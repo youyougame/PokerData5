@@ -7,25 +7,9 @@
     android:layout_height="match_parent"
     tools:context=".TitleActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        android:id="@+id/titleAppBar">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/titleToolber"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay"/>
-
-    </android.support.design.widget.AppBarLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/titleAppBar"
         android:paddingTop="16dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
@@ -67,13 +51,13 @@
             android:text="日付を設定してください"
             android:layout_weight="1"/>
 
-        <EditText
+        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/titleDateEdit"
+            android:id="@+id/titleDateButton"
             android:hint="----/--/--"
-            android:layout_below="@+id/titleDateEdit"
             android:gravity="center|bottom"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_weight="1"/>
         <Space
             android:layout_width="wrap_content"

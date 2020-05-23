@@ -5,7 +5,7 @@ import io.realm.annotations.PrimaryKey
 import java.io.Serializable
 import java.util.*
 
-class Game : RealmObject(), Serializable {
+open class Game : RealmObject(), Serializable {
     var date: Date = Date() //日時
     var title: String = "" //テーブル名
     var count: Int = 0 //行われたゲーム数

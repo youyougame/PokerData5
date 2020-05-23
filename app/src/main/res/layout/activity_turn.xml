@@ -34,11 +34,10 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="50dp"
             android:id="@+id/turnText"
-            android:text="順番と各プレーヤーの設定します\n長押しで自分の順番を決定できます\nタップで各プレーヤーの名前とチップの値を設定できます"
-            android:gravity="center"
-            android:layout_weight="1"/>
+            android:text="順番と各プレーヤーの設定します\n自分以外のデータは入力しなくても構いません"
+            android:gravity="center" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -312,7 +311,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_below="@+id/turnList"
             android:orientation="horizontal" >
 

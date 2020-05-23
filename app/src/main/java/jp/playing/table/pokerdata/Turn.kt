@@ -4,7 +4,7 @@ import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import java.io.Serializable
 
-class Turn : RealmObject(), Serializable {
+open class Turn : RealmObject(), Serializable {
     var game_id: Int = 0
     var hand_id: Int = 0
     var count: Int = 0 // ゲーム数

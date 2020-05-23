@@ -5,7 +5,7 @@ import io.realm.annotations.PrimaryKey
 import java.io.Serializable
 import java.util.*
 
-class Hand : RealmObject(), Serializable {
+open class Hand : RealmObject(), Serializable {
     var date: Date = Date() //日時
     var count: Int = 0 //ゲーム数
 

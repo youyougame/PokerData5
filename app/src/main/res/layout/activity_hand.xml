@@ -7,25 +7,9 @@
     android:layout_height="match_parent"
     tools:context=".HandActivity">
     
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/handAppBar"
-        android:theme="@style/AppTheme.AppBarOverlay">
-        
-        <android.support.v7.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:id="@+id/handToolbar"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay"/>
-        
-    </android.support.design.widget.AppBarLayout>
-    
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/handAppBar"
         android:orientation="vertical"
         android:paddingTop="16dp"
         android:paddingLeft="16dp"
@@ -53,14 +37,13 @@
                 android:layout_weight="1"/>
             
         </LinearLayout>
-            
         
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:text="最小ベッド数を設定してください（ビッグブラインド）"
             android:gravity="center"
-            android:layout_weight="1"/>
+            android:layout_weight="0.5"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -104,10 +87,10 @@
                 android:src="@drawable/left_button"
                 android:layout_weight="1"/>
 
-            <EditText
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/handChipsEdit"
+                android:id="@+id/handChipsText"
                 android:layout_weight="1"/>
 
             <ImageButton
@@ -155,7 +138,7 @@
             android:id="@+id/handCardText"
             android:text="あなたのハンドを入力してください"
             android:gravity="center"
-            android:layout_weight="1"/>
+            android:layout_weight="0.5"/>
 
         <LinearLayout
             android:layout_width="match_parent"
