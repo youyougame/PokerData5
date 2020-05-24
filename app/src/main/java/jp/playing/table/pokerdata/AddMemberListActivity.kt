@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.ListView
 import io.realm.Realm
 import io.realm.RealmChangeListener
@@ -11,6 +12,7 @@ import io.realm.kotlin.where
 
 import kotlinx.android.synthetic.main.activity_add_member_list.*
 import kotlinx.android.synthetic.main.content_add_member_list.*
+import kotlinx.android.synthetic.main.list_add_member.*
 
 class AddMemberListActivity : AppCompatActivity() {
 

@@ -8,6 +8,7 @@ import android.text.Editable
 import android.util.Log
 import android.view.View
 import android.widget.*
+import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_setting.*
 
@@ -22,11 +23,18 @@ class TurnActivity : AppCompatActivity() {
 
     private var mChips = 0
 
+    private lateinit var mRealm: Realm
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_turn)
         setSupportActionBar(turnToolbar)
+
+        //Realmの設定
+        mRealm = Realm.getDefaultInstance()
+        //Todo mRealm.addChangeListener(mRealmListener)
+
 
         //インテントを受け取る
         val extras = intent.extras
@@ -287,6 +295,12 @@ class TurnActivity : AppCompatActivity() {
             val intent = Intent(this@TurnActivity, HandActivity::class.java)
             startActivity(intent)
         }
+
+    }
+
+    private fun reloadSpinner() {
+
+
 
     }
 

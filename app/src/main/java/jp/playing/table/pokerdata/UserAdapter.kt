@@ -1,6 +1,8 @@
 package jp.playing.table.pokerdata
 
 import android.content.Context
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +38,12 @@ class UserAdapter(context: Context): BaseAdapter() {
 
         val nameText = convertView!!.findViewById<View>(R.id.addMemberListNameText) as TextView
         nameText.text = userList[position].name
+
+//        val arrayUserList = arrayListOf("", "自分")
+//        arrayUserList.add(userList[position].name)
+//
+//        val intent = Intent(this@UserAdapter, TurnActivity::class.java)
+//        intent.putExtra("UserName", arrayUserList)
 
         return convertView
     }
