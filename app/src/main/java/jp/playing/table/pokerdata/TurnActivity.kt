@@ -303,24 +303,33 @@ class TurnActivity : AppCompatActivity() {
     private fun cheackSpinner() {
         when (mMember) {
             2 -> {
+                when ("") {
+                    spinnerText1 -> player1 = "player1"
+                    spinnerText2 -> player2 = "player2"
+                }
+
                 when (spinnerText1) {
                     spinnerText2 -> {
                         val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player1 = "player1"
                     else -> player1 = spinnerText1
                 }
 
                 when (spinnerText2) {
-                    "" -> player2 = "player2"
                     else -> player2 = spinnerText2
                 }
 
             }
 
             3 -> {
+                when ("") {
+                    spinnerText1 -> player1 = "player1"
+                    spinnerText2 -> player2 = "player2"
+                    spinnerText3 -> player3 = "player3"
+                }
+
                 when (spinnerText1) {
                     spinnerText2 -> {
                         val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
@@ -332,7 +341,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player1 = "player1"
                     else -> player1 = spinnerText1
                 }
 
@@ -342,17 +350,22 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player2 = "player2"
                     else -> player2 = spinnerText2
                 }
 
                 when (spinnerText3) {
-                    "" -> player3 = "player3"
                     else -> player3 = spinnerText3
                 }
             }
 
             4 -> {
+                when ("") {
+                    spinnerText1 -> player1 = "player1"
+                    spinnerText2 -> player2 = "player2"
+                    spinnerText3 -> player3 = "player3"
+                    spinnerText4 -> player4 = "player4"
+                }
+
                 when (spinnerText1) {
                     spinnerText2 -> {
                         val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
@@ -369,7 +382,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player1 = "player1"
                     else -> player1 = spinnerText1
                 }
 
@@ -384,7 +396,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player2 = "player2"
                     else -> player2 = spinnerText2
                 }
 
@@ -394,17 +405,23 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player3 = "player3"
                     else -> player3 = spinnerText3
                 }
 
                 when (spinnerText4) {
-                    "" -> player4 = "player4"
                     else -> player4 = spinnerText4
                 }
             }
 
             5 -> {
+                when ("") {
+                    spinnerText1 -> player1 = "player1"
+                    spinnerText2 -> player2 = "player2"
+                    spinnerText3 -> player3 = "player3"
+                    spinnerText4 -> player4 = "player4"
+                    spinnerText5 -> player5 = "player5"
+                }
+
                 when (spinnerText1) {
                     spinnerText2 -> {
                         val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
@@ -426,7 +443,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player1 = "player1"
                     else -> player1 = spinnerText1
                 }
 
@@ -446,7 +462,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player2 = "player2"
                     else -> player2 = spinnerText2
                 }
 
@@ -461,7 +476,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player3 = "player3"
                     else -> player3 = spinnerText3
                 }
 
@@ -471,17 +485,24 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player4 = "player4"
                     else -> player4 = spinnerText4
                 }
 
                 when (spinnerText5) {
-                    "" -> player5 = "player5"
                     else -> player5 = spinnerText5
                 }
             }
 
             6 -> {
+                when ("") {
+                    spinnerText1 -> player1 = "player1"
+                    spinnerText2 -> player2 = "player2"
+                    spinnerText3 -> player3 = "player3"
+                    spinnerText4 -> player4 = "player4"
+                    spinnerText5 -> player5 = "player5"
+                    spinnerText6 -> player6 = "player6"
+                }
+
                 when (spinnerText1) {
                     spinnerText2 -> {
                         val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
@@ -508,7 +529,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player1 = "player1"
                     else -> player1 = spinnerText1
                 }
 
@@ -533,7 +553,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player2 = "player2"
                     else -> player2 = spinnerText2
                 }
 
@@ -553,7 +572,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player3 = "player3"
                     else -> player3 = spinnerText3
                 }
 
@@ -568,7 +586,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player4 = "player4"
                     else -> player4 = spinnerText4
                 }
 
@@ -578,17 +595,25 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player5 = "player5"
                     else -> player5 = spinnerText5
                 }
 
                 when (spinnerText6) {
-                    "" -> player6 = "player6"
                     else -> player6 = spinnerText6
                 }
             }
 
             7 -> {
+                when ("") {
+                    spinnerText1 -> player1 = "player1"
+                    spinnerText2 -> player2 = "player2"
+                    spinnerText3 -> player3 = "player3"
+                    spinnerText4 -> player4 = "player4"
+                    spinnerText5 -> player5 = "player5"
+                    spinnerText6 -> player6 = "player6"
+                    spinnerText7 -> player7 = "player7"
+                }
+
                 when (spinnerText1) {
                     spinnerText2 -> {
                         val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
@@ -620,7 +645,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player1 = "player1"
                     else -> player1 = spinnerText1
                 }
 
@@ -650,7 +674,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player2 = "player2"
                     else -> player2 = spinnerText2
                 }
 
@@ -675,7 +698,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player3 = "player3"
                     else -> player3 = spinnerText3
                 }
 
@@ -695,7 +717,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player4 = "player4"
                     else -> player4 = spinnerText4
                 }
 
@@ -710,7 +731,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player5 = "player5"
                     else -> player5 = spinnerText5
                 }
 
@@ -720,17 +740,26 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player6 = "player6"
                     else -> player6 = spinnerText6
                 }
 
                 when (spinnerText7) {
-                    "" -> player7 = "player7"
                     else -> player7 = spinnerText7
                 }
             }
 
             8 -> {
+                when ("") {
+                    spinnerText1 -> player1 = "player1"
+                    spinnerText2 -> player2 = "player2"
+                    spinnerText3 -> player3 = "player3"
+                    spinnerText4 -> player4 = "player4"
+                    spinnerText5 -> player5 = "player5"
+                    spinnerText6 -> player6 = "player6"
+                    spinnerText7 -> player7 = "player7"
+                    spinnerText8 -> player8 = "player8"
+                }
+
                 when (spinnerText1) {
                     spinnerText2 -> {
                         val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
@@ -767,7 +796,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player1 = "player1"
                     else -> player1 = spinnerText1
                 }
 
@@ -802,7 +830,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player2 = "player2"
                     else -> player2 = spinnerText2
                 }
 
@@ -832,7 +859,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player3 = "player3"
                     else -> player3 = spinnerText3
                 }
 
@@ -857,7 +883,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player4 = "player4"
                     else -> player4 = spinnerText4
                 }
 
@@ -877,7 +902,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player5 = "player5"
                     else -> player5 = spinnerText5
                 }
 
@@ -892,7 +916,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player6 = "player6"
                     else -> player6 = spinnerText6
                 }
 
@@ -902,17 +925,27 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player7 = "player7"
                     else -> player7 = spinnerText7
                 }
 
                 when (spinnerText8) {
-                    "" -> player8 = "player8"
                     else -> player8 = spinnerText8
                 }
             }
 
             9 -> {
+                when ("") {
+                    spinnerText1 -> player1 = "player1"
+                    spinnerText2 -> player2 = "player2"
+                    spinnerText3 -> player3 = "player3"
+                    spinnerText4 -> player4 = "player4"
+                    spinnerText5 -> player5 = "player5"
+                    spinnerText6 -> player6 = "player6"
+                    spinnerText7 -> player7 = "player7"
+                    spinnerText8 -> player8 = "player8"
+                    spinnerText9 -> player9 = "player9"
+                }
+
                 when (spinnerText1) {
                     spinnerText2 -> {
                         val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
@@ -954,7 +987,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player1 = "player1"
                     else -> player1 = spinnerText1
                 }
 
@@ -994,7 +1026,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player2 = "player2"
                     else -> player2 = spinnerText2
                 }
 
@@ -1029,7 +1060,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player3 = "player3"
                     else -> player3 = spinnerText3
                 }
 
@@ -1059,7 +1089,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player4 = "player4"
                     else -> player4 = spinnerText4
                 }
 
@@ -1084,7 +1113,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player5 = "player5"
                     else -> player5 = spinnerText5
                 }
 
@@ -1104,7 +1132,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player6 = "player6"
                     else -> player6 = spinnerText6
                 }
 
@@ -1119,7 +1146,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player7 = "player7"
                     else -> player7 = spinnerText7
                 }
 
@@ -1129,17 +1155,28 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player8 = "player8"
                     else -> player8 = spinnerText8
                 }
 
                 when (spinnerText9) {
-                    "" -> player9 = "player9"
                     else -> player9 = spinnerText9
                 }
             }
 
             10 -> {
+                when ("") {
+                    spinnerText1 -> player1 = "player1"
+                    spinnerText2 -> player2 = "player2"
+                    spinnerText3 -> player3 = "player3"
+                    spinnerText4 -> player4 = "player4"
+                    spinnerText5 -> player5 = "player5"
+                    spinnerText6 -> player6 = "player6"
+                    spinnerText7 -> player7 = "player7"
+                    spinnerText8 -> player8 = "player8"
+                    spinnerText9 -> player9 = "player9"
+                    spinnerText10 -> player10 = "player10"
+                }
+
                 when (spinnerText1) {
                     spinnerText2 -> {
                         val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
@@ -1186,7 +1223,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player1 = "player1"
                     else -> player1 = spinnerText1
                 }
 
@@ -1231,7 +1267,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player2 = "player2"
                     else -> player2 = spinnerText2
                 }
 
@@ -1271,7 +1306,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player3 = "player3"
                     else -> player3 = spinnerText3
                 }
 
@@ -1306,7 +1340,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player4 = "player4"
                     else -> player4 = spinnerText4
                 }
 
@@ -1336,7 +1369,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player5 = "player5"
                     else -> player5 = spinnerText5
                 }
 
@@ -1361,7 +1393,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player6 = "player6"
                     else -> player6 = spinnerText6
                 }
 
@@ -1381,7 +1412,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player7 = "player7"
                     else -> player7 = spinnerText7
                 }
 
@@ -1396,7 +1426,6 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player8 = "player8"
                     else -> player8 = spinnerText8
                 }
 
@@ -1406,12 +1435,10 @@ class TurnActivity : AppCompatActivity() {
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
                     }
-                    "" -> player9 = "player9"
                     else -> player9 = spinnerText9
                 }
 
                 when (spinnerText10) {
-                    "" -> player10 = "player10"
                     else -> player10 = spinnerText10
                 }
             }
