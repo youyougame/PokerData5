@@ -462,8 +462,6 @@ class TurnActivity : AppCompatActivity() {
                     doneChecker2 = "OK"
                 }
 
-                Log.d("kotlintestCheack1", doneChecker1)
-                Log.d("kotlintestCheack2", doneChecker2)
                 doneChecker3 = "OK"
                 doneChecker4 = "OK"
                 doneChecker5 = "OK"
@@ -475,43 +473,583 @@ class TurnActivity : AppCompatActivity() {
             }
 
             3 -> {
-                if (spinnerText1 == "") {spinnerText1 = "player1"}
-                if (spinnerText2 == "") {spinnerText2 = "player2"}
-                if (spinnerText3 == "") {spinnerText3 = "player3"}
+                if (spinnerText1 == "") {
+                    spinnerText1 = "player1"
+                    doneChecker1 = "OK"
+                } else {
+                    if (spinnerText1 == spinnerText2) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker1 = "NO"
+                        doneChecker2 = "NO"
+                    } else if (spinnerText1 == spinnerText3) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker1 = "NO"
+                        doneChecker3 = "NO"
+                    } else {
+                        doneChecker1 = "OK"
+                    }
+                }
+
+                if (spinnerText2 == "") {
+                    spinnerText2 = "player2"
+                    doneChecker2 = "OK"
+                } else {
+                    if (spinnerText2 == spinnerText3) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker2 = "NO"
+                        doneChecker3 = "NO"
+                    } else {
+                        doneChecker2 = "OK"
+                        doneChecker3 = "OK"
+                    }
+                }
+
+                if (spinnerText3 == "") {
+                    spinnerText3 = "player3"
+                    doneChecker3 = "OK"
+                }
+
+                doneChecker4 = "OK"
+                doneChecker5 = "OK"
+                doneChecker6 = "OK"
+                doneChecker7 = "OK"
+                doneChecker8 = "OK"
+                doneChecker9 = "OK"
+                doneChecker10 = "OK"
             }
 
             4 -> {
-                if (spinnerText1 == "") {spinnerText1 = "player1"}
-                if (spinnerText2 == "") {spinnerText2 = "player2"}
-                if (spinnerText3 == "") {spinnerText3 = "player3"}
-                if (spinnerText4 == "") {spinnerText4 = "player4"}
+                if (spinnerText1 == "") {
+                    spinnerText1 = "player1"
+                    doneChecker1 = "OK"
+                } else {
+                    if (spinnerText1 == spinnerText2) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker1 = "NO"
+                        doneChecker2 = "NO"
+                    } else if (spinnerText1 == spinnerText3) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker1 = "NO"
+                        doneChecker3 = "NO"
+                    } else if (spinnerText1 == spinnerText4) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker1 = "NO"
+                        doneChecker4 = "NO"
+                    } else {
+                        doneChecker1 = "OK"
+                    }
+                }
+
+                if (spinnerText2 == "") {
+                    spinnerText2 = "player2"
+                    doneChecker2 = "OK"
+                } else {
+                    if (spinnerText2 == spinnerText3) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker2 = "NO"
+                        doneChecker3 = "NO"
+                    } else if (spinnerText2 == spinnerText4) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker2 = "NO"
+                        doneChecker4 = "NO"
+                    } else {
+                        doneChecker2 = "OK"
+                    }
+                }
+
+                if (spinnerText3 == "") {
+                    spinnerText3 = "player3"
+                    doneChecker3 = "OK"
+                } else {
+                    if (spinnerText3 == spinnerText4) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker3 = "NO"
+                        doneChecker4 = "NO"
+                    } else {
+                        doneChecker3 = "OK"
+                        doneChecker4 = "OK"
+                    }
+                }
+
+                if (spinnerText4 == "") {
+                    spinnerText4 = "player4"
+                    doneChecker4 = "OK"
+                }
+
+                doneChecker5 = "OK"
+                doneChecker6 = "OK"
+                doneChecker7 = "OK"
+                doneChecker8 = "OK"
+                doneChecker9 = "OK"
+                doneChecker10 = "OK"
             }
 
             5 -> {
-                if (spinnerText1 == "") {spinnerText1 = "player1"}
-                if (spinnerText2 == "") {spinnerText2 = "player2"}
-                if (spinnerText3 == "") {spinnerText3 = "player3"}
-                if (spinnerText4 == "") {spinnerText4 = "player4"}
-                if (spinnerText5 == "") {spinnerText5 = "player5"}
+                if (spinnerText1 == "") {
+                    spinnerText1 = "player1"
+                    doneChecker1 = "OK"
+                } else {
+                    if (spinnerText1 == spinnerText2) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker1 = "NO"
+                        doneChecker2 = "NO"
+                    } else if (spinnerText1 == spinnerText3) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker1 = "NO"
+                        doneChecker3 = "NO"
+                    } else if (spinnerText1 == spinnerText4) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker1 = "NO"
+                        doneChecker4 = "NO"
+                    } else if (spinnerText1 == spinnerText5) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker1 = "NO"
+                        doneChecker5 = "NO"
+                    } else {
+                        doneChecker1 = "OK"
+                    }
+                }
+
+                if (spinnerText2 == "") {
+                    spinnerText2 = "player2"
+                    doneChecker2 = "OK"
+                } else {
+                    if (spinnerText2 == spinnerText3) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker2 = "NO"
+                        doneChecker3 = "NO"
+                    } else if (spinnerText2 == spinnerText4) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker2 = "NO"
+                        doneChecker4 = "NO"
+                    } else if (spinnerText2 == spinnerText5) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker2 = "NO"
+                        doneChecker5 = "NO"
+                    } else {
+                        doneChecker2 = "OK"
+                    }
+                }
+
+                if (spinnerText3 == "") {
+                    spinnerText3 = "player3"
+                    doneChecker3 = "OK"
+                } else {
+                    if (spinnerText3 == spinnerText4) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker3 = "NO"
+                        doneChecker4 = "NO"
+                    } else if (spinnerText3 == spinnerText5) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker3 = "NO"
+                        doneChecker5 = "NO"
+                    } else {
+                        doneChecker3 = "OK"
+                    }
+                }
+
+                if (spinnerText4 == "") {
+                    spinnerText4 = "player4"
+                    doneChecker4 = "OK"
+                } else {
+                    if (spinnerText4 == spinnerText5) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker4 = "NO"
+                        doneChecker5 = "NO"
+                    } else {
+                        doneChecker4 = "OK"
+                        doneChecker5 = "OK"
+                    }
+                }
+
+                if (spinnerText5 == "") {
+                    spinnerText5 = "player5"
+                    doneChecker5 = "OK"
+                }
+
+                doneChecker6 = "OK"
+                doneChecker7 = "OK"
+                doneChecker8 = "OK"
+                doneChecker9 = "OK"
+                doneChecker10 = "OK"
             }
 
             6 -> {
-                if (spinnerText1 == "") {spinnerText1 = "player1"}
-                if (spinnerText2 == "") {spinnerText2 = "player2"}
-                if (spinnerText3 == "") {spinnerText3 = "player3"}
-                if (spinnerText4 == "") {spinnerText4 = "player4"}
-                if (spinnerText5 == "") {spinnerText5 = "player5"}
-                if (spinnerText6 == "") {spinnerText6 = "player6"}
+                if (spinnerText1 == "") {
+                    spinnerText1 = "player1"
+                    doneChecker1 = "OK"
+                } else {
+                    if (spinnerText1 == spinnerText2) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker1 = "NO"
+                        doneChecker2 = "NO"
+                    } else if (spinnerText1 == spinnerText3) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker1 = "NO"
+                        doneChecker3 = "NO"
+                    } else if (spinnerText1 == spinnerText4) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker1 = "NO"
+                        doneChecker4 = "NO"
+                    } else if (spinnerText1 == spinnerText5) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker1 = "NO"
+                        doneChecker5 = "NO"
+                    } else if (spinnerText1 == spinnerText6) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker1 = "NO"
+                        doneChecker6 = "NO"
+                    } else {
+                        doneChecker1 = "OK"
+                    }
+                }
+
+                if (spinnerText2 == "") {
+                    spinnerText2 = "player2"
+                    doneChecker2 = "OK"
+                } else {
+                    if (spinnerText2 == spinnerText3) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker2 = "NO"
+                        doneChecker3 = "NO"
+                    } else if (spinnerText2 == spinnerText4) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker2 = "NO"
+                        doneChecker4 = "NO"
+                    } else if (spinnerText2 == spinnerText5) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker2 = "NO"
+                        doneChecker5 = "NO"
+                    } else if (spinnerText2 == spinnerText6) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker2 = "NO"
+                        doneChecker6 = "NO"
+                    } else {
+                        doneChecker2 = "OK"
+                    }
+                }
+
+                if (spinnerText3 == "") {
+                    spinnerText3 = "player3"
+                    doneChecker3 = "OK"
+                } else {
+                    if (spinnerText3 == spinnerText4) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker3 = "NO"
+                        doneChecker4 = "NO"
+                    } else if (spinnerText3 == spinnerText5) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker3 = "NO"
+                        doneChecker5 = "NO"
+                    } else if (spinnerText3 == spinnerText6) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker3 = "NO"
+                        doneChecker6 = "NO"
+                    } else {
+                        doneChecker3 = "OK"
+                    }
+                }
+
+                if (spinnerText4 == "") {
+                    spinnerText4 = "player4"
+                    doneChecker4 = "OK"
+                } else {
+                    if (spinnerText4 == spinnerText5) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker4 = "NO"
+                        doneChecker5 = "NO"
+                    } else if (spinnerText4 == spinnerText6) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker4 = "NO"
+                        doneChecker6 = "NO"
+                    } else {
+                        doneChecker4 = "OK"
+                    }
+                }
+
+                if (spinnerText5 == "") {
+                    spinnerText5 = "player5"
+                    doneChecker5 = "OK"
+                } else {
+                    if (spinnerText5 == spinnerText6) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker5 = "NO"
+                        doneChecker6 = "NO"
+                    } else {
+                        doneChecker5 = "OK"
+                        doneChecker6 = "OK"
+                    }
+                }
+
+                if (spinnerText6 == "") {
+                    spinnerText6 = "player6"
+                    doneChecker6 = "OK"
+                }
+
+                doneChecker7 = "OK"
+                doneChecker8 = "OK"
+                doneChecker9 = "OK"
+                doneChecker10 = "OK"
             }
 
             7 -> {
-                if (spinnerText1 == "") {spinnerText1 = "player1"}
-                if (spinnerText2 == "") {spinnerText2 = "player2"}
-                if (spinnerText3 == "") {spinnerText3 = "player3"}
-                if (spinnerText4 == "") {spinnerText4 = "player4"}
-                if (spinnerText5 == "") {spinnerText5 = "player5"}
-                if (spinnerText6 == "") {spinnerText6 = "player6"}
-                if (spinnerText7 == "") {spinnerText7 = "player7"}
+                if (spinnerText1 == "") {
+                    spinnerText1 = "player1"
+                    doneChecker1 = "OK"
+                } else {
+                    if (spinnerText1 == spinnerText2) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker1 = "NO"
+                        doneChecker2 = "NO"
+                    } else if (spinnerText1 == spinnerText3) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker1 = "NO"
+                        doneChecker3 = "NO"
+                    } else if (spinnerText1 == spinnerText4) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker1 = "NO"
+                        doneChecker4 = "NO"
+                    } else if (spinnerText1 == spinnerText5) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker1 = "NO"
+                        doneChecker5 = "NO"
+                    } else if (spinnerText1 == spinnerText6) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker1 = "NO"
+                        doneChecker6 = "NO"
+                    } else if (spinnerText1 == spinnerText7) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker1 = "NO"
+                        doneChecker7 = "NO"
+                    } else {
+                        doneChecker1 = "OK"
+                    }
+                }
+
+                if (spinnerText2 == "") {
+                    spinnerText2 = "player2"
+                    doneChecker2 = "OK"
+                } else {
+                    if (spinnerText2 == spinnerText3) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker2 = "NO"
+                        doneChecker3 = "NO"
+                    } else if (spinnerText2 == spinnerText4) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker2 = "NO"
+                        doneChecker4 = "NO"
+                    } else if (spinnerText2 == spinnerText5) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker2 = "NO"
+                        doneChecker5 = "NO"
+                    } else if (spinnerText2 == spinnerText6) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker2 = "NO"
+                        doneChecker6 = "NO"
+                    } else if (spinnerText2 == spinnerText7) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker2 = "NO"
+                        doneChecker7 = "NO"
+                    } else {
+                        doneChecker2 = "OK"
+                    }
+                }
+
+                if (spinnerText3 == "") {
+                    spinnerText3 = "player3"
+                    doneChecker3 = "OK"
+                } else {
+                    if (spinnerText3 == spinnerText4) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker3 = "NO"
+                        doneChecker4 = "NO"
+                    } else if (spinnerText3 == spinnerText5) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker3 = "NO"
+                        doneChecker5 = "NO"
+                    } else if (spinnerText3 == spinnerText6) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker3 = "NO"
+                        doneChecker6 = "NO"
+                    } else if (spinnerText3 == spinnerText7) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker3 = "NO"
+                        doneChecker7 = "NO"
+                    } else {
+                        doneChecker3 = "OK"
+                    }
+                }
+
+                if (spinnerText4 == "") {
+                    spinnerText4 = "player4"
+                    doneChecker4 = "OK"
+                } else {
+                    if (spinnerText4 == spinnerText5) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker4 = "NO"
+                        doneChecker5 = "NO"
+                    } else if (spinnerText4 == spinnerText6) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker4 = "NO"
+                        doneChecker6 = "NO"
+                    } else if (spinnerText4 == spinnerText7) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker4 = "NO"
+                        doneChecker7 = "NO"
+                    } else {
+                        doneChecker4 = "OK"
+                    }
+                }
+
+                if (spinnerText5 == "") {
+                    spinnerText5 = "player5"
+                    doneChecker5 = "OK"
+                } else {
+                    if (spinnerText5 == spinnerText6) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker5 = "NO"
+                        doneChecker6 = "NO"
+                    } else if (spinnerText5 == spinnerText7) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker5 = "NO"
+                        doneChecker7 = "NO"
+                    } else {
+                        doneChecker5 = "OK"
+                    }
+                }
+
+                if (spinnerText6 == "") {
+                    spinnerText6 = "player6"
+                    doneChecker6 = "OK"
+                } else {
+                    if (spinnerText6 == spinnerText7) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker6 = "NO"
+                        doneChecker7 = "NO"
+                    } else {
+                        doneChecker6 = "OK"
+                        doneChecker7 = "OK"
+                    }
+                }
+
+                if (spinnerText7 == "") {
+                    spinnerText7 = "player7"
+                    doneChecker7 = "OK"
+                }
+
+                doneChecker8 = "OK"
+                doneChecker9 = "OK"
+                doneChecker10 = "OK"
             }
 
             8 -> {
