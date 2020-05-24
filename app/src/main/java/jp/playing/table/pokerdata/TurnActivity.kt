@@ -41,6 +41,17 @@ class TurnActivity : AppCompatActivity() {
     private var player9 = ""
     private var player10 = ""
 
+    private var chips1 = "none"
+    private var chips2 = "none"
+    private var chips3 = "none"
+    private var chips4 = "none"
+    private var chips5 = "none"
+    private var chips6 = "none"
+    private var chips7 = "none"
+    private var chips8 = "none"
+    private var chips9 = "none"
+    private var chips10 = "none"
+
     private var mMember = 0
 
     private var mChips = 0
@@ -304,11 +315,126 @@ class TurnActivity : AppCompatActivity() {
         turnDoneButton.setOnClickListener {
 
             cheackSpinner()
+            cheackChips()
 
-            val intent = Intent(this@TurnActivity, HandActivity::class.java)
-            startActivity(intent)
+            if (
+                doneChecker1 == "OK" && doneChecker2 == "OK" && doneChecker3 == "OK" && doneChecker4 == "OK" && doneChecker5 == "OK" &&
+                doneChecker6 == "OK" && doneChecker7 == "OK" && doneChecker8 == "OK" && doneChecker9 == "OK" && doneChecker10 == "OK"
+                    ) {
+                val intent = Intent(this@TurnActivity, HandActivity::class.java)
+                intent.putExtra("p1", player1)
+                intent.putExtra("p2", player2)
+                intent.putExtra("p3", player3)
+                intent.putExtra("p4", player4)
+                intent.putExtra("p5", player5)
+                intent.putExtra("p6", player6)
+                intent.putExtra("p7", player7)
+                intent.putExtra("p8", player8)
+                intent.putExtra("p9", player9)
+                intent.putExtra("p10", player10)
+
+                intent.putExtra("c1", chips1)
+                intent.putExtra("c2", chips2)
+                intent.putExtra("c3", chips3)
+                intent.putExtra("c4", chips4)
+                intent.putExtra("c5", chips5)
+                intent.putExtra("c6", chips6)
+                intent.putExtra("c7", chips7)
+                intent.putExtra("c8", chips8)
+                intent.putExtra("c9", chips9)
+                intent.putExtra("c10", chips10)
+
+                startActivity(intent)
+            }
         }
 
+    }
+
+
+    //チップを設定
+    private fun cheackChips() {
+        when (mMember) {
+            2 -> {
+                chips1 = turnEdit1.toString()
+                chips2 = turnEdit2.toString()
+            }
+
+            3 -> {
+                chips1 = turnEdit1.toString()
+                chips2 = turnEdit2.toString()
+                chips3 = turnEdit3.toString()
+            }
+
+            4 -> {
+                chips1 = turnEdit1.toString()
+                chips2 = turnEdit2.toString()
+                chips3 = turnEdit3.toString()
+                chips4 = turnEdit4.toString()
+            }
+
+            5 -> {
+                chips1 = turnEdit1.toString()
+                chips2 = turnEdit2.toString()
+                chips3 = turnEdit3.toString()
+                chips4 = turnEdit4.toString()
+                chips5 = turnEdit5.toString()
+            }
+
+            6 -> {
+                chips1 = turnEdit1.toString()
+                chips2 = turnEdit2.toString()
+                chips3 = turnEdit3.toString()
+                chips4 = turnEdit4.toString()
+                chips5 = turnEdit5.toString()
+                chips6 = turnEdit6.toString()
+            }
+
+            7 -> {
+                chips1 = turnEdit1.toString()
+                chips2 = turnEdit2.toString()
+                chips3 = turnEdit3.toString()
+                chips4 = turnEdit4.toString()
+                chips5 = turnEdit5.toString()
+                chips6 = turnEdit6.toString()
+                chips7 = turnEdit7.toString()
+            }
+
+            8 -> {
+                chips1 = turnEdit1.toString()
+                chips2 = turnEdit2.toString()
+                chips3 = turnEdit3.toString()
+                chips4 = turnEdit4.toString()
+                chips5 = turnEdit5.toString()
+                chips6 = turnEdit6.toString()
+                chips7 = turnEdit7.toString()
+                chips8 = turnEdit8.toString()
+            }
+
+            9 -> {
+                chips1 = turnEdit1.toString()
+                chips2 = turnEdit2.toString()
+                chips3 = turnEdit3.toString()
+                chips4 = turnEdit4.toString()
+                chips5 = turnEdit5.toString()
+                chips6 = turnEdit6.toString()
+                chips7 = turnEdit7.toString()
+                chips8 = turnEdit8.toString()
+                chips9 = turnEdit9.toString()
+            }
+
+            10 -> {
+                chips1 = turnEdit1.toString()
+                chips2 = turnEdit2.toString()
+                chips3 = turnEdit3.toString()
+                chips4 = turnEdit4.toString()
+                chips5 = turnEdit5.toString()
+                chips6 = turnEdit6.toString()
+                chips7 = turnEdit7.toString()
+                chips8 = turnEdit8.toString()
+                chips9 = turnEdit9.toString()
+                chips10 = turnEdit10.toString()
+            }
+        }
     }
 
     //プレイヤー名に重複が無いかチェック
@@ -319,10 +445,12 @@ class TurnActivity : AppCompatActivity() {
                     spinnerText1 -> {
                         player1 = "player1"
                         doneChecker1 = "OK"
+                        spinnerText1 = "1"
                     }
                     spinnerText2 -> {
                         player2 = "player2"
                         doneChecker2 = "OK"
+                        spinnerText2 = "2"
                     }
                 }
 
@@ -347,6 +475,16 @@ class TurnActivity : AppCompatActivity() {
                     }
                 }
 
+                doneChecker3 = "OK"
+                doneChecker4 = "OK"
+                doneChecker5 = "OK"
+                doneChecker6 = "OK"
+                doneChecker7 = "OK"
+                doneChecker8 = "OK"
+                doneChecker9 = "OK"
+                doneChecker10 = "OK"
+
+
             }
 
             3 -> {
@@ -354,14 +492,17 @@ class TurnActivity : AppCompatActivity() {
                     spinnerText1 -> {
                         player1 = "player1"
                         doneChecker1 = "OK"
+                        spinnerText1 = "1"
                     }
                     spinnerText2 -> {
                         player2 = "player2"
                         doneChecker2 = "OK"
+                        spinnerText2 = "2"
                     }
                     spinnerText3 -> {
                         player3 = "player3"
                         doneChecker3 = "OK"
+                        spinnerText3 = "3"
                     }
                 }
 
@@ -381,6 +522,7 @@ class TurnActivity : AppCompatActivity() {
                         doneChecker3 = "NO"
                     }
                     else -> {
+                        Log.d("kotlintestCheack", "通過しました")
                         player1 = spinnerText1
                         doneChecker1 = "OK"
                     }
@@ -406,6 +548,15 @@ class TurnActivity : AppCompatActivity() {
                         doneChecker3 = "OK"
                     }
                 }
+
+                doneChecker4 = "OK"
+                doneChecker5 = "OK"
+                doneChecker6 = "OK"
+                doneChecker7 = "OK"
+                doneChecker8 = "OK"
+                doneChecker9 = "OK"
+                doneChecker10 = "OK"
+
             }
 
             4 -> {
@@ -413,18 +564,22 @@ class TurnActivity : AppCompatActivity() {
                     spinnerText1 -> {
                         player1 = "player1"
                         doneChecker1 = "OK"
+                        spinnerText1 = "1"
                     }
                     spinnerText2 -> {
                         player2 = "player2"
                         doneChecker2 = "OK"
+                        spinnerText2 = "2"
                     }
                     spinnerText3 -> {
                         player3 = "player3"
                         doneChecker3 = "OK"
+                        spinnerText3 = "3"
                     }
                     spinnerText4 -> {
                         player4 = "player4"
                         doneChecker4 = "OK"
+                        spinnerText4 = "4"
                     }
                 }
 
@@ -497,6 +652,14 @@ class TurnActivity : AppCompatActivity() {
                         doneChecker4 = "OK"
                     }
                 }
+
+                doneChecker5 = "OK"
+                doneChecker6 = "OK"
+                doneChecker7 = "OK"
+                doneChecker8 = "OK"
+                doneChecker9 = "OK"
+                doneChecker10 = "OK"
+
             }
 
             5 -> {
@@ -504,22 +667,27 @@ class TurnActivity : AppCompatActivity() {
                     spinnerText1 -> {
                         player1 = "player1"
                         doneChecker1 = "OK"
+                        spinnerText1 = "1"
                     }
                     spinnerText2 -> {
                         player2 = "player2"
                         doneChecker2 = "OK"
+                        spinnerText2 = "2"
                     }
                     spinnerText3 -> {
                         player3 = "player3"
                         doneChecker3 = "OK"
+                        spinnerText3 = "3"
                     }
                     spinnerText4 -> {
                         player4 = "player4"
                         doneChecker4 = "OK"
+                        spinnerText4 = "4"
                     }
                     spinnerText5 -> {
                         player5 = "player5"
                         doneChecker5 = "OK"
+                        spinnerText5 = "5"
                     }
                 }
 
@@ -627,6 +795,13 @@ class TurnActivity : AppCompatActivity() {
                         doneChecker5 = "OK"
                     }
                 }
+
+                doneChecker6 = "OK"
+                doneChecker7 = "OK"
+                doneChecker8 = "OK"
+                doneChecker9 = "OK"
+                doneChecker10 = "OK"
+
             }
 
             6 -> {
@@ -634,26 +809,32 @@ class TurnActivity : AppCompatActivity() {
                     spinnerText1 -> {
                         player1 = "player1"
                         doneChecker1 = "OK"
+                        spinnerText1 = "1"
                     }
                     spinnerText2 -> {
                         player2 = "player2"
                         doneChecker2 = "OK"
+                        spinnerText2 = "2"
                     }
                     spinnerText3 -> {
                         player3 = "player3"
                         doneChecker3 = "OK"
+                        spinnerText3 = "3"
                     }
                     spinnerText4 -> {
                         player4 = "player4"
                         doneChecker4 = "OK"
+                        spinnerText4 = "4"
                     }
                     spinnerText5 -> {
                         player5 = "player5"
                         doneChecker5 = "OK"
+                        spinnerText5 = "5"
                     }
                     spinnerText6 -> {
                         player6 = "player6"
                         doneChecker6 = "OK"
+                        spinnerText6 = "6"
                     }
                 }
 
@@ -803,6 +984,12 @@ class TurnActivity : AppCompatActivity() {
                         doneChecker6 = "OK"
                     }
                 }
+
+                doneChecker7 = "OK"
+                doneChecker8 = "OK"
+                doneChecker9 = "OK"
+                doneChecker10 = "OK"
+
             }
 
             7 -> {
@@ -810,30 +997,37 @@ class TurnActivity : AppCompatActivity() {
                     spinnerText1 -> {
                         player1 = "player1"
                         doneChecker1 = "OK"
+                        spinnerText1 = "1"
                     }
                     spinnerText2 -> {
                         player2 = "player2"
                         doneChecker2 = "OK"
+                        spinnerText2 = "2"
                     }
                     spinnerText3 -> {
                         player3 = "player3"
                         doneChecker3 = "OK"
+                        spinnerText3 = "3"
                     }
                     spinnerText4 -> {
                         player4 = "player4"
                         doneChecker4 = "OK"
+                        spinnerText4 = "4"
                     }
                     spinnerText5 -> {
                         player5 = "player5"
                         doneChecker5 = "OK"
+                        spinnerText5 = "5"
                     }
                     spinnerText6 -> {
                         player6 = "player6"
                         doneChecker6 = "OK"
+                        spinnerText6 = "6"
                     }
                     spinnerText7 -> {
                         player7 = "player7"
                         doneChecker7 = "OK"
+                        spinnerText7 = "7"
                     }
                 }
 
@@ -1032,6 +1226,11 @@ class TurnActivity : AppCompatActivity() {
                         doneChecker7 = "OK"
                     }
                 }
+
+                doneChecker8 = "OK"
+                doneChecker9 = "OK"
+                doneChecker10 = "OK"
+
             }
 
             8 -> {
@@ -1039,34 +1238,42 @@ class TurnActivity : AppCompatActivity() {
                     spinnerText1 -> {
                         player1 = "player1"
                         doneChecker1 = "OK"
+                        spinnerText1 = "1"
                     }
                     spinnerText2 -> {
                         player2 = "player2"
                         doneChecker2 = "OK"
+                        spinnerText2 = "2"
                     }
                     spinnerText3 -> {
                         player3 = "player3"
                         doneChecker3 = "OK"
+                        spinnerText3 = "3"
                     }
                     spinnerText4 -> {
                         player4 = "player4"
                         doneChecker4 = "OK"
+                        spinnerText4 = "4"
                     }
                     spinnerText5 -> {
                         player5 = "player5"
                         doneChecker5 = "OK"
+                        spinnerText5 = "5"
                     }
                     spinnerText6 -> {
                         player6 = "player6"
                         doneChecker6 = "OK"
+                        spinnerText6 = "6"
                     }
                     spinnerText7 -> {
                         player7 = "player7"
                         doneChecker7 = "OK"
+                        spinnerText7 = "7"
                     }
                     spinnerText8 -> {
                         player8 = "player8"
                         doneChecker8 = "OK"
+                        spinnerText8 = "8"
                     }
                 }
 
@@ -1321,6 +1528,10 @@ class TurnActivity : AppCompatActivity() {
                         doneChecker8 = "OK"
                     }
                 }
+
+                doneChecker9 = "OK"
+                doneChecker10 = "OK"
+
             }
 
             9 -> {
@@ -1328,38 +1539,47 @@ class TurnActivity : AppCompatActivity() {
                     spinnerText1 -> {
                         player1 = "player1"
                         doneChecker1 = "OK"
+                        spinnerText1 = "1"
                     }
                     spinnerText2 -> {
                         player2 = "player2"
                         doneChecker2 = "OK"
+                        spinnerText2 = "2"
                     }
                     spinnerText3 -> {
                         player3 = "player3"
                         doneChecker3 = "OK"
+                        spinnerText3 = "3"
                     }
                     spinnerText4 -> {
                         player4 = "player4"
                         doneChecker4 = "OK"
+                        spinnerText4 = "4"
                     }
                     spinnerText5 -> {
                         player5 = "player5"
                         doneChecker5 = "OK"
+                        spinnerText5 = "5"
                     }
                     spinnerText6 -> {
                         player6 = "player6"
                         doneChecker6 = "OK"
+                        spinnerText6 = "6"
                     }
                     spinnerText7 -> {
                         player7 = "player7"
                         doneChecker7 = "OK"
+                        spinnerText7 = "7"
                     }
                     spinnerText8 -> {
                         player8 = "player8"
                         doneChecker8 = "OK"
+                        spinnerText8 = "8"
                     }
                     spinnerText9 -> {
                         player9 = "player9"
                         doneChecker9 = "OK"
+                        spinnerText9 = "9"
                     }
                 }
 
@@ -1678,6 +1898,9 @@ class TurnActivity : AppCompatActivity() {
                         doneChecker9 = "OK"
                     }
                 }
+
+                doneChecker10 = "OK"
+
             }
 
             10 -> {
@@ -1685,42 +1908,52 @@ class TurnActivity : AppCompatActivity() {
                     spinnerText1 -> {
                         player1 = "player1"
                         doneChecker1 = "OK"
+                        spinnerText1 = "1"
                     }
                     spinnerText2 -> {
                         player2 = "player2"
                         doneChecker2 = "OK"
+                        spinnerText2 = "2"
                     }
                     spinnerText3 -> {
                         player3 = "player3"
                         doneChecker3 = "OK"
+                        spinnerText3 = "3"
                     }
                     spinnerText4 -> {
                         player4 = "player4"
                         doneChecker4 = "OK"
+                        spinnerText4 = "4"
                     }
                     spinnerText5 -> {
                         player5 = "player5"
                         doneChecker5 = "OK"
+                        spinnerText5 = "5"
                     }
                     spinnerText6 -> {
                         player6 = "player6"
                         doneChecker6 = "OK"
+                        spinnerText6 = "6"
                     }
                     spinnerText7 -> {
                         player7 = "player7"
                         doneChecker7 = "OK"
+                        spinnerText7 = "7"
                     }
                     spinnerText8 -> {
                         player8 = "player8"
                         doneChecker8 = "OK"
+                        spinnerText8 = "8"
                     }
                     spinnerText9 -> {
                         player9 = "player9"
                         doneChecker9 = "OK"
+                        spinnerText9 = "9"
                     }
                     spinnerText10 -> {
                         player10 = "player10"
                         doneChecker10 = "OK"
+                        spinnerText10 = "10"
                     }
                 }
 
