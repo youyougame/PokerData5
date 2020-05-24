@@ -30,6 +30,7 @@ class TurnActivity : AppCompatActivity() {
     private var spinnerText9 = ""
     private var spinnerText10 = ""
 
+    private var player = ""
     private var player1 = ""
     private var player2 = ""
     private var player3= ""
@@ -314,7 +315,7 @@ class TurnActivity : AppCompatActivity() {
         //決定ボタンのリスナー
         turnDoneButton.setOnClickListener {
 
-            cheackSpinner()
+            cheackSpinner2()
             cheackChips()
 
             if (
@@ -322,27 +323,27 @@ class TurnActivity : AppCompatActivity() {
                 doneChecker6 == "OK" && doneChecker7 == "OK" && doneChecker8 == "OK" && doneChecker9 == "OK" && doneChecker10 == "OK"
                     ) {
                 val intent = Intent(this@TurnActivity, HandActivity::class.java)
-                intent.putExtra("p1", player1)
-                intent.putExtra("p2", player2)
-                intent.putExtra("p3", player3)
-                intent.putExtra("p4", player4)
-                intent.putExtra("p5", player5)
-                intent.putExtra("p6", player6)
-                intent.putExtra("p7", player7)
-                intent.putExtra("p8", player8)
-                intent.putExtra("p9", player9)
-                intent.putExtra("p10", player10)
-
-                intent.putExtra("c1", chips1)
-                intent.putExtra("c2", chips2)
-                intent.putExtra("c3", chips3)
-                intent.putExtra("c4", chips4)
-                intent.putExtra("c5", chips5)
-                intent.putExtra("c6", chips6)
-                intent.putExtra("c7", chips7)
-                intent.putExtra("c8", chips8)
-                intent.putExtra("c9", chips9)
-                intent.putExtra("c10", chips10)
+//                intent.putExtra("p1", player1)
+//                intent.putExtra("p2", player2)
+//                intent.putExtra("p3", player3)
+//                intent.putExtra("p4", player4)
+//                intent.putExtra("p5", player5)
+//                intent.putExtra("p6", player6)
+//                intent.putExtra("p7", player7)
+//                intent.putExtra("p8", player8)
+//                intent.putExtra("p9", player9)
+//                intent.putExtra("p10", player10)
+//
+//                intent.putExtra("c1", chips1)
+//                intent.putExtra("c2", chips2)
+//                intent.putExtra("c3", chips3)
+//                intent.putExtra("c4", chips4)
+//                intent.putExtra("c5", chips5)
+//                intent.putExtra("c6", chips6)
+//                intent.putExtra("c7", chips7)
+//                intent.putExtra("c8", chips8)
+//                intent.putExtra("c9", chips9)
+//                intent.putExtra("c10", chips10)
 
                 startActivity(intent)
             }
@@ -434,6 +435,121 @@ class TurnActivity : AppCompatActivity() {
                 chips9 = turnEdit9.toString()
                 chips10 = turnEdit10.toString()
             }
+        }
+    }
+
+    private fun cheackSpinner2() {
+        when (mMember) {
+            2 -> {
+                if (spinnerText1 == "") {
+                    spinnerText1 = "player1"
+                    doneChecker1 = "OK"
+                } else {
+                    if (spinnerText1 == spinnerText2) {
+                        val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
+                        toast.show()
+                        doneChecker1 = "NO"
+                        doneChecker2 = "NO"
+                    } else {
+                        doneChecker1 = "OK"
+                        doneChecker2 = "OK"
+                    }
+                }
+
+                if (spinnerText2 == "") {
+                    spinnerText2 = "player2"
+                    doneChecker2 = "OK"
+                }
+
+                Log.d("kotlintestCheack1", doneChecker1)
+                Log.d("kotlintestCheack2", doneChecker2)
+                doneChecker3 = "OK"
+                doneChecker4 = "OK"
+                doneChecker5 = "OK"
+                doneChecker6 = "OK"
+                doneChecker7 = "OK"
+                doneChecker8 = "OK"
+                doneChecker9 = "OK"
+                doneChecker10 = "OK"
+            }
+
+            3 -> {
+                if (spinnerText1 == "") {spinnerText1 = "player1"}
+                if (spinnerText2 == "") {spinnerText2 = "player2"}
+                if (spinnerText3 == "") {spinnerText3 = "player3"}
+            }
+
+            4 -> {
+                if (spinnerText1 == "") {spinnerText1 = "player1"}
+                if (spinnerText2 == "") {spinnerText2 = "player2"}
+                if (spinnerText3 == "") {spinnerText3 = "player3"}
+                if (spinnerText4 == "") {spinnerText4 = "player4"}
+            }
+
+            5 -> {
+                if (spinnerText1 == "") {spinnerText1 = "player1"}
+                if (spinnerText2 == "") {spinnerText2 = "player2"}
+                if (spinnerText3 == "") {spinnerText3 = "player3"}
+                if (spinnerText4 == "") {spinnerText4 = "player4"}
+                if (spinnerText5 == "") {spinnerText5 = "player5"}
+            }
+
+            6 -> {
+                if (spinnerText1 == "") {spinnerText1 = "player1"}
+                if (spinnerText2 == "") {spinnerText2 = "player2"}
+                if (spinnerText3 == "") {spinnerText3 = "player3"}
+                if (spinnerText4 == "") {spinnerText4 = "player4"}
+                if (spinnerText5 == "") {spinnerText5 = "player5"}
+                if (spinnerText6 == "") {spinnerText6 = "player6"}
+            }
+
+            7 -> {
+                if (spinnerText1 == "") {spinnerText1 = "player1"}
+                if (spinnerText2 == "") {spinnerText2 = "player2"}
+                if (spinnerText3 == "") {spinnerText3 = "player3"}
+                if (spinnerText4 == "") {spinnerText4 = "player4"}
+                if (spinnerText5 == "") {spinnerText5 = "player5"}
+                if (spinnerText6 == "") {spinnerText6 = "player6"}
+                if (spinnerText7 == "") {spinnerText7 = "player7"}
+            }
+
+            8 -> {
+                if (spinnerText1 == "") {spinnerText1 = "player1"}
+                if (spinnerText2 == "") {spinnerText2 = "player2"}
+                if (spinnerText3 == "") {spinnerText3 = "player3"}
+                if (spinnerText4 == "") {spinnerText4 = "player4"}
+                if (spinnerText5 == "") {spinnerText5 = "player5"}
+                if (spinnerText6 == "") {spinnerText6 = "player6"}
+                if (spinnerText7 == "") {spinnerText7 = "player7"}
+                if (spinnerText8 == "") {spinnerText8 = "player8"}
+            }
+
+            9 -> {
+                if (spinnerText1 == "") {spinnerText1 = "player1"}
+                if (spinnerText2 == "") {spinnerText2 = "player2"}
+                if (spinnerText3 == "") {spinnerText3 = "player3"}
+                if (spinnerText4 == "") {spinnerText4 = "player4"}
+                if (spinnerText5 == "") {spinnerText5 = "player5"}
+                if (spinnerText6 == "") {spinnerText6 = "player6"}
+                if (spinnerText7 == "") {spinnerText7 = "player7"}
+                if (spinnerText8 == "") {spinnerText8 = "player8"}
+                if (spinnerText9 == "") {spinnerText9 = "player9"}
+            }
+
+            10 -> {
+                if (spinnerText1 == "") {spinnerText1 = "player1"}
+                if (spinnerText2 == "") {spinnerText2 = "player2"}
+                if (spinnerText3 == "") {spinnerText3 = "player3"}
+                if (spinnerText4 == "") {spinnerText4 = "player4"}
+                if (spinnerText5 == "") {spinnerText5 = "player5"}
+                if (spinnerText6 == "") {spinnerText6 = "player6"}
+                if (spinnerText7 == "") {spinnerText7 = "player7"}
+                if (spinnerText8 == "") {spinnerText8 = "player8"}
+                if (spinnerText9 == "") {spinnerText9 = "player9"}
+                if (spinnerText10 == "") {spinnerText10 = "player10"}
+            }
+
         }
     }
 
@@ -575,11 +691,13 @@ class TurnActivity : AppCompatActivity() {
                         player3 = "player3"
                         doneChecker3 = "OK"
                         spinnerText3 = "3"
+                        Log.d("kotlintest", "通過7")
                     }
                     spinnerText4 -> {
                         player4 = "player4"
                         doneChecker4 = "OK"
                         spinnerText4 = "4"
+                        Log.d("kotlintest", "通過8")
                     }
                 }
 
@@ -590,6 +708,7 @@ class TurnActivity : AppCompatActivity() {
                         toast.show()
                         doneChecker1 = "NO"
                         doneChecker2 = "NO"
+                        Log.d("kotlintest", "通過1")
                     }
                     spinnerText3 -> {
                         val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
@@ -597,6 +716,7 @@ class TurnActivity : AppCompatActivity() {
                         toast.show()
                         doneChecker1 = "NO"
                         doneChecker3 = "NO"
+                        Log.d("kotlintest", "通過2")
                     }
                     spinnerText4 -> {
                         val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
@@ -604,6 +724,7 @@ class TurnActivity : AppCompatActivity() {
                         toast.show()
                         doneChecker1 = "NO"
                         doneChecker4 = "NO"
+                        Log.d("kotlintest", "通過3")
                     }
                     else -> {
                         player1 = spinnerText1
@@ -618,11 +739,13 @@ class TurnActivity : AppCompatActivity() {
                         toast.show()
                         doneChecker2 = "NO"
                         doneChecker3 = "NO"
+                        Log.d("kotlintest", "通過4")
                     }
                     spinnerText4 -> {
                         val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
+                        Log.d("kotlintest", "通過5")
                         doneChecker2 = "NO"
                         doneChecker4 = "NO"
                     }
@@ -637,6 +760,9 @@ class TurnActivity : AppCompatActivity() {
                         val toast = Toast.makeText(applicationContext, "プレイヤー名が重複しています", Toast.LENGTH_SHORT)
                         toast.setGravity(Gravity.CENTER or Gravity.CENTER, 0, 0)
                         toast.show()
+                        Log.d("kotlintest", "通過6")
+                        Log.d("kotlintest", "Text3" + spinnerText3)
+                        Log.d("kotlintest", "Text4" + spinnerText4)
                         doneChecker3 = "NO"
                         doneChecker4 = "NO"
                     }
