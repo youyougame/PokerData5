@@ -3,4 +3,5 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_turn">TurnActivity</string>
     <string name="title_activity_member_change">MemberChangeActivity</string>
+    <string name="title_activity_add_member_list">AddMemberListActivity</string>
 </resources>

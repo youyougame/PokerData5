@@ -87,8 +87,6 @@ class TitleActivity : AppCompatActivity() {
         val date = calendar.time
         mGame!!.date = date
 
-        Log.d("kotlintest", mGame.toString())
-
         realm.copyToRealmOrUpdate(mGame!!)
         realm.commitTransaction()
 

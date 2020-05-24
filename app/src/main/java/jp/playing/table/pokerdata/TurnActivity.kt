@@ -263,10 +263,8 @@ class TurnActivity : AppCompatActivity() {
 
         //プレイヤー新規登録ボタンのリスナー
         newPlayerButton.setOnClickListener {
-//            val intent = Intent(this@TurnActivity, AddMemberActivity::class.java)
-//            startActivity(intent)
-            // Todo 今後実装
-            val toast = Toast.makeText(applicationContext, "今後実装予定", Toast.LENGTH_SHORT)
+            val intent = Intent(this@TurnActivity, AddMemberListActivity::class.java)
+            startActivity(intent)
         }
 
         //全員同額ボタンのリスナー
@@ -297,6 +295,7 @@ class TurnActivity : AppCompatActivity() {
 
         Log.d("kotlintest", "通過")
 
+        //設定したプレイヤー数のみ表示する
         when {
             (mMember == 2) -> {
                 turnText3.visibility = View.INVISIBLE
