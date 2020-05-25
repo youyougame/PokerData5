@@ -45,6 +45,8 @@ class TurnActivity : AppCompatActivity() {
 
     private var mChips = 0
 
+    private var mPlayer: Player? = null
+
     private lateinit var mRealm: Realm
 
     private var doneChecker1 = "NO"
@@ -57,6 +59,9 @@ class TurnActivity : AppCompatActivity() {
     private var doneChecker8 = "NO"
     private var doneChecker9 = "NO"
     private var doneChecker10 = "NO"
+
+    private var roundPlayer = ""
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -307,35 +312,200 @@ class TurnActivity : AppCompatActivity() {
             cheackChips()
 
             if (
-                doneChecker1 == "OK" && doneChecker2 == "OK" && doneChecker3 == "OK" && doneChecker4 == "OK" && doneChecker5 == "OK" &&
-                doneChecker6 == "OK" && doneChecker7 == "OK" && doneChecker8 == "OK" && doneChecker9 == "OK" && doneChecker10 == "OK"
+                spinnerText1 == "自分" || spinnerText2 == "自分" || spinnerText3 == "自分" || spinnerText4 == "自分" || spinnerText5 == "自分" ||
+                spinnerText6 == "自分" || spinnerText7 == "自分" || spinnerText8 == "自分" || spinnerText9 == "自分" || spinnerText10 == "自分"
                     ) {
-                val intent = Intent(this@TurnActivity, HandActivity::class.java)
-                intent.putExtra("p1", spinnerText1)
-                intent.putExtra("p2", spinnerText2)
-                intent.putExtra("p3", spinnerText3)
-                intent.putExtra("p4", spinnerText4)
-                intent.putExtra("p5", spinnerText5)
-                intent.putExtra("p6", spinnerText6)
-                intent.putExtra("p7", spinnerText7)
-                intent.putExtra("p8", spinnerText8)
-                intent.putExtra("p9", spinnerText9)
-                intent.putExtra("p10", spinnerText10)
 
-                intent.putExtra("c1", chips1)
-                intent.putExtra("c2", chips2)
-                intent.putExtra("c3", chips3)
-                intent.putExtra("c4", chips4)
-                intent.putExtra("c5", chips5)
-                intent.putExtra("c6", chips6)
-                intent.putExtra("c7", chips7)
-                intent.putExtra("c8", chips8)
-                intent.putExtra("c9", chips9)
-                intent.putExtra("c10", chips10)
+                if (
+                    doneChecker1 == "OK" && doneChecker2 == "OK" && doneChecker3 == "OK" && doneChecker4 == "OK" && doneChecker5 == "OK" &&
+                    doneChecker6 == "OK" && doneChecker7 == "OK" && doneChecker8 == "OK" && doneChecker9 == "OK" && doneChecker10 == "OK"
+                ) {
 
-                startActivity(intent)
+                    when (mMember) {
+                        2 -> {
+                            if (spinnerText2 == "自分") {
+                                roundPlayer = "you"
+                            } else {
+                                roundPlayer = "other"
+                            }
+                        }
+
+                        3 -> {
+                            if (spinnerText1 == "自分") {
+                                roundPlayer = "you"
+                            } else {
+                                roundPlayer = "other"
+                            }
+                        }
+
+                        else -> {
+                            if (spinnerText4 == "自分") {
+                                roundPlayer = "you"
+                            } else {
+                                roundPlayer = "other"
+                            }
+                        }
+                    }
+
+                    addPlayer()
+
+                    val intent = Intent(this@TurnActivity, HandActivity::class.java)
+                    intent.putExtra("p1", spinnerText1)
+                    intent.putExtra("p2", spinnerText2)
+                    intent.putExtra("p3", spinnerText3)
+                    intent.putExtra("p4", spinnerText4)
+                    intent.putExtra("p5", spinnerText5)
+                    intent.putExtra("p6", spinnerText6)
+                    intent.putExtra("p7", spinnerText7)
+                    intent.putExtra("p8", spinnerText8)
+                    intent.putExtra("p9", spinnerText9)
+                    intent.putExtra("p10", spinnerText10)
+
+                    intent.putExtra("c1", chips1)
+                    intent.putExtra("c2", chips2)
+                    intent.putExtra("c3", chips3)
+                    intent.putExtra("c4", chips4)
+                    intent.putExtra("c5", chips5)
+                    intent.putExtra("c6", chips6)
+                    intent.putExtra("c7", chips7)
+                    intent.putExtra("c8", chips8)
+                    intent.putExtra("c9", chips9)
+                    intent.putExtra("c10", chips10)
+
+                    intent.putExtra("memberNum", mMember)
+                    intent.putExtra("roundPlayer", roundPlayer)
+
+                    startActivity(intent)
+                }
             }
         }
+    }
+
+    //プレイヤー登録
+    private fun addPlayer() {
+
+        val userRealmResutls = mRealm.where(User::class.java).contains("name", String()).findAll()
+        val length = userRealmResutls.size
+
+        var playerId1 = ""
+        var playerId2 = ""
+        var playerId3 = ""
+        var playerId4 = ""
+        var playerId5 = ""
+        var playerId6 = ""
+        var playerId7 = ""
+        var playerId8 = ""
+        var playerId9 = ""
+        var playerId10 = ""
+
+        for (i in 0 .. length - 1) {
+            val name = userRealmResutls[i]!!.name
+            if (name == spinnerText1) {
+                playerId1 = i.toString()
+            }
+        }
+
+        for (i in 0 .. length - 1) {
+            val name = userRealmResutls[i]!!.name
+            if (name == spinnerText2) {
+                playerId2 = i.toString()
+            }
+        }
+
+        for (i in 0 .. length - 1) {
+            val name = userRealmResutls[i]!!.name
+            if (name == spinnerText3) {
+                playerId3 = i.toString()
+            }
+        }
+
+        for (i in 0 .. length - 1) {
+            val name = userRealmResutls[i]!!.name
+            if (name == spinnerText4) {
+                playerId4 = i.toString()
+            }
+        }
+
+        for (i in 0 .. length - 1) {
+            val name = userRealmResutls[i]!!.name
+            if (name == spinnerText5) {
+                playerId5 = i.toString()
+            }
+        }
+
+        for (i in 0 .. length - 1) {
+            val name = userRealmResutls[i]!!.name
+            if (name == spinnerText6) {
+                playerId6 = i.toString()
+            }
+        }
+
+        for (i in 0 .. length - 1) {
+            val name = userRealmResutls[i]!!.name
+            if (name == spinnerText7) {
+                playerId7 = i.toString()
+            }
+        }
+
+        for (i in 0 .. length - 1) {
+            val name = userRealmResutls[i]!!.name
+            if (name == spinnerText8) {
+                playerId8 = i.toString()
+            }
+        }
+
+        for (i in 0 .. length - 1) {
+            val name = userRealmResutls[i]!!.name
+            if (name == spinnerText9) {
+                playerId9 = i.toString()
+            }
+        }
+
+        for (i in 0 .. length - 1) {
+            val name = userRealmResutls[i]!!.name
+            if (name == spinnerText10) {
+                playerId10 = i.toString()
+            }
+        }
+
+        val gameRealmResults = mRealm.where(Game::class.java).findAll()
+
+        val gameLength = gameRealmResults.max("id")!!.toInt()
+
+        mRealm.beginTransaction()
+
+        if (mPlayer == null) {
+            //新規作成
+            mPlayer = Player()
+
+            val playerRealmResults = mRealm.where(Player::class.java).findAll()
+
+            val identifier: Int =
+                if (playerRealmResults.max("id") != null ) {
+                    playerRealmResults.max("id")!!.toInt() + 1
+                } else {
+                    0
+                }
+            mPlayer!!.id = identifier
+        }
+
+        mPlayer!!.p1 = playerId1
+        mPlayer!!.p2 = playerId2
+        mPlayer!!.p3 = playerId3
+        mPlayer!!.p4 = playerId4
+        mPlayer!!.p5 = playerId5
+        mPlayer!!.p6 = playerId6
+        mPlayer!!.p7 = playerId7
+        mPlayer!!.p8 = playerId8
+        mPlayer!!.p9 = playerId9
+        mPlayer!!.p10 = playerId10
+        mPlayer!!.game_id = gameLength
+
+        mRealm.copyToRealmOrUpdate(mPlayer!!)
+        mRealm.commitTransaction()
+
+
+
 
     }
 
@@ -2127,6 +2297,11 @@ class TurnActivity : AppCompatActivity() {
                 turnSpinner10.visibility = View.INVISIBLE
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mRealm.close()
     }
 
 }

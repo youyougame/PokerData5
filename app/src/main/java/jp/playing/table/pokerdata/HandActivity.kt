@@ -9,16 +9,22 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class HandActivity : AppCompatActivity() {
 
+    //チップ一桁目
     private var firstNum:Int = 1
 
+    //チップ2桁目（0）
     private var secondNum:String = ""
 
+    //スート
     private var cardSuit = ""
 
+    //カード1桁目
     private var cardNumber1 = ""
 
+    //カード2桁目
     private var cardNumber2 = ""
 
+    //ハンド選択
     private var cardSelect = "hand1"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +33,7 @@ class HandActivity : AppCompatActivity() {
 
         supportActionBar?.title = "HAND"
 
-
+        //チップ数の表示
         if (secondNum == "") {
             handChipsText.text = firstNum.toString()
         } else {
