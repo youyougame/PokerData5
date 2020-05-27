@@ -73,6 +73,7 @@ class PlayingActivity : AppCompatActivity() {
 
 
             }
+            playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
         }
 
         playingNum3.setOnClickListener {
@@ -87,6 +88,7 @@ class PlayingActivity : AppCompatActivity() {
 
 
             }
+            playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
         }
 
         playingNum4.setOnClickListener {
@@ -101,6 +103,7 @@ class PlayingActivity : AppCompatActivity() {
 
 
             }
+            playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
         }
 
         playingNum5.setOnClickListener {
@@ -115,6 +118,7 @@ class PlayingActivity : AppCompatActivity() {
 
 
             }
+            playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
         }
 
         playingNum6.setOnClickListener {
@@ -129,20 +133,22 @@ class PlayingActivity : AppCompatActivity() {
 
 
             }
+            playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
         }
 
         playingNum7.setOnClickListener {
             when {
-            chipsNum1 == "" -> chipsNum1 = "7"
-            chipsNum2 == "" -> chipsNum2 = "7"
-            chipsNum3 == "" -> chipsNum3 = "7"
-            chipsNum4 == "" -> chipsNum4 = "7"
-            chipsNum5 == "" -> chipsNum5 = "7"
-            chipsNum6 == "" -> chipsNum6 = "7"
-            chipsNum7 == "" -> chipsNum7 = "7"
+                chipsNum1 == "" -> chipsNum1 = "7"
+                chipsNum2 == "" -> chipsNum2 = "7"
+                chipsNum3 == "" -> chipsNum3 = "7"
+                chipsNum4 == "" -> chipsNum4 = "7"
+                chipsNum5 == "" -> chipsNum5 = "7"
+                chipsNum6 == "" -> chipsNum6 = "7"
+                chipsNum7 == "" -> chipsNum7 = "7"
 
-
-        } }
+            }
+            playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
+        }
 
         playingNum8.setOnClickListener {
             when {
@@ -156,6 +162,7 @@ class PlayingActivity : AppCompatActivity() {
 
 
             }
+            playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
         }
 
         playingNum9.setOnClickListener {
@@ -170,6 +177,7 @@ class PlayingActivity : AppCompatActivity() {
 
 
             }
+            playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
         }
 
         playingNum0.setOnClickListener {
@@ -181,6 +189,7 @@ class PlayingActivity : AppCompatActivity() {
                 chipsNum6 == "" -> chipsNum6 = "0"
                 chipsNum7 == "" -> chipsNum7 = "0"
             }
+            playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
         }
 
         playingNum00.setOnClickListener {
@@ -209,6 +218,7 @@ class PlayingActivity : AppCompatActivity() {
                     chipsNum7 = "0"
                 }
             }
+            playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
         }
 
         playingNum000.setOnClickListener {
@@ -241,6 +251,7 @@ class PlayingActivity : AppCompatActivity() {
                     chipsNum7 = "0"
                 }
             }
+            playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
         }
 
         playingNum0000.setOnClickListener {
@@ -276,6 +287,19 @@ class PlayingActivity : AppCompatActivity() {
                     chipsNum7 = "0"
                 }
             }
+            playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
+        }
+
+        playingDaleteButton.setOnClickListener {
+            chipsNum1 = ""
+            chipsNum2 = ""
+            chipsNum3 = ""
+            chipsNum4 = ""
+            chipsNum5 = ""
+            chipsNum6 = ""
+            chipsNum7 = ""
+
+            playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
         }
 
     }
