@@ -17,8 +17,7 @@ import kotlinx.android.synthetic.main.list_add_member.*
 class AddMemberListActivity : AppCompatActivity() {
 
     private lateinit var mRealm: Realm
-    private lateinit var mListView: ListView
-    private lateinit var mUserArrayList: ArrayList<User>
+
     private lateinit var mUserAdapter: UserAdapter
 
     private val  mRealmListener = object : RealmChangeListener<Realm> {

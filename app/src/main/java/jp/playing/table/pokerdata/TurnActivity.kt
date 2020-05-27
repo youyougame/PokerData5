@@ -47,6 +47,8 @@ class TurnActivity : AppCompatActivity() {
 
     private var mPlayer: Player? = null
 
+    private var mMemBerPlay: Member? = null
+
     private lateinit var mRealm: Realm
 
     private var doneChecker1 = "NO"
@@ -61,6 +63,8 @@ class TurnActivity : AppCompatActivity() {
     private var doneChecker10 = "NO"
 
     private var roundPlayer = ""
+
+    private var gameLength = 0
 
 
 
@@ -317,65 +321,58 @@ class TurnActivity : AppCompatActivity() {
                     ) {
 
                 if (
-                    doneChecker1 == "OK" && doneChecker2 == "OK" && doneChecker3 == "OK" && doneChecker4 == "OK" && doneChecker5 == "OK" &&
-                    doneChecker6 == "OK" && doneChecker7 == "OK" && doneChecker8 == "OK" && doneChecker9 == "OK" && doneChecker10 == "OK"
-                ) {
+                    chips1 != "" && chips2 != "" && chips3 != "" && chips4 != "" && chips5 != "" &&
+                    chips6 != "" && chips7 != "" && chips8 != "" && chips9 != "" && chips10 != ""
+                        ) {
 
-                    when (mMember) {
-                        2 -> {
-                            if (spinnerText2 == "自分") {
-                                roundPlayer = "you"
-                            } else {
-                                roundPlayer = "other"
-                            }
-                        }
+                    if (
+                        chips1 != "0" && chips2 != "0" && chips3 != "0" && chips4 != "0" && chips5 != "0" &&
+                        chips6 != "0" && chips7 != "0" && chips8 != "0" && chips9 != "0" && chips10 != "0"
+                            ) {
 
-                        3 -> {
-                            if (spinnerText1 == "自分") {
-                                roundPlayer = "you"
-                            } else {
-                                roundPlayer = "other"
-                            }
-                        }
+                        if (
+                            doneChecker1 == "OK" && doneChecker2 == "OK" && doneChecker3 == "OK" && doneChecker4 == "OK" && doneChecker5 == "OK" &&
+                            doneChecker6 == "OK" && doneChecker7 == "OK" && doneChecker8 == "OK" && doneChecker9 == "OK" && doneChecker10 == "OK"
+                        ) {
 
-                        else -> {
-                            if (spinnerText4 == "自分") {
-                                roundPlayer = "you"
-                            } else {
-                                roundPlayer = "other"
+                            when (mMember) {
+                                2 -> {
+                                    if (spinnerText2 == "自分") {
+                                        roundPlayer = "you"
+                                    } else {
+                                        roundPlayer = "other"
+                                    }
+                                }
+
+                                3 -> {
+                                    if (spinnerText1 == "自分") {
+                                        roundPlayer = "you"
+                                    } else {
+                                        roundPlayer = "other"
+                                    }
+                                }
+
+                                else -> {
+                                    if (spinnerText4 == "自分") {
+                                        roundPlayer = "you"
+                                    } else {
+                                        roundPlayer = "other"
+                                    }
+                                }
                             }
+
+                            addPlayer()
+
+                            val intent = Intent(this@TurnActivity, HandActivity::class.java)
+
+                            intent.putExtra("memberNum", mMember)
+                            intent.putExtra("roundPlayer", roundPlayer)
+                            intent.putExtra("game_id", gameLength)
+
+
+                            startActivity(intent)
                         }
                     }
-
-                    addPlayer()
-
-                    val intent = Intent(this@TurnActivity, HandActivity::class.java)
-                    intent.putExtra("p1", spinnerText1)
-                    intent.putExtra("p2", spinnerText2)
-                    intent.putExtra("p3", spinnerText3)
-                    intent.putExtra("p4", spinnerText4)
-                    intent.putExtra("p5", spinnerText5)
-                    intent.putExtra("p6", spinnerText6)
-                    intent.putExtra("p7", spinnerText7)
-                    intent.putExtra("p8", spinnerText8)
-                    intent.putExtra("p9", spinnerText9)
-                    intent.putExtra("p10", spinnerText10)
-
-                    intent.putExtra("c1", chips1)
-                    intent.putExtra("c2", chips2)
-                    intent.putExtra("c3", chips3)
-                    intent.putExtra("c4", chips4)
-                    intent.putExtra("c5", chips5)
-                    intent.putExtra("c6", chips6)
-                    intent.putExtra("c7", chips7)
-                    intent.putExtra("c8", chips8)
-                    intent.putExtra("c9", chips9)
-                    intent.putExtra("c10", chips10)
-
-                    intent.putExtra("memberNum", mMember)
-                    intent.putExtra("roundPlayer", roundPlayer)
-
-                    startActivity(intent)
                 }
             }
         }
@@ -470,38 +467,76 @@ class TurnActivity : AppCompatActivity() {
 
         val gameRealmResults = mRealm.where(Game::class.java).findAll()
 
-        val gameLength = gameRealmResults.max("id")!!.toInt()
+        gameLength = gameRealmResults.max("id")!!.toInt()
 
         mRealm.beginTransaction()
 
-        if (mPlayer == null) {
-            //新規作成
-            mPlayer = Player()
+        var round = 1
 
-            val playerRealmResults = mRealm.where(Player::class.java).findAll()
+        val userArray = arrayOf(playerId1, playerId2, playerId3, playerId4, playerId5, playerId6, playerId7, playerId8, playerId9, playerId10)
 
-            val identifier: Int =
-                if (playerRealmResults.max("id") != null ) {
-                    playerRealmResults.max("id")!!.toInt() + 1
-                } else {
-                    0
-                }
-            mPlayer!!.id = identifier
+        mPlayer = Player()
+
+        for (i  in userArray) {
+            if (i != "") {
+                val playerRealmResults = mRealm.where(Player::class.java).findAll()
+
+                val identifier: Int =
+                    if (playerRealmResults.max("id") != null ) {
+                        playerRealmResults.max("id")!!.toInt() + 1
+                    } else {
+                        0
+                    }
+                mPlayer!!.id = identifier
+
+                mPlayer!!.game_id = gameLength
+                mPlayer!!.playerId = i.toInt()
+                mPlayer!!.playerRound = round
+                mRealm.copyToRealmOrUpdate(mPlayer!!)
+            }
+            round++
         }
 
-        mPlayer!!.p1 = playerId1
-        mPlayer!!.p2 = playerId2
-        mPlayer!!.p3 = playerId3
-        mPlayer!!.p4 = playerId4
-        mPlayer!!.p5 = playerId5
-        mPlayer!!.p6 = playerId6
-        mPlayer!!.p7 = playerId7
-        mPlayer!!.p8 = playerId8
-        mPlayer!!.p9 = playerId9
-        mPlayer!!.p10 = playerId10
-        mPlayer!!.game_id = gameLength
+        val memberArray = arrayOf(spinnerText1, spinnerText2, spinnerText3, spinnerText4, spinnerText5, spinnerText6, spinnerText7, spinnerText8, spinnerText9, spinnerText10)
+        var playRound = 1
 
-        mRealm.copyToRealmOrUpdate(mPlayer!!)
+        mMemBerPlay = Member()
+
+        for (i in memberArray) {
+            if (i != "") {
+
+                val memberRealmResults = mRealm.where(Member::class.java).findAll()
+
+                val identifier: Int =
+                    if (memberRealmResults.max("id") != null) {
+                        memberRealmResults.max("id")!!.toInt() + 1
+                    } else {
+                        0
+                    }
+                mMemBerPlay!!.id = identifier
+                mMemBerPlay!!.hand_count = 1
+                mMemBerPlay!!.memberName = i
+                mMemBerPlay!!.memberRound = playRound
+                mMemBerPlay!!.game_id = gameLength.toString()
+                when (playRound) {
+                    1 -> mMemBerPlay!!.memberChips = chips1.toInt()
+                    2 -> mMemBerPlay!!.memberChips = chips2.toInt()
+                    3 -> mMemBerPlay!!.memberChips = chips3.toInt()
+                    4 -> mMemBerPlay!!.memberChips = chips4.toInt()
+                    5 -> mMemBerPlay!!.memberChips = chips5.toInt()
+                    6 -> mMemBerPlay!!.memberChips = chips6.toInt()
+                    7 -> mMemBerPlay!!.memberChips = chips7.toInt()
+                    8 -> mMemBerPlay!!.memberChips = chips8.toInt()
+                    9 -> mMemBerPlay!!.memberChips = chips9.toInt()
+                    10 -> mMemBerPlay!!.memberChips = chips10.toInt()
+
+                }
+                mRealm.copyToRealmOrUpdate(mMemBerPlay!!)
+
+            }
+
+            playRound++
+        }
         mRealm.commitTransaction()
 
 
@@ -514,84 +549,84 @@ class TurnActivity : AppCompatActivity() {
     private fun cheackChips() {
         when (mMember) {
             2 -> {
-                chips1 = turnEdit1.toString()
-                chips2 = turnEdit2.toString()
+                chips1 = turnEdit1.text.toString()
+                chips2 = turnEdit2.text.toString()
             }
 
             3 -> {
-                chips1 = turnEdit1.toString()
-                chips2 = turnEdit2.toString()
-                chips3 = turnEdit3.toString()
+                chips1 = turnEdit1.text.toString()
+                chips2 = turnEdit2.text.toString()
+                chips3 = turnEdit3.text.toString()
             }
 
             4 -> {
-                chips1 = turnEdit1.toString()
-                chips2 = turnEdit2.toString()
-                chips3 = turnEdit3.toString()
-                chips4 = turnEdit4.toString()
+                chips1 = turnEdit1.text.toString()
+                chips2 = turnEdit2.text.toString()
+                chips3 = turnEdit3.text.toString()
+                chips4 = turnEdit4.text.toString()
             }
 
             5 -> {
-                chips1 = turnEdit1.toString()
-                chips2 = turnEdit2.toString()
-                chips3 = turnEdit3.toString()
-                chips4 = turnEdit4.toString()
-                chips5 = turnEdit5.toString()
+                chips1 = turnEdit1.text.toString()
+                chips2 = turnEdit2.text.toString()
+                chips3 = turnEdit3.text.toString()
+                chips4 = turnEdit4.text.toString()
+                chips5 = turnEdit5.text.toString()
             }
 
             6 -> {
-                chips1 = turnEdit1.toString()
-                chips2 = turnEdit2.toString()
-                chips3 = turnEdit3.toString()
-                chips4 = turnEdit4.toString()
-                chips5 = turnEdit5.toString()
-                chips6 = turnEdit6.toString()
+                chips1 = turnEdit1.text.toString()
+                chips2 = turnEdit2.text.toString()
+                chips3 = turnEdit3.text.toString()
+                chips4 = turnEdit4.text.toString()
+                chips5 = turnEdit5.text.toString()
+                chips6 = turnEdit6.text.toString()
             }
 
             7 -> {
-                chips1 = turnEdit1.toString()
-                chips2 = turnEdit2.toString()
-                chips3 = turnEdit3.toString()
-                chips4 = turnEdit4.toString()
-                chips5 = turnEdit5.toString()
-                chips6 = turnEdit6.toString()
-                chips7 = turnEdit7.toString()
+                chips1 = turnEdit1.text.toString()
+                chips2 = turnEdit2.text.toString()
+                chips3 = turnEdit3.text.toString()
+                chips4 = turnEdit4.text.toString()
+                chips5 = turnEdit5.text.toString()
+                chips6 = turnEdit6.text.toString()
+                chips7 = turnEdit7.text.toString()
             }
 
             8 -> {
-                chips1 = turnEdit1.toString()
-                chips2 = turnEdit2.toString()
-                chips3 = turnEdit3.toString()
-                chips4 = turnEdit4.toString()
-                chips5 = turnEdit5.toString()
-                chips6 = turnEdit6.toString()
-                chips7 = turnEdit7.toString()
-                chips8 = turnEdit8.toString()
+                chips1 = turnEdit1.text.toString()
+                chips2 = turnEdit2.text.toString()
+                chips3 = turnEdit3.text.toString()
+                chips4 = turnEdit4.text.toString()
+                chips5 = turnEdit5.text.toString()
+                chips6 = turnEdit6.text.toString()
+                chips7 = turnEdit7.text.toString()
+                chips8 = turnEdit8.text.toString()
             }
 
             9 -> {
-                chips1 = turnEdit1.toString()
-                chips2 = turnEdit2.toString()
-                chips3 = turnEdit3.toString()
-                chips4 = turnEdit4.toString()
-                chips5 = turnEdit5.toString()
-                chips6 = turnEdit6.toString()
-                chips7 = turnEdit7.toString()
-                chips8 = turnEdit8.toString()
-                chips9 = turnEdit9.toString()
+                chips1 = turnEdit1.text.toString()
+                chips2 = turnEdit2.text.toString()
+                chips3 = turnEdit3.text.toString()
+                chips4 = turnEdit4.text.toString()
+                chips5 = turnEdit5.text.toString()
+                chips6 = turnEdit6.text.toString()
+                chips7 = turnEdit7.text.toString()
+                chips8 = turnEdit8.text.toString()
+                chips9 = turnEdit9.text.toString()
             }
 
             10 -> {
-                chips1 = turnEdit1.toString()
-                chips2 = turnEdit2.toString()
-                chips3 = turnEdit3.toString()
-                chips4 = turnEdit4.toString()
-                chips5 = turnEdit5.toString()
-                chips6 = turnEdit6.toString()
-                chips7 = turnEdit7.toString()
-                chips8 = turnEdit8.toString()
-                chips9 = turnEdit9.toString()
-                chips10 = turnEdit10.toString()
+                chips1 = turnEdit1.text.toString()
+                chips2 = turnEdit2.text.toString()
+                chips3 = turnEdit3.text.toString()
+                chips4 = turnEdit4.text.toString()
+                chips5 = turnEdit5.text.toString()
+                chips6 = turnEdit6.text.toString()
+                chips7 = turnEdit7.text.toString()
+                chips8 = turnEdit8.text.toString()
+                chips9 = turnEdit9.text.toString()
+                chips10 = turnEdit10.text.toString()
             }
         }
     }

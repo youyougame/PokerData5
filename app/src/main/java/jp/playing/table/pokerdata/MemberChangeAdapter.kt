@@ -1,7 +1,6 @@
 package jp.playing.table.pokerdata
 
 import android.content.Context
-import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,41 +8,33 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 
-class UserAdapter(context: Context): BaseAdapter() {
+class MemberChangeAdapter(context: Context): BaseAdapter() {
     private val mLayoutInflater: LayoutInflater
-    var userList = mutableListOf<User>()
+    var memberChangeList = mutableListOf<Member>()
 
     init {
         this.mLayoutInflater = LayoutInflater.from(context)
     }
 
     override fun getCount(): Int {
-        return userList.size
+        return memberChangeList.size
     }
 
     override fun getItem(position: Int): Any {
-        return userList[position]
+        return memberChangeList[position]
     }
 
     override fun getItemId(position: Int): Long {
-        return userList[position].id.toLong()
+        return 0
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        var convertView = convertView
+        var convertView = convertView ?: mLayoutInflater.inflate(R.layout.list_member_change, null)
 
-        if (convertView == null) {
-            convertView = mLayoutInflater.inflate(R.layout.list_add_member, parent, false)
-        }
-
-        val nameText = convertView!!.findViewById<View>(R.id.addMemberListNameText) as TextView
-        nameText.text = userList[position].name
+        val nameText = convertView!!.findViewById<View>(R.id.memberChangeListText) as TextView
+        nameText.text = memberChangeList[position].memberName
 
         return convertView
-    }
-
-    fun setUserArrayList(userArrayList: ArrayList<User>) {
-        userList = userArrayList
     }
 
 }

@@ -4,10 +4,17 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
+import android.util.Log
+import io.realm.Realm
+import io.realm.kotlin.where
 import kotlinx.android.synthetic.main.activity_hand.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class HandActivity : AppCompatActivity() {
+
+    private var mHand: Hand? = null
+
+    private lateinit var mRealm: Realm
 
     //チップ一桁目
     private var firstNum:Int = 1
@@ -27,11 +34,28 @@ class HandActivity : AppCompatActivity() {
     //ハンド選択
     private var cardSelect = "hand1"
 
+    private var playerHand1 = ""
+
+    private var playerHand2 = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hand)
 
         supportActionBar?.title = "HAND"
+
+        //Realmの設定
+        mRealm = Realm.getDefaultInstance()
+
+        //インテントを取得する
+        val intent = intent
+
+        val memberNum = intent.getStringExtra("memberNum")
+        val roundPlayer = intent.getStringExtra("roundPlayer")
+
+        Log.d("kotlintest", "通過")
+
+
 
         //チップ数の表示
         if (secondNum == "") {
@@ -345,6 +369,8 @@ class HandActivity : AppCompatActivity() {
             cardSuit = ""
             cardNumber1 = ""
             cardNumber2 = ""
+            playerHand1 = ""
+            playerHand2 = ""
 
             handCard1.setImageResource(R.drawable.card_back)
             handCard2.setImageResource(R.drawable.card_back)
@@ -354,18 +380,75 @@ class HandActivity : AppCompatActivity() {
         }
 
         handDoneButton.setOnClickListener {
-            when(cardSelect) {
-                "hand1" -> {
-                    cardSelect = "hand2"
-                    handDoneButton.text = "2枚目決定"
-                }
+            if (cardSelect == "hand1") {
+                cardSelect = "hand2"
+                handDoneButton.text = "2枚目決定"
+                playerHand1 = cardSuit + cardNumber1 + cardNumber2
+            } else {
 
-                "hand2" -> {
-                    //Todo 自分のプレイ画面または他のプレイヤー画面に移動する
+                if (cardSelect == "hand2") {
+                    playerHand2 = cardSuit + cardNumber1 + cardNumber2
+                    mRealm.beginTransaction()
+                    if (mHand == null) {
+                        mHand = Hand()
+
+                        val handRealmResults = mRealm.where(Hand::class.java).findAll()
+
+                        val identifier: Int =
+                            if (handRealmResults.max("id") != null) {
+                                handRealmResults.max("id")!!.toInt() + 1
+                            } else {
+                                0
+                            }
+                        mHand!!.id = identifier
+
+                        val coundCheack: Int =
+                            if (handRealmResults.max("count") != null) {
+                                handRealmResults.max("count")!!.toInt() + 1
+                            } else {
+                                1
+                            }
+                        mHand!!.count = coundCheack
+                    }
+
+                    val gameRealmResults = mRealm.where(Game::class.java).findAll()
+
+                    val game_id = gameRealmResults.max("id")!!.toInt()
+
+                    mHand!!.game_id = game_id
+                    mHand!!.hand1 = playerHand1
+                    mHand!!.hand2 = playerHand2
+
+                    mRealm.copyToRealmOrUpdate(mHand!!)
+                    mRealm.commitTransaction()
+
+
+                    when (roundPlayer) {
+                        "you" -> {
+                            val intent = Intent(this@HandActivity, PlayingActivity::class.java)
+                            intent.putExtra("memberNum", memberNum)
+                            intent.putExtra("game_id", game_id)
+                            startActivity(intent)
+                        }
+
+                        "other" -> {
+                            val intent =
+                                Intent(this@HandActivity, MemberPlayingActivity::class.java)
+                            intent.putExtra("memberNum", memberNum)
+                            intent.putExtra("game_id", game_id)
+                            startActivity(intent)
+                        }
+                    }
                 }
             }
         }
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        mRealm.close()
     }
 
     private fun cardSetting1() {

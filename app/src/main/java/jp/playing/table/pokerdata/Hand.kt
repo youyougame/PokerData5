@@ -6,8 +6,8 @@ import java.io.Serializable
 import java.util.*
 
 open class Hand : RealmObject(), Serializable {
-    var date: Date = Date() //日時
     var count: Int = 0 //ゲーム数
+    var game_id: Int = 0 //テーブルのid
 
     //カードの情報
     var hand1 :String = "" //ハンド

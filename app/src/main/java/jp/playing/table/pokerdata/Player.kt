@@ -6,16 +6,8 @@ import java.io.Serializable
 
 open class Player : RealmObject(), Serializable {
     var game_id = 0
-    var p1 = ""
-    var p2 = ""
-    var p3 = ""
-    var p4 = ""
-    var p5 = ""
-    var p6 = ""
-    var p7 = ""
-    var p8 = ""
-    var p9 = ""
-    var p10 = ""
+    var playerId = 0
+    var playerRound = 0 //スタートの順番
 
     @PrimaryKey
     var id: Int = 0
