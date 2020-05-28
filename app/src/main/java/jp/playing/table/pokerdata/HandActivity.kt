@@ -14,6 +14,8 @@ class HandActivity : AppCompatActivity() {
 
     private var mHand: Hand? = null
 
+    private var mTurn: Turn? = null
+
     private lateinit var mRealm: Realm
 
     //チップ一桁目
@@ -38,6 +40,8 @@ class HandActivity : AppCompatActivity() {
 
     private var playerHand2 = ""
 
+    private var countCheack = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hand)
@@ -50,10 +54,9 @@ class HandActivity : AppCompatActivity() {
         //インテントを取得する
         val intent = intent
 
-        val memberNum = intent.getStringExtra("memberNum")
+        val memberNum = intent.getIntExtra("memberNum", 0)
         val roundPlayer = intent.getStringExtra("roundPlayer")
 
-        Log.d("kotlintest", "通過")
 
 
 
@@ -402,13 +405,13 @@ class HandActivity : AppCompatActivity() {
                             }
                         mHand!!.id = identifier
 
-                        val coundCheack: Int =
+                        countCheack =
                             if (handRealmResults.max("count") != null) {
                                 handRealmResults.max("count")!!.toInt() + 1
                             } else {
                                 1
                             }
-                        mHand!!.count = coundCheack
+                        mHand!!.count = countCheack
                     }
 
                     val gameRealmResults = mRealm.where(Game::class.java).findAll()
@@ -426,16 +429,38 @@ class HandActivity : AppCompatActivity() {
                     when (roundPlayer) {
                         "you" -> {
                             val intent = Intent(this@HandActivity, PlayingActivity::class.java)
-                            intent.putExtra("memberNum", memberNum)
-                            intent.putExtra("game_id", game_id)
+                            intent.putExtra("memberNum", memberNum.toInt())
+                            intent.putExtra("game_id", game_id.toInt())
+                            intent.putExtra("round", "preflop")
+                            intent.putExtra("round_count", 1)
+                            intent.putExtra("roundNum", 0) // 一周の間の何人目か
+                            intent.putExtra("cardHand1", playerHand1)
+                            intent.putExtra("cardHand2", playerHand2)
+                            intent.putExtra("cardCom1", "")
+                            intent.putExtra("cardCom2", "")
+                            intent.putExtra("cardCom3", "")
+                            intent.putExtra("cardCom4", "")
+                            intent.putExtra("cardCom5", "")
+                            intent.putExtra("tableChips", handChipsText.text.toString().toInt())
                             startActivity(intent)
                         }
 
                         "other" -> {
                             val intent =
                                 Intent(this@HandActivity, MemberPlayingActivity::class.java)
-                            intent.putExtra("memberNum", memberNum)
-                            intent.putExtra("game_id", game_id)
+                            intent.putExtra("memberNum", memberNum.toInt())
+                            intent.putExtra("game_id", game_id.toInt())
+                            intent.putExtra("round", "preflop")
+                            intent.putExtra("round_count", 1)
+                            intent.putExtra("roundNum", 0)
+                            intent.putExtra("cardHand1", playerHand1)
+                            intent.putExtra("cardHand2", playerHand2)
+                            intent.putExtra("cardCom1", "")
+                            intent.putExtra("cardCom2", "")
+                            intent.putExtra("cardCom3", "")
+                            intent.putExtra("cardCom4", "")
+                            intent.putExtra("cardCom5", "")
+                            intent.putExtra("tableChips", handChipsText.text.toString().toInt())
                             startActivity(intent)
                         }
                     }

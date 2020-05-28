@@ -2,19 +2,15 @@ package jp.playing.table.pokerdata
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_hand.*
 import kotlinx.android.synthetic.main.activity_playing.*
 
 class PlayingActivity : AppCompatActivity() {
 
-    //スート
-    private var cardSuit = ""
+    private var mTurn: Turn? = null
 
-    //カード1桁目
-    private var cardNumber1 = ""
-
-    //カード2桁目
-    private var cardNumber2 = ""
+    private lateinit var mRealm: Realm
 
     //ハンド選択
     private var cardSelect = "hand1"
@@ -27,15 +23,46 @@ class PlayingActivity : AppCompatActivity() {
     private var chipsNum6 = ""
     private var chipsNum7 = ""
 
+    private var memberNum = 0
+    private var game_id = 0
+    private var round = ""
+    private var round_count = 0
+    private var roundNum = 0
+    private var cardHand1 = ""
+    private var cardHand2 = ""
+    private var cardCom1 = ""
+    private var cardCom2 = ""
+    private var cardCom3 = ""
+    private var cardCom4 = ""
+    private var cardCom5 = ""
+    private var tableChips = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_playing)
 
         supportActionBar?.title = "あなたの順番です"
 
+        //Realmの設定
+        mRealm = Realm.getDefaultInstance()
+
         val intent = intent
-        val memberNum = intent.getStringExtra("memberNum")
-        val game_id = intent.getStringExtra("game_id")
+        memberNum = intent.getIntExtra("memberNum", 0)
+        game_id = intent.getIntExtra("game_id", 0)
+        round = intent.getStringExtra("round")
+        round_count = intent.getIntExtra("round_count", 0)
+        roundNum = intent.getIntExtra("roundNum", 0)
+        cardHand1 = intent.getStringExtra("cardHand1")
+        cardHand2 = intent.getStringExtra("cardHand2")
+        cardCom1 = intent.getStringExtra("cardCom1")
+        cardCom2 = intent.getStringExtra("cardCom2")
+        cardCom3 = intent.getStringExtra("cardCom3")
+        cardCom4 = intent.getStringExtra("cardCom4")
+        cardCom5 = intent.getStringExtra("cardCom5")
+        tableChips = intent.getIntExtra("tableChips", 0)
+
+        cardSetting1()
+        cardSetting2()
 
         //UI部品の設定
         playingCheckButton.setOnClickListener {  }
@@ -302,10 +329,34 @@ class PlayingActivity : AppCompatActivity() {
             playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
         }
 
+        playingDoneButton.setOnClickListener {
+
+            roundNum++
+            if (roundNum == memberNum) {
+                round_count++
+            }
+
+            mRealm.beginTransaction()
+            mTurn = Turn()
+
+            val handRealmResults = mRealm.where(Hand::class.java).findAll()
+            val countNum = handRealmResults.max("id")!!.toInt()
+
+            mTurn!!.game_id = game_id
+            mTurn!!.count = handRealmResults[countNum]!!.count
+            mTurn!!.round_count = round_count
+            mTurn!!.round = round
+            mTurn!!.player = "自分"
+
+            mRealm.copyToRealmOrUpdate(mTurn!!)
+            mRealm.commitTransaction()
+
+        }
+
     }
 
     private fun cardSetting1() {
-        when (cardSuit + cardNumber1 + cardNumber2){
+        when (cardHand1){
             "club1" -> playingHand1.setImageResource(R.drawable.club1)
             "club2" -> playingHand1.setImageResource(R.drawable.club2)
             "club3" -> playingHand1.setImageResource(R.drawable.club3)
@@ -365,7 +416,7 @@ class PlayingActivity : AppCompatActivity() {
     }
 
     private fun cardSetting2() {
-        when(cardSuit + cardNumber1 + cardNumber2) {
+        when(cardHand2) {
             "club1" -> playingHand2.setImageResource(R.drawable.club1)
             "club2" -> playingHand2.setImageResource(R.drawable.club2)
             "club3" -> playingHand2.setImageResource(R.drawable.club3)
