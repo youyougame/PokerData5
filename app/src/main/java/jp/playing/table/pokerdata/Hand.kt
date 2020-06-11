@@ -17,6 +17,7 @@ open class Hand : RealmObject(), Serializable {
     var table3 :String = "" //テーブル
     var table4 :String = "" //テーブル
     var table5 :String = "" //テーブル
+    var bigBlind :Int = 0 //ビッグブラインド
 
     @PrimaryKey
     var id: Int = 0

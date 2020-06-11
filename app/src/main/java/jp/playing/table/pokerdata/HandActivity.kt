@@ -42,6 +42,18 @@ class HandActivity : AppCompatActivity() {
 
     private var countCheack = 0
 
+    private var startNum = 0
+
+    private var playingNum = 0
+
+    private var count = 0
+
+    private var bigBlind = 0
+
+    private var myRound = 0
+
+    private var roundPlayer = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hand)
@@ -55,10 +67,14 @@ class HandActivity : AppCompatActivity() {
         val intent = intent
 
         val memberNum = intent.getIntExtra("memberNum", 0)
-        val roundPlayer = intent.getStringExtra("roundPlayer")
+        startNum = intent.getIntExtra("startNum", 0)
+        playingNum = intent.getIntExtra("playingNum", 0)
+        count = intent.getIntExtra("count", 0)
+        bigBlind = intent.getIntExtra("bigBlind", 0)
+        myRound = intent.getIntExtra("myRound", myRound)
 
 
-
+        handChipsText.text = bigBlind.toString()
 
         //チップ数の表示
         if (secondNum == "") {
@@ -389,6 +405,10 @@ class HandActivity : AppCompatActivity() {
                 playerHand1 = cardSuit + cardNumber1 + cardNumber2
             } else {
 
+                val gameRealmResults = mRealm.where(Game::class.java).findAll()
+
+                val game_id = gameRealmResults.max("id")!!.toInt()
+
                 if (cardSelect == "hand2") {
                     playerHand2 = cardSuit + cardNumber1 + cardNumber2
                     mRealm.beginTransaction()
@@ -412,18 +432,22 @@ class HandActivity : AppCompatActivity() {
                                 1
                             }
                         mHand!!.count = countCheack
+
                     }
-
-                    val gameRealmResults = mRealm.where(Game::class.java).findAll()
-
-                    val game_id = gameRealmResults.max("id")!!.toInt()
 
                     mHand!!.game_id = game_id
                     mHand!!.hand1 = playerHand1
                     mHand!!.hand2 = playerHand2
+                    mHand!!.bigBlind = handChipsText.text.toString().toInt()
 
                     mRealm.copyToRealmOrUpdate(mHand!!)
                     mRealm.commitTransaction()
+
+                    if (myRound == startNum) {
+                        roundPlayer = "you"
+                    } else {
+                        roundPlayer = "other"
+                    }
 
 
                     when (roundPlayer) {
@@ -431,9 +455,11 @@ class HandActivity : AppCompatActivity() {
                             val intent = Intent(this@HandActivity, PlayingActivity::class.java)
                             intent.putExtra("memberNum", memberNum.toInt())
                             intent.putExtra("game_id", game_id.toInt())
+                            intent.putExtra("count", count)
                             intent.putExtra("round", "preflop")
                             intent.putExtra("round_count", 1)
-                            intent.putExtra("roundNum", 0) // 一周の間の何人目か
+                            intent.putExtra("roundNum", 1) // 一周の間の何人目か
+                            intent.putExtra("myRound", myRound)
                             intent.putExtra("cardHand1", playerHand1)
                             intent.putExtra("cardHand2", playerHand2)
                             intent.putExtra("cardCom1", "")
@@ -441,7 +467,13 @@ class HandActivity : AppCompatActivity() {
                             intent.putExtra("cardCom3", "")
                             intent.putExtra("cardCom4", "")
                             intent.putExtra("cardCom5", "")
+                            intent.putExtra("bigBlind", handChipsText.text.toString().toInt())
                             intent.putExtra("tableChips", handChipsText.text.toString().toInt())
+                            intent.putExtra("tableTotalChips", handChipsText.text.toString().toInt())
+                            intent.putExtra("startNum", startNum)
+                            intent.putExtra("playingNum", playingNum)
+                            intent.putExtra("foldPlayer", 0)
+                            intent.putExtra("sameChipsPlayer", 1)
                             startActivity(intent)
                         }
 
@@ -450,9 +482,11 @@ class HandActivity : AppCompatActivity() {
                                 Intent(this@HandActivity, MemberPlayingActivity::class.java)
                             intent.putExtra("memberNum", memberNum.toInt())
                             intent.putExtra("game_id", game_id.toInt())
+                            intent.putExtra("count", count)
                             intent.putExtra("round", "preflop")
                             intent.putExtra("round_count", 1)
-                            intent.putExtra("roundNum", 0)
+                            intent.putExtra("roundNum", 1)
+                            intent.putExtra("myRound", myRound)
                             intent.putExtra("cardHand1", playerHand1)
                             intent.putExtra("cardHand2", playerHand2)
                             intent.putExtra("cardCom1", "")
@@ -460,14 +494,19 @@ class HandActivity : AppCompatActivity() {
                             intent.putExtra("cardCom3", "")
                             intent.putExtra("cardCom4", "")
                             intent.putExtra("cardCom5", "")
+                            intent.putExtra("bigBlind", handChipsText.text.toString().toInt())
                             intent.putExtra("tableChips", handChipsText.text.toString().toInt())
+                            intent.putExtra("tableTotalChips", handChipsText.text.toString().toInt())
+                            intent.putExtra("startNum", startNum)
+                            intent.putExtra("playingNum", playingNum)
+                            intent.putExtra("foldPlayer", 0)
+                            intent.putExtra("sameChipsPlayer", 1)
                             startActivity(intent)
                         }
                     }
                 }
             }
         }
-
     }
 
     override fun onDestroy() {

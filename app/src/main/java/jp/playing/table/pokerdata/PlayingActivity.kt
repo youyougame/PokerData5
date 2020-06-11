@@ -1,7 +1,9 @@
 package jp.playing.table.pokerdata
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_hand.*
 import kotlinx.android.synthetic.main.activity_playing.*
@@ -10,10 +12,11 @@ class PlayingActivity : AppCompatActivity() {
 
     private var mTurn: Turn? = null
 
+    private var mMember: Member? = null
+
     private lateinit var mRealm: Realm
 
     //ハンド選択
-    private var cardSelect = "hand1"
 
     private var chipsNum1 = ""
     private var chipsNum2 = ""
@@ -25,9 +28,11 @@ class PlayingActivity : AppCompatActivity() {
 
     private var memberNum = 0
     private var game_id = 0
+    private var count = 0
     private var round = ""
     private var round_count = 0
     private var roundNum = 0
+    private var myRound = 0
     private var cardHand1 = ""
     private var cardHand2 = ""
     private var cardCom1 = ""
@@ -35,7 +40,18 @@ class PlayingActivity : AppCompatActivity() {
     private var cardCom3 = ""
     private var cardCom4 = ""
     private var cardCom5 = ""
+    private var bigBlind = 0
     private var tableChips = 0
+    private var tableTotalChips = 0
+    private var startNum = 0
+    private var playingNum = 0
+    private var foldPlayer = 0
+    private var sameChipsPlayer = 0
+
+    private var memberChips = 0
+    private var playChips = 0
+    private var player_id = ""
+    private var playingCheck = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,12 +62,20 @@ class PlayingActivity : AppCompatActivity() {
         //Realmの設定
         mRealm = Realm.getDefaultInstance()
 
+        val memberChipsRealm = mRealm.where(Member::class.java).findAll()
+        val memberChipsRealmId = memberChipsRealm.max("id")!!.toInt()
+
+        memberChips = memberChipsRealm[memberChipsRealmId]!!.memberChips
+
+
         val intent = intent
         memberNum = intent.getIntExtra("memberNum", 0)
         game_id = intent.getIntExtra("game_id", 0)
+        count = intent.getIntExtra("count", 0)
         round = intent.getStringExtra("round")
         round_count = intent.getIntExtra("round_count", 0)
         roundNum = intent.getIntExtra("roundNum", 0)
+        myRound = intent.getIntExtra("myRound", 0)
         cardHand1 = intent.getStringExtra("cardHand1")
         cardHand2 = intent.getStringExtra("cardHand2")
         cardCom1 = intent.getStringExtra("cardCom1")
@@ -59,19 +83,52 @@ class PlayingActivity : AppCompatActivity() {
         cardCom3 = intent.getStringExtra("cardCom3")
         cardCom4 = intent.getStringExtra("cardCom4")
         cardCom5 = intent.getStringExtra("cardCom5")
+        bigBlind = intent.getIntExtra("bigBlind", 0)
         tableChips = intent.getIntExtra("tableChips", 0)
+        tableTotalChips = intent.getIntExtra("tableTotalChips", 0)
+        startNum = intent.getIntExtra("startNum", 0)
+        playingNum = intent.getIntExtra("playingNum", 0)
+        foldPlayer = intent.getIntExtra("foldPlayer", 0)
+        sameChipsPlayer = intent.getIntExtra("sameChipsPlayer", 0)
 
         cardSetting1()
         cardSetting2()
 
+        //アクションボタンのUI表示設定
+        if (tableChips != playChips) {
+            playingCheckButton.isEnabled = false
+        } else {
+            playingCheckButton.isEnabled = true
+        }
+
+        if (playChips < tableChips) {
+            playingCallButton.isEnabled = true
+        } else {
+            playingCallButton.isEnabled = false
+        }
+
         //UI部品の設定
-        playingCheckButton.setOnClickListener {  }
+        playingCheckButton.setOnClickListener {
+            playingChipsText.text = playChips.toString()
+            playingCheck = "play"
+        }
 
-        playingCallButton.setOnClickListener {  }
+        playingCallButton.setOnClickListener {
+            playChips = tableChips
+            playingChipsText.text = playChips.toString()
+            playingCheck = "play"
+        }
 
-        playingFoldButton.setOnClickListener {  }
+        playingFoldButton.setOnClickListener {
+            playingChipsText.text = "fold"
+            playingCheck = "fold"
+        }
 
-        playingAllInButton.setOnClickListener {  }
+        playingAllInButton.setOnClickListener {
+            playChips = memberChips
+            playingChipsText.text = playChips.toString()
+            playingCheck = "play"
+        }
 
         playingNum1.setOnClickListener {
             when {
@@ -86,6 +143,7 @@ class PlayingActivity : AppCompatActivity() {
 
             }
             playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
+            playingCheck = "play"
         }
 
         playingNum2.setOnClickListener {
@@ -101,6 +159,7 @@ class PlayingActivity : AppCompatActivity() {
 
             }
             playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
+            playingCheck = "play"
         }
 
         playingNum3.setOnClickListener {
@@ -116,6 +175,7 @@ class PlayingActivity : AppCompatActivity() {
 
             }
             playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
+            playingCheck = "play"
         }
 
         playingNum4.setOnClickListener {
@@ -131,6 +191,7 @@ class PlayingActivity : AppCompatActivity() {
 
             }
             playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
+            playingCheck = "play"
         }
 
         playingNum5.setOnClickListener {
@@ -146,6 +207,7 @@ class PlayingActivity : AppCompatActivity() {
 
             }
             playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
+            playingCheck = "play"
         }
 
         playingNum6.setOnClickListener {
@@ -161,6 +223,7 @@ class PlayingActivity : AppCompatActivity() {
 
             }
             playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
+            playingCheck = "play"
         }
 
         playingNum7.setOnClickListener {
@@ -175,6 +238,7 @@ class PlayingActivity : AppCompatActivity() {
 
             }
             playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
+            playingCheck = "play"
         }
 
         playingNum8.setOnClickListener {
@@ -190,6 +254,7 @@ class PlayingActivity : AppCompatActivity() {
 
             }
             playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
+            playingCheck = "play"
         }
 
         playingNum9.setOnClickListener {
@@ -205,6 +270,7 @@ class PlayingActivity : AppCompatActivity() {
 
             }
             playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
+            playingCheck = "play"
         }
 
         playingNum0.setOnClickListener {
@@ -217,6 +283,7 @@ class PlayingActivity : AppCompatActivity() {
                 chipsNum7 == "" -> chipsNum7 = "0"
             }
             playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
+            playingCheck = "play"
         }
 
         playingNum00.setOnClickListener {
@@ -246,6 +313,7 @@ class PlayingActivity : AppCompatActivity() {
                 }
             }
             playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
+            playingCheck = "play"
         }
 
         playingNum000.setOnClickListener {
@@ -279,6 +347,7 @@ class PlayingActivity : AppCompatActivity() {
                 }
             }
             playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
+            playingCheck = "play"
         }
 
         playingNum0000.setOnClickListener {
@@ -315,6 +384,7 @@ class PlayingActivity : AppCompatActivity() {
                 }
             }
             playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
+            playingCheck = "play"
         }
 
         playingDaleteButton.setOnClickListener {
@@ -330,28 +400,190 @@ class PlayingActivity : AppCompatActivity() {
         }
 
         playingDoneButton.setOnClickListener {
+            //チップ値が入力されているか確認
+            if (playingChipsText.text != "") {
 
-            roundNum++
-            if (roundNum == memberNum) {
-                round_count++
+                //テーブルチップとの比較
+                when {
+                    playingChipsText.text.toString().toInt() == tableChips -> {
+                        sameChipsPlayer++
+                    }
+                    playingChipsText.text.toString().toInt() > tableChips -> {
+                        sameChipsPlayer = 1
+                        tableChips = tableChips + playingChipsText.text.toString().toInt()
+                    }
+                 }
+
+                mRealm.beginTransaction()
+                val turnRealmResults = mRealm.where(Turn::class.java).findAll()
+
+                //Turnへデータ保存
+                if (mTurn == null) {
+                    mTurn = Turn()
+
+                    val identifier: Int =
+                        if (turnRealmResults.max("id") != null) {
+                            turnRealmResults.max("id")!!.toInt() + 1
+                        } else {
+                            0
+                        }
+                    mTurn!!.id = identifier
+                }
+
+                val memberRealmResults = mRealm.where(Member::class.java).findAll()
+                //player_idを取得
+                val memberPlayerNumRealmResults = mRealm.where(Member::class.java).equalTo("memberRound", playingNum).findAll()
+                val playerNumId = memberPlayerNumRealmResults.max("id")!!.toInt()
+                player_id = memberRealmResults[playerNumId]!!.member_id
+                val playerTotalChips = memberRealmResults[playerNumId]!!.memberChips
+
+                //Turnを新規登録
+                mTurn!!.game_id = game_id
+                mTurn!!.count = count
+                mTurn!!.round = round
+                mTurn!!.round_count = round_count
+                mTurn!!.player = "自分"
+                mTurn!!.player_id = player_id
+                mTurn!!.playChips = playingChipsText.text.toString().toInt()
+                mTurn!!.memberChips = playerTotalChips - playingChipsText.text.toString().toInt()
+                mTurn!!.tableChips = tableChips
+                mTurn!!.tableTotalChips = tableTotalChips + playingChipsText.text.toString().toInt()
+
+                mRealm.copyToRealmOrUpdate(mTurn!!)
+                mRealm.commitTransaction()
+
+
+                //Memberを更新
+                var menber = mRealm.where(Member::class.java).equalTo("id", playerNumId ).findFirst()
+
+
+                if (playingCheck == "fold"){
+                    menber!!.playingCheck = "fold"
+                    foldPlayer++
+
+                }
+
+                menber!!.memberChips = playerTotalChips - playingChipsText.text.toString().toInt()
+
+                if (foldPlayer == memberNum - 1) {
+                    count++
+                    if (startNum == memberNum) {
+                        startNum = 1
+                        playingNum = 1
+                    } else {
+                        startNum++
+                        playingNum = startNum
+                    }
+                    //Todo HandActivityへ移動
+                    val intent = Intent(this@PlayingActivity, HandActivity::class.java)
+                    intent.putExtra("memberNum", memberNum)
+                    intent.putExtra("count", count)
+                    intent.putExtra("myRound", myRound)
+                    intent.putExtra("bigBlind", bigBlind)
+                    intent.putExtra("startNum", startNum)
+                    intent.putExtra("playingNum", playingNum)
+                    startActivity(intent)
+
+                } else {
+                    if (sameChipsPlayer == memberNum - foldPlayer) {
+                        when (round) {
+                            "preflop" -> round = "flop"
+                            "flop" -> round = "turn"
+                            "turn" -> round = "river"
+                            "turn" -> round = "showdown"
+                        }
+
+                        //Todo CardActivityへ移動
+
+                    }
+
+                    if (roundNum == memberNum) {
+                        round_count++
+                        roundNum = 1
+                    } else {
+                        roundNum++
+                    }
+
+                    if (playingNum == memberNum) {
+                        playingNum = 1
+                    } else {
+                        playingNum++
+                    }
+
+                    //Todo MemberPlayingActivityに移動
+
+
+
+                }
+
             }
-
-            mRealm.beginTransaction()
-            mTurn = Turn()
-
-            val handRealmResults = mRealm.where(Hand::class.java).findAll()
-            val countNum = handRealmResults.max("id")!!.toInt()
-
-            mTurn!!.game_id = game_id
-            mTurn!!.count = handRealmResults[countNum]!!.count
-            mTurn!!.round_count = round_count
-            mTurn!!.round = round
-            mTurn!!.player = "自分"
-
-            mRealm.copyToRealmOrUpdate(mTurn!!)
-            mRealm.commitTransaction()
-
         }
+
+//        playingDoneButton.setOnClickListener {
+//
+//            //チップ値が入力されているか確認
+//            if (playingChipsText.text != "") {
+//
+//                val memberRealmResults = mRealm.where(Member::class.java).findAll()
+//                val memberCountNum = memberRealmResults.max("id")!!.toInt()
+//
+//                roundNum++
+//                if (roundNum == memberNum) {
+//                    round_count++
+//                }
+//
+//                mRealm.beginTransaction()
+//                val turnRealmResults = mRealm.where(Turn::class.java).findAll()
+//
+//                if (mTurn == null) {
+//                    mTurn = Turn()
+//                    turnRealmResults
+//
+//                    val identifier: Int =
+//                        if (turnRealmResults.max("id") != null) {
+//                            turnRealmResults.max("id")!!.toInt() + 1
+//                        } else {
+//                            0
+//                        }
+//                    mTurn!!.id = identifier
+//                }
+//
+//                val handRealmResults = mRealm.where(Hand::class.java).findAll()
+//
+//                val countNum = handRealmResults.max("id")!!.toInt()
+//                player_id = memberChipsRealm[memberChipsRealmId]!!.member_id
+//
+//                val memberPlayingCheck =
+//                    mRealm.where(Member::class.java).equalTo("game_id", game_id)
+//                        .equalTo("hand_count", round_count).equalTo("memberName", "自分").findFirst()
+//
+//                memberPlayingCheck!!.playingCheck = playingCheck
+//
+//                mTurn!!.game_id = game_id
+//                mTurn!!.count = handRealmResults[countNum]!!.count
+//                mTurn!!.round_count = round_count
+//                mTurn!!.round = round
+//                mTurn!!.player = "自分"
+//                mTurn!!.playChips = playingChipsText.text.toString().toInt()
+//                mTurn!!.memberChips = memberChips
+//                mTurn!!.player_id = player_id
+//                mTurn!!.tableChips = tableChips
+//
+//                val tableTotalChipsRealmResults = mRealm.where(Turn::class.java).equalTo("game_id", game_id).findAll()
+//                if (tableTotalChipsRealmResults.max("id") != null ) {
+//                    val turnTableTotalChips = turnRealmResults.max("id")!!.toInt()
+//                    tableTotalChips =
+//                        turnRealmResults[turnTableTotalChips - 1]!!.tableTotalChips + playingChipsText.text.toString().toInt()
+//                }
+//
+//
+//
+//                mRealm.copyToRealmOrUpdate(mTurn!!)
+//                mRealm.commitTransaction()
+//
+//            }
+//
+//        }
 
     }
 

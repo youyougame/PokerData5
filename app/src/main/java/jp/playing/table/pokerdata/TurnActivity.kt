@@ -66,6 +66,12 @@ class TurnActivity : AppCompatActivity() {
 
     private var gameLength = 0
 
+    private var startNum = 0
+
+    private var playingNum = 0
+
+    private var myRound = 0
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -339,24 +345,177 @@ class TurnActivity : AppCompatActivity() {
                                 2 -> {
                                     if (spinnerText2 == "自分") {
                                         roundPlayer = "you"
+                                        startNum = 2
+                                        playingNum = 2
+                                        myRound = 2
                                     } else {
                                         roundPlayer = "other"
+                                        startNum = 2
+                                        playingNum = 2
                                     }
                                 }
 
                                 3 -> {
                                     if (spinnerText1 == "自分") {
                                         roundPlayer = "you"
+                                        startNum = 1
+                                        playingNum = 1
+                                        myRound = 1
                                     } else {
                                         roundPlayer = "other"
+                                        startNum = 1
+                                        playingNum = 1
+                                        when ("自分") {
+                                            spinnerText2 -> myRound = 2
+                                            spinnerText3 -> myRound = 3
+                                        }
                                     }
                                 }
 
-                                else -> {
+                                4 -> {
                                     if (spinnerText4 == "自分") {
                                         roundPlayer = "you"
+                                        startNum = 4
+                                        playingNum = 4
+                                        myRound = 4
                                     } else {
                                         roundPlayer = "other"
+                                        startNum = 4
+                                        playingNum = 4
+                                        when ("自分") {
+                                            spinnerText1 -> myRound = 1
+                                            spinnerText2 -> myRound = 2
+                                            spinnerText3 -> myRound = 3
+                                        }
+                                    }
+                                }
+
+                                5 -> {
+                                    if (spinnerText4 == "自分") {
+                                        roundPlayer = "you"
+                                        startNum = 4
+                                        playingNum = 4
+                                        myRound = 4
+                                    } else {
+                                        roundPlayer = "other"
+                                        startNum = 4
+                                        playingNum = 4
+                                        when ("自分") {
+                                            spinnerText1 -> myRound = 1
+                                            spinnerText2 -> myRound = 2
+                                            spinnerText3 -> myRound = 3
+                                            spinnerText5 -> myRound = 5
+                                        }
+                                    }
+                                }
+
+                                6 -> {
+                                    if (spinnerText4 == "自分") {
+                                        roundPlayer = "you"
+                                        startNum = 4
+                                        playingNum = 4
+                                        myRound = 4
+                                    } else {
+                                        roundPlayer = "other"
+                                        startNum = 4
+                                        playingNum = 4
+                                        when ("自分") {
+                                            spinnerText1 -> myRound = 1
+                                            spinnerText2 -> myRound = 2
+                                            spinnerText3 -> myRound = 3
+                                            spinnerText5 -> myRound = 5
+                                            spinnerText6 -> myRound = 6
+                                        }
+                                    }
+                                }
+
+                                7 -> {
+                                    if (spinnerText4 == "自分") {
+                                        roundPlayer = "you"
+                                        startNum = 4
+                                        playingNum = 4
+                                        myRound = 4
+                                    } else {
+                                        roundPlayer = "other"
+                                        startNum = 4
+                                        playingNum = 4
+                                        when ("自分") {
+                                            spinnerText1 -> myRound = 1
+                                            spinnerText2 -> myRound = 2
+                                            spinnerText3 -> myRound = 3
+                                            spinnerText5 -> myRound = 5
+                                            spinnerText6 -> myRound = 6
+                                            spinnerText7 -> myRound = 7
+                                        }
+                                    }
+                                }
+
+                                8 -> {
+                                    if (spinnerText4 == "自分") {
+                                        roundPlayer = "you"
+                                        startNum = 4
+                                        playingNum = 4
+                                        myRound = 4
+                                    } else {
+                                        roundPlayer = "other"
+                                        startNum = 4
+                                        playingNum = 4
+                                        when ("自分") {
+                                            spinnerText1 -> myRound = 1
+                                            spinnerText2 -> myRound = 2
+                                            spinnerText3 -> myRound = 3
+                                            spinnerText5 -> myRound = 5
+                                            spinnerText6 -> myRound = 6
+                                            spinnerText7 -> myRound = 7
+                                            spinnerText8 -> myRound = 8
+                                        }
+                                    }
+                                }
+
+                                9 -> {
+                                    if (spinnerText4 == "自分") {
+                                        roundPlayer = "you"
+                                        startNum = 4
+                                        playingNum = 4
+                                        myRound = 4
+                                    } else {
+                                        roundPlayer = "other"
+                                        startNum = 4
+                                        playingNum = 4
+                                        when ("自分") {
+                                            spinnerText1 -> myRound = 1
+                                            spinnerText2 -> myRound = 2
+                                            spinnerText3 -> myRound = 3
+                                            spinnerText5 -> myRound = 5
+                                            spinnerText6 -> myRound = 6
+                                            spinnerText7 -> myRound = 7
+                                            spinnerText8 -> myRound = 8
+                                            spinnerText9 -> myRound = 9
+                                        }
+                                    }
+                                }
+
+                                10 -> {
+                                    if (spinnerText4 == "自分") {
+                                        roundPlayer = "you"
+                                        startNum = 4
+                                        playingNum = 4
+                                        myRound = 4
+                                    } else {
+                                        roundPlayer = "other"
+                                        startNum = 4
+                                        playingNum = 4
+                                        when ("自分") {
+                                            spinnerText1 -> myRound = 1
+                                            spinnerText2 -> myRound = 2
+                                            spinnerText3 -> myRound = 3
+                                            spinnerText5 -> myRound = 5
+                                            spinnerText6 -> myRound = 6
+                                            spinnerText7 -> myRound = 7
+                                            spinnerText8 -> myRound = 8
+                                            spinnerText9 -> myRound = 9
+                                            spinnerText10 -> myRound = 10
+                                        }
                                     }
                                 }
                             }
@@ -368,6 +527,11 @@ class TurnActivity : AppCompatActivity() {
                             intent.putExtra("memberNum", mMember)
                             intent.putExtra("roundPlayer", roundPlayer)
                             intent.putExtra("game_id", gameLength)
+                            intent.putExtra("startNum", startNum)
+                            intent.putExtra("playingNum", playingNum)
+                            intent.putExtra("count", 0)
+                            intent.putExtra("bigBlind", 1 )
+                            intent.putExtra("myRound", myRound)
 
 
                             startActivity(intent)
@@ -494,6 +658,8 @@ class TurnActivity : AppCompatActivity() {
                 mPlayer!!.playerRound = round
                 mRealm.copyToRealmOrUpdate(mPlayer!!)
             }
+
+
             round++
         }
 
@@ -517,7 +683,23 @@ class TurnActivity : AppCompatActivity() {
                 mMemBerPlay!!.hand_count = 1
                 mMemBerPlay!!.memberName = i
                 mMemBerPlay!!.memberRound = playRound
-                mMemBerPlay!!.game_id = gameLength.toString()
+                mMemBerPlay!!.game_id = gameLength
+                mMemBerPlay!!.playingCheck = "play"
+
+                when (i) {
+                    spinnerText1 -> if (playerId1 != "") {mMemBerPlay!!.member_id = playerId1}
+                    spinnerText2 -> if (playerId2 != "") {mMemBerPlay!!.member_id = playerId2}
+                    spinnerText3 -> if (playerId3 != "") {mMemBerPlay!!.member_id = playerId3}
+                    spinnerText4 -> if (playerId4 != "") {mMemBerPlay!!.member_id = playerId4}
+                    spinnerText5 -> if (playerId5 != "") {mMemBerPlay!!.member_id = playerId5}
+                    spinnerText6 -> if (playerId6 != "") {mMemBerPlay!!.member_id = playerId6}
+                    spinnerText7 -> if (playerId7 != "") {mMemBerPlay!!.member_id = playerId7}
+                    spinnerText8 -> if (playerId8 != "") {mMemBerPlay!!.member_id = playerId8}
+                    spinnerText9 -> if (playerId9 != "") {mMemBerPlay!!.member_id = playerId9}
+                    spinnerText10 -> if (playerId10 != "") {mMemBerPlay!!.member_id = playerId10}
+
+                }
+
                 when (playRound) {
                     1 -> mMemBerPlay!!.memberChips = chips1.toInt()
                     2 -> mMemBerPlay!!.memberChips = chips2.toInt()
