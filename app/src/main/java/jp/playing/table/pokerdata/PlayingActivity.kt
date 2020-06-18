@@ -91,6 +91,89 @@ class PlayingActivity : AppCompatActivity() {
         foldPlayer = intent.getIntExtra("foldPlayer", 0)
         sameChipsPlayer = intent.getIntExtra("sameChipsPlayer", 0)
 
+        val memberRealmResults = mRealm.where(Member::class.java).findAll()
+        val memberPlayerNumRealmResults = mRealm.where(Member::class.java).equalTo("memberRound", playingNum).findAll()
+        val playerNumId = memberPlayerNumRealmResults.max("id")!!.toInt()
+        val memberPlayingCheck = memberRealmResults[playerNumId]!!.playingCheck
+
+        if (memberPlayingCheck == "fold") {
+            if (sameChipsPlayer == memberNum - foldPlayer) {
+                when (round) {
+                    "preflop" -> round = "flop"
+                    "flop" -> round = "turn"
+                    "turn" -> round = "river"
+                    "turn" -> round = "showdown"
+                }
+
+                // CardActivityへ移動
+                val intent = Intent(this@PlayingActivity, CardActivity::class.java)
+                intent.putExtra("memberNum", memberNum)
+                intent.putExtra("game_id", game_id)
+                intent.putExtra("count", count)
+                intent.putExtra("round", round)
+                intent.putExtra("round_count", round_count)
+                intent.putExtra("roundNum", roundNum)
+                intent.putExtra("myRound", myRound)
+                intent.putExtra("cardHand1", cardHand1)
+                intent.putExtra("cardHand2", cardHand2)
+                intent.putExtra("cardCom1", cardCom1)
+                intent.putExtra("cardCom2", cardCom2)
+                intent.putExtra("cardCom3", cardCom3)
+                intent.putExtra("cardCom4", cardCom4)
+                intent.putExtra("cardCom5", cardCom5)
+                intent.putExtra("bigBlind", bigBlind)
+                intent.putExtra("tableChips", tableChips)
+                intent.putExtra("tableTotalChips", tableTotalChips)
+                intent.putExtra("startNum", startNum)
+                intent.putExtra("playingNum", playingNum)
+                intent.putExtra("foldPlayer", foldPlayer)
+                intent.putExtra("sameChipsPlayer", sameChipsPlayer)
+                startActivity(intent)
+
+            }
+
+            if (roundNum == memberNum) {
+                round_count++
+                roundNum = 1
+            } else {
+                roundNum++
+            }
+
+            if (playingNum == memberNum) {
+                playingNum = 1
+            } else {
+                playingNum++
+            }
+
+            // MemberPlayingActivityに移動
+            Log.d("kotlintest", "FoldPlayingActivity->MemberPlayigActivity:" + sameChipsPlayer.toString())
+            val intent = Intent(this@PlayingActivity, MemberPlayingActivity::class.java)
+            intent.putExtra("memberNum", memberNum)
+            intent.putExtra("game_id", game_id)
+            intent.putExtra("count", count)
+            intent.putExtra("round", round)
+            intent.putExtra("round_count", round_count)
+            intent.putExtra("roundNum", roundNum)
+            intent.putExtra("myRound", myRound)
+            intent.putExtra("cardHand1", cardHand1)
+            intent.putExtra("cardHand2", cardHand2)
+            intent.putExtra("cardCom1", cardCom1)
+            intent.putExtra("cardCom2", cardCom2)
+            intent.putExtra("cardCom3", cardCom3)
+            intent.putExtra("cardCom4", cardCom4)
+            intent.putExtra("cardCom5", cardCom5)
+            intent.putExtra("bigBlind", bigBlind)
+            intent.putExtra("tableChips", tableChips)
+            intent.putExtra("tableTotalChips", tableTotalChips)
+            intent.putExtra("startNum", startNum)
+            intent.putExtra("playingNum", playingNum)
+            intent.putExtra("foldPlayer", foldPlayer)
+            intent.putExtra("sameChipsPlayer", sameChipsPlayer)
+            startActivity(intent)
+        }
+
+        playingHandText.text = "ミニマムベット：" + tableChips + "  " + "ミニマムレイズ：" + tableChips * 2
+
         cardSetting1()
         cardSetting2()
 
@@ -120,7 +203,7 @@ class PlayingActivity : AppCompatActivity() {
         }
 
         playingFoldButton.setOnClickListener {
-            playingChipsText.text = "fold"
+            playingChipsText.text = "0"
             playingCheck = "fold"
         }
 
@@ -410,7 +493,7 @@ class PlayingActivity : AppCompatActivity() {
                     }
                     playingChipsText.text.toString().toInt() > tableChips -> {
                         sameChipsPlayer = 1
-                        tableChips = tableChips + playingChipsText.text.toString().toInt()
+                        tableChips = playingChipsText.text.toString().toInt()
                     }
                  }
 
@@ -430,10 +513,12 @@ class PlayingActivity : AppCompatActivity() {
                     mTurn!!.id = identifier
                 }
 
-                val memberRealmResults = mRealm.where(Member::class.java).findAll()
+                mMember = Member()
+
+//                val memberRealmResults = mRealm.where(Member::class.java).findAll()
                 //player_idを取得
-                val memberPlayerNumRealmResults = mRealm.where(Member::class.java).equalTo("memberRound", playingNum).findAll()
-                val playerNumId = memberPlayerNumRealmResults.max("id")!!.toInt()
+//                val memberPlayerNumRealmResults = mRealm.where(Member::class.java).equalTo("memberRound", playingNum).findAll()
+//                val playerNumId = memberPlayerNumRealmResults.max("id")!!.toInt()
                 player_id = memberRealmResults[playerNumId]!!.member_id
                 val playerTotalChips = memberRealmResults[playerNumId]!!.memberChips
 
@@ -449,9 +534,6 @@ class PlayingActivity : AppCompatActivity() {
                 mTurn!!.tableChips = tableChips
                 mTurn!!.tableTotalChips = tableTotalChips + playingChipsText.text.toString().toInt()
 
-                mRealm.copyToRealmOrUpdate(mTurn!!)
-                mRealm.commitTransaction()
-
 
                 //Memberを更新
                 var menber = mRealm.where(Member::class.java).equalTo("id", playerNumId ).findFirst()
@@ -465,6 +547,10 @@ class PlayingActivity : AppCompatActivity() {
 
                 menber!!.memberChips = playerTotalChips - playingChipsText.text.toString().toInt()
 
+                mRealm.copyToRealmOrUpdate(mTurn!!)
+                mRealm.copyToRealmOrUpdate(mMember!!)
+                mRealm.commitTransaction()
+
                 if (foldPlayer == memberNum - 1) {
                     count++
                     if (startNum == memberNum) {
@@ -474,7 +560,7 @@ class PlayingActivity : AppCompatActivity() {
                         startNum++
                         playingNum = startNum
                     }
-                    //Todo HandActivityへ移動
+                    // HandActivityへ移動
                     val intent = Intent(this@PlayingActivity, HandActivity::class.java)
                     intent.putExtra("memberNum", memberNum)
                     intent.putExtra("count", count)
@@ -493,26 +579,76 @@ class PlayingActivity : AppCompatActivity() {
                             "turn" -> round = "showdown"
                         }
 
-                        //Todo CardActivityへ移動
+                        // CardActivityへ移動
+                        val intent = Intent(this@PlayingActivity, CardActivity::class.java)
+                        intent.putExtra("memberNum", memberNum)
+                        intent.putExtra("game_id", game_id)
+                        intent.putExtra("count", count)
+                        intent.putExtra("round", round)
+                        intent.putExtra("round_count", round_count)
+                        intent.putExtra("roundNum", roundNum)
+                        intent.putExtra("myRound", myRound)
+                        intent.putExtra("cardHand1", cardHand1)
+                        intent.putExtra("cardHand2", cardHand2)
+                        intent.putExtra("cardCom1", cardCom1)
+                        intent.putExtra("cardCom2", cardCom2)
+                        intent.putExtra("cardCom3", cardCom3)
+                        intent.putExtra("cardCom4", cardCom4)
+                        intent.putExtra("cardCom5", cardCom5)
+                        intent.putExtra("bigBlind", bigBlind)
+                        intent.putExtra("tableChips", tableChips)
+                        intent.putExtra("tableTotalChips", tableTotalChips)
+                        intent.putExtra("startNum", startNum)
+                        intent.putExtra("playingNum", playingNum)
+                        intent.putExtra("foldPlayer", foldPlayer)
+                        intent.putExtra("sameChipsPlayer", sameChipsPlayer)
+                        startActivity(intent)
 
-                    }
-
-                    if (roundNum == memberNum) {
-                        round_count++
-                        roundNum = 1
                     } else {
-                        roundNum++
+
+                        if (roundNum == memberNum) {
+                            round_count++
+                            roundNum = 1
+                        } else {
+                            roundNum++
+                        }
+
+                        if (playingNum == memberNum) {
+                            playingNum = 1
+                        } else {
+                            playingNum++
+                        }
+
+                        // MemberPlayingActivityに移動
+                        Log.d(
+                            "kotlintest",
+                            "PlayingActivity->MemberPlayigActivity:" + sameChipsPlayer.toString()
+                        )
+                        val intent = Intent(this@PlayingActivity, MemberPlayingActivity::class.java)
+                        intent.putExtra("memberNum", memberNum)
+                        intent.putExtra("game_id", game_id)
+                        intent.putExtra("count", count)
+                        intent.putExtra("round", round)
+                        intent.putExtra("round_count", round_count)
+                        intent.putExtra("roundNum", roundNum)
+                        intent.putExtra("myRound", myRound)
+                        intent.putExtra("cardHand1", cardHand1)
+                        intent.putExtra("cardHand2", cardHand2)
+                        intent.putExtra("cardCom1", cardCom1)
+                        intent.putExtra("cardCom2", cardCom2)
+                        intent.putExtra("cardCom3", cardCom3)
+                        intent.putExtra("cardCom4", cardCom4)
+                        intent.putExtra("cardCom5", cardCom5)
+                        intent.putExtra("bigBlind", bigBlind)
+                        intent.putExtra("tableChips", tableChips)
+                        intent.putExtra("tableTotalChips", tableTotalChips)
+                        intent.putExtra("startNum", startNum)
+                        intent.putExtra("playingNum", playingNum)
+                        intent.putExtra("foldPlayer", foldPlayer)
+                        intent.putExtra("sameChipsPlayer", sameChipsPlayer)
+                        startActivity(intent)
+
                     }
-
-                    if (playingNum == memberNum) {
-                        playingNum = 1
-                    } else {
-                        playingNum++
-                    }
-
-                    //Todo MemberPlayingActivityに移動
-
-
 
                 }
 

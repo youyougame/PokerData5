@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar
 import android.util.Log
 import io.realm.Realm
 import io.realm.kotlin.where
+import kotlinx.android.synthetic.main.activity_card.*
 import kotlinx.android.synthetic.main.activity_hand.*
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -53,6 +54,10 @@ class HandActivity : AppCompatActivity() {
     private var myRound = 0
 
     private var roundPlayer = ""
+
+    private var handCard1Set = ""
+
+    private var handCard2Set = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -396,112 +401,126 @@ class HandActivity : AppCompatActivity() {
 
             cardSelect = "hand1"
             handDoneButton.text = "1枚目決定"
+
+            handCard1Set = ""
+            handCard2Set = ""
         }
 
+        //決定ボタン
         handDoneButton.setOnClickListener {
             if (cardSelect == "hand1") {
-                cardSelect = "hand2"
-                handDoneButton.text = "2枚目決定"
-                playerHand1 = cardSuit + cardNumber1 + cardNumber2
+                if (handCard1Set == "set") {
+                    cardSelect = "hand2"
+                    handDoneButton.text = "2枚目決定"
+                    playerHand1 = cardSuit + cardNumber1 + cardNumber2
+                }
             } else {
+                if (handCard2Set == "set") {
 
-                val gameRealmResults = mRealm.where(Game::class.java).findAll()
+                    val gameRealmResults = mRealm.where(Game::class.java).findAll()
 
-                val game_id = gameRealmResults.max("id")!!.toInt()
+                    val game_id = gameRealmResults.max("id")!!.toInt()
 
-                if (cardSelect == "hand2") {
-                    playerHand2 = cardSuit + cardNumber1 + cardNumber2
-                    mRealm.beginTransaction()
-                    if (mHand == null) {
-                        mHand = Hand()
+                    if (cardSelect == "hand2") {
+                        playerHand2 = cardSuit + cardNumber1 + cardNumber2
+                        mRealm.beginTransaction()
+                        if (mHand == null) {
+                            mHand = Hand()
 
-                        val handRealmResults = mRealm.where(Hand::class.java).findAll()
+                            val handRealmResults = mRealm.where(Hand::class.java).findAll()
 
-                        val identifier: Int =
-                            if (handRealmResults.max("id") != null) {
-                                handRealmResults.max("id")!!.toInt() + 1
-                            } else {
-                                0
-                            }
-                        mHand!!.id = identifier
+                            val identifier: Int =
+                                if (handRealmResults.max("id") != null) {
+                                    handRealmResults.max("id")!!.toInt() + 1
+                                } else {
+                                    0
+                                }
+                            mHand!!.id = identifier
 
-                        countCheack =
-                            if (handRealmResults.max("count") != null) {
-                                handRealmResults.max("count")!!.toInt() + 1
-                            } else {
-                                1
-                            }
-                        mHand!!.count = countCheack
+                            countCheack =
+                                if (handRealmResults.max("count") != null) {
+                                    handRealmResults.max("count")!!.toInt() + 1
+                                } else {
+                                    1
+                                }
+                            mHand!!.count = countCheack
 
-                    }
-
-                    mHand!!.game_id = game_id
-                    mHand!!.hand1 = playerHand1
-                    mHand!!.hand2 = playerHand2
-                    mHand!!.bigBlind = handChipsText.text.toString().toInt()
-
-                    mRealm.copyToRealmOrUpdate(mHand!!)
-                    mRealm.commitTransaction()
-
-                    if (myRound == startNum) {
-                        roundPlayer = "you"
-                    } else {
-                        roundPlayer = "other"
-                    }
-
-
-                    when (roundPlayer) {
-                        "you" -> {
-                            val intent = Intent(this@HandActivity, PlayingActivity::class.java)
-                            intent.putExtra("memberNum", memberNum.toInt())
-                            intent.putExtra("game_id", game_id.toInt())
-                            intent.putExtra("count", count)
-                            intent.putExtra("round", "preflop")
-                            intent.putExtra("round_count", 1)
-                            intent.putExtra("roundNum", 1) // 一周の間の何人目か
-                            intent.putExtra("myRound", myRound)
-                            intent.putExtra("cardHand1", playerHand1)
-                            intent.putExtra("cardHand2", playerHand2)
-                            intent.putExtra("cardCom1", "")
-                            intent.putExtra("cardCom2", "")
-                            intent.putExtra("cardCom3", "")
-                            intent.putExtra("cardCom4", "")
-                            intent.putExtra("cardCom5", "")
-                            intent.putExtra("bigBlind", handChipsText.text.toString().toInt())
-                            intent.putExtra("tableChips", handChipsText.text.toString().toInt())
-                            intent.putExtra("tableTotalChips", handChipsText.text.toString().toInt())
-                            intent.putExtra("startNum", startNum)
-                            intent.putExtra("playingNum", playingNum)
-                            intent.putExtra("foldPlayer", 0)
-                            intent.putExtra("sameChipsPlayer", 1)
-                            startActivity(intent)
                         }
 
-                        "other" -> {
-                            val intent =
-                                Intent(this@HandActivity, MemberPlayingActivity::class.java)
-                            intent.putExtra("memberNum", memberNum.toInt())
-                            intent.putExtra("game_id", game_id.toInt())
-                            intent.putExtra("count", count)
-                            intent.putExtra("round", "preflop")
-                            intent.putExtra("round_count", 1)
-                            intent.putExtra("roundNum", 1)
-                            intent.putExtra("myRound", myRound)
-                            intent.putExtra("cardHand1", playerHand1)
-                            intent.putExtra("cardHand2", playerHand2)
-                            intent.putExtra("cardCom1", "")
-                            intent.putExtra("cardCom2", "")
-                            intent.putExtra("cardCom3", "")
-                            intent.putExtra("cardCom4", "")
-                            intent.putExtra("cardCom5", "")
-                            intent.putExtra("bigBlind", handChipsText.text.toString().toInt())
-                            intent.putExtra("tableChips", handChipsText.text.toString().toInt())
-                            intent.putExtra("tableTotalChips", handChipsText.text.toString().toInt())
-                            intent.putExtra("startNum", startNum)
-                            intent.putExtra("playingNum", playingNum)
-                            intent.putExtra("foldPlayer", 0)
-                            intent.putExtra("sameChipsPlayer", 1)
-                            startActivity(intent)
+                        mHand!!.game_id = game_id
+                        mHand!!.hand1 = playerHand1
+                        mHand!!.hand2 = playerHand2
+                        mHand!!.bigBlind = handChipsText.text.toString().toInt()
+
+                        mRealm.copyToRealmOrUpdate(mHand!!)
+                        mRealm.commitTransaction()
+
+                        if (myRound == startNum) {
+                            roundPlayer = "you"
+                        } else {
+                            roundPlayer = "other"
+                        }
+
+
+                        when (roundPlayer) {
+                            "you" -> {
+                                val intent = Intent(this@HandActivity, PlayingActivity::class.java)
+                                intent.putExtra("memberNum", memberNum.toInt())
+                                intent.putExtra("game_id", game_id.toInt())
+                                intent.putExtra("count", count)
+                                intent.putExtra("round", "preflop")
+                                intent.putExtra("round_count", 1)
+                                intent.putExtra("roundNum", 1) // 一周の間の何人目か
+                                intent.putExtra("myRound", myRound)
+                                intent.putExtra("cardHand1", playerHand1)
+                                intent.putExtra("cardHand2", playerHand2)
+                                intent.putExtra("cardCom1", "")
+                                intent.putExtra("cardCom2", "")
+                                intent.putExtra("cardCom3", "")
+                                intent.putExtra("cardCom4", "")
+                                intent.putExtra("cardCom5", "")
+                                intent.putExtra("bigBlind", handChipsText.text.toString().toInt())
+                                intent.putExtra("tableChips", handChipsText.text.toString().toInt())
+                                intent.putExtra(
+                                    "tableTotalChips",
+                                    handChipsText.text.toString().toInt()
+                                )
+                                intent.putExtra("startNum", startNum)
+                                intent.putExtra("playingNum", playingNum)
+                                intent.putExtra("foldPlayer", 0)
+                                intent.putExtra("sameChipsPlayer", 0)
+                                startActivity(intent)
+                            }
+
+                            "other" -> {
+                                val intent =
+                                    Intent(this@HandActivity, MemberPlayingActivity::class.java)
+                                intent.putExtra("memberNum", memberNum.toInt())
+                                intent.putExtra("game_id", game_id.toInt())
+                                intent.putExtra("count", count)
+                                intent.putExtra("round", "preflop")
+                                intent.putExtra("round_count", 1)
+                                intent.putExtra("roundNum", 1)
+                                intent.putExtra("myRound", myRound)
+                                intent.putExtra("cardHand1", playerHand1)
+                                intent.putExtra("cardHand2", playerHand2)
+                                intent.putExtra("cardCom1", "")
+                                intent.putExtra("cardCom2", "")
+                                intent.putExtra("cardCom3", "")
+                                intent.putExtra("cardCom4", "")
+                                intent.putExtra("cardCom5", "")
+                                intent.putExtra("bigBlind", handChipsText.text.toString().toInt())
+                                intent.putExtra("tableChips", handChipsText.text.toString().toInt())
+                                intent.putExtra(
+                                    "tableTotalChips",
+                                    handChipsText.text.toString().toInt()
+                                )
+                                intent.putExtra("startNum", startNum)
+                                intent.putExtra("playingNum", playingNum)
+                                intent.putExtra("foldPlayer", 0)
+                                intent.putExtra("sameChipsPlayer", 0)
+                                startActivity(intent)
+                            }
                         }
                     }
                 }
@@ -574,6 +593,7 @@ class HandActivity : AppCompatActivity() {
             "spade13" -> handCard1.setImageResource(R.drawable.spade13)
 
         }
+        handCard1Set = "set"
     }
 
     private fun cardSetting2() {
@@ -635,5 +655,6 @@ class HandActivity : AppCompatActivity() {
             "spade13" -> handCard2.setImageResource(R.drawable.spade13)
 
         }
+        handCard2Set = "set"
     }
 }
