@@ -44,6 +44,8 @@ class MemberPlayingActivity : AppCompatActivity() {
     private var tableChips = 0
     private var tableTotalChips = 0
     private var startNum = 0
+    private var flopNum = 0
+    private var preFlopNum = 0
     private var playingNum = 0
     private var foldPlayer = 0
     private var sameChipsPlayer = 0
@@ -54,6 +56,8 @@ class MemberPlayingActivity : AppCompatActivity() {
 
     private var playerName = ""
     private var player_id = ""
+
+    private var turnDataChips = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,16 +84,27 @@ class MemberPlayingActivity : AppCompatActivity() {
         bigBlind = intent.getIntExtra("bigBlind", 0)
         tableChips = intent.getIntExtra("tableChips", 0)
         tableTotalChips = intent.getIntExtra("tableTotalChips", 0)
-        startNum = intent.getIntExtra("startNum", 0)
+        flopNum = intent.getIntExtra("flopNum", 0)
+        preFlopNum = intent.getIntExtra("preFlopNum", 0)
         playingNum = intent.getIntExtra("playingNum", 0)
         foldPlayer = intent.getIntExtra("foldPlayer", 0)
         sameChipsPlayer = intent.getIntExtra("sameChipsPlayer", 0)
+
+        if (round == "flop") {
+            startNum = flopNum
+        } else {
+            startNum = preFlopNum
+        }
 
         val memberPlayerRealmResults = mRealm.where(Member::class.java).findAll()
         val memberPlayerRoundRealmResults = mRealm.where(Member::class.java).equalTo("memberRound", playingNum).findAll()
         val memberPlayerRealmResultsId = memberPlayerRoundRealmResults.max("id")!!.toInt()
         playerName = memberPlayerRealmResults[memberPlayerRealmResultsId]!!.memberName
+        val dataPlayerId = memberPlayerRealmResults[memberPlayerRealmResultsId]!!.member_id
         val memberPlayingCheck = memberPlayerRealmResults[memberPlayerRealmResultsId]!!.playingCheck
+
+        Log.d("kotlintest", "playerName：" + playerName)
+        Log.d("kotlintest", "playerId" + memberPlayerRealmResultsId)
 
         if (memberPlayingCheck == "fold") {
             if (sameChipsPlayer == memberNum - foldPlayer) {
@@ -119,7 +134,8 @@ class MemberPlayingActivity : AppCompatActivity() {
                 intent.putExtra("bigBlind", bigBlind)
                 intent.putExtra("tableChips", tableChips)
                 intent.putExtra("tableTotalChips", tableTotalChips)
-                intent.putExtra("startNum", startNum)
+                intent.putExtra("flopNum", flopNum)
+                intent.putExtra("preFlopNum", preFlopNum)
                 intent.putExtra("playingNum", playingNum)
                 intent.putExtra("foldPlayer", foldPlayer)
                 intent.putExtra("sameChipsPlayer", sameChipsPlayer)
@@ -163,7 +179,8 @@ class MemberPlayingActivity : AppCompatActivity() {
                 intent.putExtra("bigBlind", bigBlind)
                 intent.putExtra("tableChips", tableChips)
                 intent.putExtra("tableTotalChips", tableTotalChips)
-                intent.putExtra("startNum", startNum)
+                intent.putExtra("flopNum", flopNum)
+                intent.putExtra("preFlopNum", preFlopNum)
                 intent.putExtra("playingNum", playingNum)
                 intent.putExtra("foldPlayer", foldPlayer)
                 intent.putExtra("sameChipsPlayer", sameChipsPlayer)
@@ -188,7 +205,8 @@ class MemberPlayingActivity : AppCompatActivity() {
                 intent.putExtra("bigBlind", bigBlind)
                 intent.putExtra("tableChips", tableChips)
                 intent.putExtra("tableTotalChips", tableTotalChips)
-                intent.putExtra("startNum", startNum)
+                intent.putExtra("flopNum", flopNum)
+                intent.putExtra("preFlopNum", preFlopNum)
                 intent.putExtra("playingNum", playingNum)
                 intent.putExtra("foldPlayer", foldPlayer)
                 intent.putExtra("sameChipsPlayer", sameChipsPlayer)
@@ -196,24 +214,43 @@ class MemberPlayingActivity : AppCompatActivity() {
             }
         }
 
+
+        val turnRealmResults = mRealm.where(Turn::class.java).findAll()
+        val turnDataRealmResults = mRealm.where(Turn::class.java).equalTo("player_id", dataPlayerId).findAll()
+        if (turnDataRealmResults.toString() != "[]") {
+            val turnDataRealmResultsId = turnDataRealmResults.max("id")!!.toInt()
+            turnDataChips = turnRealmResults[turnDataRealmResultsId]!!.playChips
+            var turnDataRound = turnRealmResults[turnDataRealmResultsId]!!.round //前回の自分のラウンド
+
+            if (turnDataChips == null || turnDataRound != round) {
+                turnDataChips = 0
+            }
+        }
+
         supportActionBar?.title = playerName
 
         memberPlayingNameText.text = "ミニマムベット：" + tableChips + "  " + "ミニマムレイズ：" + tableChips * 2
 
+        if (round == "preflop" && round_count == 1) {
+            memberChangeChipsText.text = "0"
+        } else {
+            memberChangeChipsText.text = turnDataChips.toString()
+        }
 
 
         //アクションボタンのUI表示設定
-        if (tableChips != playChips) {
+        if (tableChips != memberChangeChipsText.text.toString().toInt()) {
             memberPlayingCheckButton.isEnabled = false
         } else {
             memberPlayingCheckButton.isEnabled = true
         }
 
-        if (playChips < tableChips) {
+        if (memberChangeChipsText.text.toString().toInt() < tableChips) {
             memberPlayingCallButton.isEnabled = true
         } else {
             memberPlayingCallButton.isEnabled = false
         }
+
 
 
         //UI部品の設定
@@ -511,6 +548,8 @@ class MemberPlayingActivity : AppCompatActivity() {
         memberPlayingDoneButton.setOnClickListener {
             //チップ値が入力されているか確認
             if (memberChangeChipsText.text != "") {
+                tableTotalChips = tableTotalChips + memberChangeChipsText.text.toString().toInt()
+                Log.d("kotlintest", "他人合計" + tableTotalChips)
 
                 //テーブルチップとの比較
                 when {
@@ -555,10 +594,10 @@ class MemberPlayingActivity : AppCompatActivity() {
                 mTurn!!.round_count = round_count
                 mTurn!!.player = playerName
                 mTurn!!.player_id = player_id
-                mTurn!!.playChips = memberChangeChipsText.text.toString().toInt()
+                mTurn!!.playChips = memberChangeChipsText.text.toString().toInt() - turnDataChips.toString().toInt()
                 mTurn!!.memberChips = playerTotalChips - memberChangeChipsText.text.toString().toInt()
                 mTurn!!.tableChips = tableChips
-                mTurn!!.tableTotalChips = tableTotalChips + memberChangeChipsText.text.toString().toInt()
+                mTurn!!.tableTotalChips = tableTotalChips
 
                 //Memberを更新
                 var member = mRealm.where(Member::class.java).equalTo("id", playerNumId).findFirst()
@@ -576,12 +615,12 @@ class MemberPlayingActivity : AppCompatActivity() {
 
                 if (foldPlayer == memberNum - 1) {
                     count++
-                    if (startNum == memberNum) {
-                        startNum = 1
+                    if (flopNum == memberNum) {
+                        flopNum = 1
                         playingNum = 1
                     } else {
-                        startNum++
-                        playingNum = startNum
+                        flopNum++
+                        playingNum = flopNum
                     }
                     //HandActivityへの移動
                     val intent = Intent(this@MemberPlayingActivity, HandActivity::class.java)
@@ -589,7 +628,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                     intent.putExtra("count", count)
                     intent.putExtra("myRound", myRound)
                     intent.putExtra("bigBlind", bigBlind)
-                    intent.putExtra("startNum", startNum)
+                    intent.putExtra("flopNum", flopNum)
                     intent.putExtra("playingNum", playingNum)
                     startActivity(intent)
                 } else {
@@ -598,12 +637,28 @@ class MemberPlayingActivity : AppCompatActivity() {
                             "preflop" -> round = "flop"
                             "flop" -> round = "turn"
                             "turn" -> round = "river"
-                            "turn" -> round = "showdown"
+                            "river" -> round = "showdown"
                         }
 
-
+                        playingNum = preFlopNum
+                        roundNum = 1
+                        round_count = 1
+                        tableChips = 0
+                        sameChipsPlayer = 0
 
                         //CardActivityへ移動
+                        Log.d("kotlintest", "他人・" + "memberNum：" + memberNum)
+                        Log.d("kotlintest", "他人・" + "count：" + count)
+                        Log.d("kotlintest", "他人・" + "round：" + round)
+                        Log.d("kotlintest", "他人・" + "round_count：" + round_count)
+                        Log.d("kotlintest", "他人・" + "roundNum：" + roundNum)
+                        Log.d("kotlintest", "他人・" + "myRound：" + myRound)
+                        Log.d("kotlintest", "他人・" + "tableChips：" + tableChips)
+                        Log.d("kotlintest", "他人・" + "tableTotalChips：" + tableTotalChips)
+                        Log.d("kotlintest", "他人・" + "playingNum：" + playingNum)
+                        Log.d("kotlintest", "他人・" + "foldPlayer：" + foldPlayer)
+                        Log.d("kotlintest", "他人・" + "sameChipsPlayer：" + sameChipsPlayer)
+
                         val intent = Intent(this@MemberPlayingActivity, CardActivity::class.java)
                         intent.putExtra("memberNum", memberNum)
                         intent.putExtra("game_id", game_id)
@@ -622,7 +677,8 @@ class MemberPlayingActivity : AppCompatActivity() {
                         intent.putExtra("bigBlind", bigBlind)
                         intent.putExtra("tableChips", tableChips)
                         intent.putExtra("tableTotalChips", tableTotalChips)
-                        intent.putExtra("startNum", startNum)
+                        intent.putExtra("flopNum", flopNum)
+                        intent.putExtra("preFlopNum", preFlopNum)
                         intent.putExtra("playingNum", playingNum)
                         intent.putExtra("foldPlayer", foldPlayer)
                         intent.putExtra("sameChipsPlayer", sameChipsPlayer)
@@ -650,10 +706,18 @@ class MemberPlayingActivity : AppCompatActivity() {
 
                         if (nextPlayerName == "自分") {
                             //PlayingActivityに移動
-                            Log.d(
-                                "kotlintest",
-                                "MemberPlayingActivity->PlayigActivity:" + sameChipsPlayer.toString()
-                            )
+                            Log.d("kotlintest", "他人・" + "memberNum：" + memberNum)
+                            Log.d("kotlintest", "他人・" + "count：" + count)
+                            Log.d("kotlintest", "他人・" + "round：" + round)
+                            Log.d("kotlintest", "他人・" + "round_count：" + round_count)
+                            Log.d("kotlintest", "他人・" + "roundNum：" + roundNum)
+                            Log.d("kotlintest", "他人・" + "myRound：" + myRound)
+                            Log.d("kotlintest", "他人・" + "tableChips：" + tableChips)
+                            Log.d("kotlintest", "他人・" + "tableTotalChips：" + tableTotalChips)
+                            Log.d("kotlintest", "他人・" + "playingNum：" + playingNum)
+                            Log.d("kotlintest", "他人・" + "foldPlayer：" + foldPlayer)
+                            Log.d("kotlintest", "他人・" + "sameChipsPlayer：" + sameChipsPlayer)
+
                             val intent =
                                 Intent(this@MemberPlayingActivity, PlayingActivity::class.java)
                             intent.putExtra("memberNum", memberNum)
@@ -673,17 +737,26 @@ class MemberPlayingActivity : AppCompatActivity() {
                             intent.putExtra("bigBlind", bigBlind)
                             intent.putExtra("tableChips", tableChips)
                             intent.putExtra("tableTotalChips", tableTotalChips)
-                            intent.putExtra("startNum", startNum)
+                            intent.putExtra("flopNum", flopNum)
+                            intent.putExtra("preFlopNum", preFlopNum)
                             intent.putExtra("playingNum", playingNum)
                             intent.putExtra("foldPlayer", foldPlayer)
                             intent.putExtra("sameChipsPlayer", sameChipsPlayer)
                             startActivity(intent)
                         } else {
                             //MemberPlayingActivityに移動
-                            Log.d(
-                                "kotlintest",
-                                "MemberPlayingActivity->MemberPlayigActivity:" + sameChipsPlayer.toString()
-                            )
+                            Log.d("kotlintest", "他人・" + "memberNum：" + memberNum)
+                            Log.d("kotlintest", "他人・" + "count：" + count)
+                            Log.d("kotlintest", "他人・" + "round：" + round)
+                            Log.d("kotlintest", "他人・" + "round_count：" + round_count)
+                            Log.d("kotlintest", "他人・" + "roundNum：" + roundNum)
+                            Log.d("kotlintest", "他人・" + "myRound：" + myRound)
+                            Log.d("kotlintest", "他人・" + "tableChips：" + tableChips)
+                            Log.d("kotlintest", "他人・" + "tableTotalChips：" + tableTotalChips)
+                            Log.d("kotlintest", "他人・" + "playingNum：" + playingNum)
+                            Log.d("kotlintest", "他人・" + "foldPlayer：" + foldPlayer)
+                            Log.d("kotlintest", "他人・" + "sameChipsPlayer：" + sameChipsPlayer)
+
                             val intent = Intent(
                                 this@MemberPlayingActivity,
                                 MemberPlayingActivity::class.java
@@ -705,7 +778,8 @@ class MemberPlayingActivity : AppCompatActivity() {
                             intent.putExtra("bigBlind", bigBlind)
                             intent.putExtra("tableChips", tableChips)
                             intent.putExtra("tableTotalChips", tableTotalChips)
-                            intent.putExtra("startNum", startNum)
+                            intent.putExtra("flopNum", flopNum)
+                            intent.putExtra("preFlopNum", preFlopNum)
                             intent.putExtra("playingNum", playingNum)
                             intent.putExtra("foldPlayer", foldPlayer)
                             intent.putExtra("sameChipsPlayer", sameChipsPlayer)

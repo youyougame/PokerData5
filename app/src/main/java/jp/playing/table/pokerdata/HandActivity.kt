@@ -43,7 +43,9 @@ class HandActivity : AppCompatActivity() {
 
     private var countCheack = 0
 
-    private var startNum = 0
+    private var flopNum = 0
+
+    private var preFlopNum = 0
 
     private var playingNum = 0
 
@@ -72,7 +74,7 @@ class HandActivity : AppCompatActivity() {
         val intent = intent
 
         val memberNum = intent.getIntExtra("memberNum", 0)
-        startNum = intent.getIntExtra("startNum", 0)
+        flopNum = intent.getIntExtra("flopNum", 0)
         playingNum = intent.getIntExtra("playingNum", 0)
         count = intent.getIntExtra("count", 0)
         bigBlind = intent.getIntExtra("bigBlind", 0)
@@ -455,10 +457,16 @@ class HandActivity : AppCompatActivity() {
                         mRealm.copyToRealmOrUpdate(mHand!!)
                         mRealm.commitTransaction()
 
-                        if (myRound == startNum) {
+                        if (myRound == flopNum) {
                             roundPlayer = "you"
                         } else {
                             roundPlayer = "other"
+                        }
+
+                        when (flopNum) {
+                            1 -> preFlopNum = memberNum - 1
+                            2 -> preFlopNum = memberNum
+                            else -> preFlopNum = flopNum - 2
                         }
 
 
@@ -485,7 +493,8 @@ class HandActivity : AppCompatActivity() {
                                     "tableTotalChips",
                                     handChipsText.text.toString().toInt()
                                 )
-                                intent.putExtra("startNum", startNum)
+                                intent.putExtra("flopNum", flopNum)
+                                intent.putExtra("preFlopNum", preFlopNum)
                                 intent.putExtra("playingNum", playingNum)
                                 intent.putExtra("foldPlayer", 0)
                                 intent.putExtra("sameChipsPlayer", 0)
@@ -515,7 +524,8 @@ class HandActivity : AppCompatActivity() {
                                     "tableTotalChips",
                                     handChipsText.text.toString().toInt()
                                 )
-                                intent.putExtra("startNum", startNum)
+                                intent.putExtra("flopNum", flopNum)
+                                intent.putExtra("preFlopNum", preFlopNum)
                                 intent.putExtra("playingNum", playingNum)
                                 intent.putExtra("foldPlayer", 0)
                                 intent.putExtra("sameChipsPlayer", 0)

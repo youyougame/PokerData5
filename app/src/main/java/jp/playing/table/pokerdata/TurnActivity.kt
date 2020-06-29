@@ -527,7 +527,7 @@ class TurnActivity : AppCompatActivity() {
                             intent.putExtra("memberNum", mMember)
                             intent.putExtra("roundPlayer", roundPlayer)
                             intent.putExtra("game_id", gameLength)
-                            intent.putExtra("startNum", startNum)
+                            intent.putExtra("flopNum", startNum)
                             intent.putExtra("playingNum", playingNum)
                             intent.putExtra("count", 0)
                             intent.putExtra("bigBlind", 1 )

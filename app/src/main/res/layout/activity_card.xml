@@ -7,25 +7,9 @@
     android:layout_height="match_parent"
     tools:context=".CardActivity">
     
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/cardAppBar"
-        android:theme="@style/AppTheme.AppBarOverlay">
-        
-        <android.support.v7.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:id="@+id/cardToolbar"
-            android:backgroundTint="@color/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay"/>
-        
-    </android.support.design.widget.AppBarLayout>
-    
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/cardAppBar"
         android:orientation="vertical"
         android:paddingTop="16dp"
         android:paddingLeft="16dp"
@@ -56,7 +40,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:id="@+id/cardHandImageView1"/>
+                android:id="@+id/cardHandImageView1"
+                android:scaleType="fitXY"/>
 
             <Space
                 android:layout_width="0dp"
@@ -67,7 +52,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:id="@+id/cardHandImageView2"/>
+                android:id="@+id/cardHandImageView2"
+                android:scaleType="fitXY"/>
 
             <Space
                 android:layout_width="0dp"
@@ -94,31 +80,41 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:id="@+id/cardComImageView1"/>
+                android:id="@+id/cardComImageView1"
+                android:src="@drawable/card_back"
+                android:scaleType="fitXY"/>
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:id="@+id/cardComImageView2"/>
+                android:id="@+id/cardComImageView2"
+                android:src="@drawable/card_back"
+                android:scaleType="fitXY"/>
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:id="@+id/cardComImageView3"/>
+                android:id="@+id/cardComImageView3"
+                android:src="@drawable/card_back"
+                android:scaleType="fitXY"/>
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:id="@+id/cardComImageView4"/>
+                android:id="@+id/cardComImageView4"
+                android:src="@drawable/card_back"
+                android:scaleType="fitXY"/>
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:id="@+id/cardComImageView5"/>
+                android:id="@+id/cardComImageView5"
+                android:src="@drawable/card_back"
+                android:scaleType="fitXY"/>
 
         </LinearLayout>
 
