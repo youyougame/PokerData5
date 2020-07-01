@@ -97,7 +97,9 @@ class CardActivity : AppCompatActivity() {
                 cardCom1 == "" && cardCom2 == "" && cardCom3 == "" && cardCom4 == "" && cardCom5 == "" -> round = "flop"
                 cardCom1 != "" && cardCom2 != "" && cardCom3 != "" && cardCom4 == "" && cardCom5 == "" -> round = "turn"
                 cardCom1 != "" && cardCom2 != "" && cardCom3 != "" && cardCom4 != "" && cardCom5 == "" -> round = "river"
-                cardCom1 != "" && cardCom2 != "" && cardCom3 != "" && cardCom4 != "" && cardCom5 != "" -> round = "showdown" //ShowDownActivityに移動
+                cardCom1 != "" && cardCom2 != "" && cardCom3 != "" && cardCom4 != "" && cardCom5 != "" -> {
+                    intentShowDown()
+                }
             }
         } else {
             round = roundCheck
@@ -560,6 +562,23 @@ class CardActivity : AppCompatActivity() {
 
                             "com5" -> {
                                 if (cardComSet5 == "set") {
+                                    cardCom5 = cardSuit + cardNumber1 + cardNumber2
+
+                                    val handRealmResults = mRealm.where(Hand::class.java).findAll()
+                                    val hand = mRealm.where(Hand::class.java).equalTo("game_id", game_id).findAll()
+                                    val handId = hand.max("id")!!.toInt()
+                                    val handDB = handRealmResults.get(handId)
+                                    mRealm.beginTransaction()
+                                    mHand = Hand()
+                                    handDB!!.table1 = cardCom1
+                                    handDB!!.table2 = cardCom2
+                                    handDB!!.table3 = cardCom3
+                                    handDB!!.table4 = cardCom4
+                                    handDB!!.table5 = cardCom5
+                                    mRealm.copyToRealmOrUpdate(mHand!!)
+                                    mRealm.commitTransaction()
+
+                                    intentShowDown()
                                 }
                             }
                         }
@@ -577,7 +596,20 @@ class CardActivity : AppCompatActivity() {
 
                             "com5" -> {
                                 if (cardComSet5 == "set") {
+                                    cardCom5 = cardSuit + cardNumber1 + cardNumber2
 
+                                    val handRealmResults = mRealm.where(Hand::class.java).findAll()
+                                    val hand = mRealm.where(Hand::class.java).equalTo("game_id", game_id).findAll()
+                                    val handId = hand.max("id")!!.toInt()
+                                    val handDB = handRealmResults.get(handId)
+                                    mRealm.beginTransaction()
+                                    mHand = Hand()
+                                    handDB!!.table4 = cardCom4
+                                    handDB!!.table5 = cardCom5
+                                    mRealm.copyToRealmOrUpdate(mHand!!)
+                                    mRealm.commitTransaction()
+
+                                    intentShowDown()
                                 }
                             }
                         }
@@ -585,7 +617,19 @@ class CardActivity : AppCompatActivity() {
 
                     "river" -> {
                         if (cardComSet5 == "set") {
+                            cardCom5 = cardSuit + cardNumber1 + cardNumber2
 
+                            val handRealmResults = mRealm.where(Hand::class.java).findAll()
+                            val hand = mRealm.where(Hand::class.java).equalTo("game_id", game_id).findAll()
+                            val handId = hand.max("id")!!.toInt()
+                            val handDB = handRealmResults.get(handId)
+                            mRealm.beginTransaction()
+                            mHand = Hand()
+                            handDB!!.table5 = cardCom5
+                            mRealm.copyToRealmOrUpdate(mHand!!)
+                            mRealm.commitTransaction()
+
+                            intentShowDown()
                         }
                     }
                 }
@@ -1349,6 +1393,7 @@ class CardActivity : AppCompatActivity() {
                 Log.d("kotlintest", "自分・" + "foldPlayer：" + foldPlayer)
                 Log.d("kotlintest", "自分・" + "sameChipsPlayer：" + sameChipsPlayer)
 
+                // PlayingActivityへ移動
                 val intent = Intent(this@CardActivity, PlayingActivity::class.java)
                 intent.putExtra("memberNum", memberNum)
                 intent.putExtra("game_id", game_id)
@@ -1389,6 +1434,7 @@ class CardActivity : AppCompatActivity() {
                 Log.d("kotlintest", "自分・" + "foldPlayer：" + foldPlayer)
                 Log.d("kotlintest", "自分・" + "sameChipsPlayer：" + sameChipsPlayer)
 
+                //MemberPlayingActivityへ移動
                 val intent = Intent(this@CardActivity, MemberPlayingActivity::class.java)
                 intent.putExtra("memberNum", memberNum)
                 intent.putExtra("game_id", game_id)
@@ -1418,6 +1464,42 @@ class CardActivity : AppCompatActivity() {
     }
 
     private fun intentShowDown() {
+        Log.d("kotlintest", "通過10")
+        Log.d("kotlintest", "自分・" + "memberNum：" + memberNum)
+        Log.d("kotlintest", "自分・" + "count：" + count)
+        Log.d("kotlintest", "自分・" + "round：" + roundCheck)
+        Log.d("kotlintest", "自分・" + "round_count：" + round_count)
+        Log.d("kotlintest", "自分・" + "roundNum：" + roundNum)
+        Log.d("kotlintest", "自分・" + "myRound：" + myRound)
+        Log.d("kotlintest", "自分・" + "tableChips：" + tableChips)
+        Log.d("kotlintest", "自分・" + "tableTotalChips：" + tableTotalChips)
+        Log.d("kotlintest", "自分・" + "playingNum：" + playingNum)
+        Log.d("kotlintest", "自分・" + "foldPlayer：" + foldPlayer)
+        Log.d("kotlintest", "自分・" + "sameChipsPlayer：" + sameChipsPlayer)
+
+        //ShowDownActivityへ移動
         val intent = Intent(this@CardActivity, ShowDownActivity::class.java)
+        intent.putExtra("game_id", game_id)
+        intent.putExtra("count", count)
+        intent.putExtra("round", roundCheck)
+        intent.putExtra("round_count", round_count)
+        intent.putExtra("roundNum", roundNum)
+        intent.putExtra("myRound", myRound)
+        intent.putExtra("cardHand1", cardHand1)
+        intent.putExtra("cardHand2", cardHand2)
+        intent.putExtra("cardCom1", cardCom1)
+        intent.putExtra("cardCom2", cardCom2)
+        intent.putExtra("cardCom3", cardCom3)
+        intent.putExtra("cardCom4", cardCom4)
+        intent.putExtra("cardCom5", cardCom5)
+        intent.putExtra("bigBlind", bigBlind)
+        intent.putExtra("tableChips", tableChips)
+        intent.putExtra("tableTotalChips", tableTotalChips)
+        intent.putExtra("flopNum", flopNum)
+        intent.putExtra("preFlopNum", preFlopNum)
+        intent.putExtra("playingNum", playingNum)
+        intent.putExtra("foldPlayer", foldPlayer)
+        intent.putExtra("sameChipsPlayer", sameChipsPlayer)
+        startActivity(intent)
     }
 }
