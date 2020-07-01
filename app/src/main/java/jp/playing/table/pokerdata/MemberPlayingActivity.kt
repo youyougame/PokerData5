@@ -541,6 +541,7 @@ class MemberPlayingActivity : AppCompatActivity() {
             chipsNum5 = ""
             chipsNum6 = ""
             chipsNum7 = ""
+            playingCheck = "fold"
 
             memberChangeChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
         }
@@ -659,7 +660,8 @@ class MemberPlayingActivity : AppCompatActivity() {
                         Log.d("kotlintest", "他人・" + "foldPlayer：" + foldPlayer)
                         Log.d("kotlintest", "他人・" + "sameChipsPlayer：" + sameChipsPlayer)
 
-                        val intent = Intent(this@MemberPlayingActivity, CardActivity::class.java)
+                        val intent =
+                            Intent(this@MemberPlayingActivity, CardActivity::class.java)
                         intent.putExtra("memberNum", memberNum)
                         intent.putExtra("game_id", game_id)
                         intent.putExtra("count", count)
@@ -683,6 +685,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                         intent.putExtra("foldPlayer", foldPlayer)
                         intent.putExtra("sameChipsPlayer", sameChipsPlayer)
                         startActivity(intent)
+
                     } else {
 
                         if (roundNum == memberNum) {

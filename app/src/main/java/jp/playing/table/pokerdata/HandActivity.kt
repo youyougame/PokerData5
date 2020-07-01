@@ -65,7 +65,7 @@ class HandActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hand)
 
-        supportActionBar?.title = "HAND"
+        supportActionBar?.title = "Hand"
 
         //Realmの設定
         mRealm = Realm.getDefaultInstance()

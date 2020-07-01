@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_card.*
+import kotlinx.android.synthetic.main.activity_hand.*
 import kotlinx.android.synthetic.main.activity_playing.*
 
 class CardActivity : AppCompatActivity() {
@@ -27,6 +28,8 @@ class CardActivity : AppCompatActivity() {
     private var cardNumber2 = ""
 
     private var roundPlayer = ""
+
+    private var roundCheck = ""
 
     private var memberNum = 0
     private var game_id = 0
@@ -69,7 +72,7 @@ class CardActivity : AppCompatActivity() {
         memberNum = intent.getIntExtra("memberNum", 0)
         game_id = intent.getIntExtra("game_id", 0)
         count = intent.getIntExtra("count", 0)
-        round = intent.getStringExtra("round")
+        roundCheck = intent.getStringExtra("round")
         round_count = intent.getIntExtra("round_count", 0)
         roundNum = intent.getIntExtra("roundNum", 0)
         myRound = intent.getIntExtra("myRound", 0)
@@ -88,6 +91,17 @@ class CardActivity : AppCompatActivity() {
         playingNum = intent.getIntExtra("playingNum", 0)
         foldPlayer = intent.getIntExtra("foldPlayer", 0)
         sameChipsPlayer = intent.getIntExtra("sameChipsPlayer", 0)
+
+        if (roundCheck == "showdown") {
+            when {
+                cardCom1 == "" && cardCom2 == "" && cardCom3 == "" && cardCom4 == "" && cardCom5 == "" -> round = "flop"
+                cardCom1 != "" && cardCom2 != "" && cardCom3 != "" && cardCom4 == "" && cardCom5 == "" -> round = "turn"
+                cardCom1 != "" && cardCom2 != "" && cardCom3 != "" && cardCom4 != "" && cardCom5 == "" -> round = "river"
+                cardCom1 != "" && cardCom2 != "" && cardCom3 != "" && cardCom4 != "" && cardCom5 != "" -> round = "showdown" //ShowDownActivityに移動
+            }
+        } else {
+            round = roundCheck
+        }
 
         if (round == "flop") {
             startNum = flopNum
@@ -354,102 +368,225 @@ class CardActivity : AppCompatActivity() {
             }
         }
 
-        cardDaleteButton.setOnClickListener {  }
-
-        cardDoneButton.setOnClickListener {
+        cardDaleteButton.setOnClickListener {
             when (round) {
                 "flop" -> {
-                    when (cardSelect) {
-                        "com1" -> {
-                            if (cardComSet1 == "set") {
-                                cardSelect = "com2"
-                                cardDoneButton.text = "2枚目決定"
-                                cardCom1 = cardSuit + cardNumber1 + cardNumber2
-                            }
-                        }
+                    cardCom1 = ""
+                    cardCom2 = ""
+                    cardCom3 = ""
+                    cardSuit = ""
+                    cardNumber1 = ""
+                    cardNumber2 = ""
 
-                        "com2" -> {
-                            if (cardComSet2 == "set") {
-                                cardSelect = "com3"
-                                cardDoneButton.text = "3枚目決定"
-                                cardCom2 = cardSuit + cardNumber1 + cardNumber2
-                            }
-                        }
+                    cardComImageView1.setImageResource(R.drawable.card_back)
+                    cardComImageView2.setImageResource(R.drawable.card_back)
+                    cardComImageView3.setImageResource(R.drawable.card_back)
 
-                        "com3" -> {
-                            Log.d("kotlintest", "flop通過")
-                            Log.d("kotlintest", "通過1")
-                            if (cardComSet3 == "set") {
-                                Log.d("kotlintest", "通過2")
-                                cardCom3 = cardSuit + cardNumber1 + cardNumber2
+                    cardSelect = "com1"
+                    cardDoneButton.text = "1枚目決定"
 
-                                Log.d("kotlintest", "通過3")
-
-                                val handRealmResults = mRealm.where(Hand::class.java).findAll()
-                                Log.d("kotlintest", "通過3-1")
-                                val hand = mRealm.where(Hand::class.java).equalTo("game_id", game_id).findAll()
-                                Log.d("kotlintest", hand.toString())
-                                Log.d("kotlintest", "通過3-2")
-                                val handId = hand.max("id")!!.toInt()
-                                Log.d("kotlintest", "通過3-3")
-                                val handDB = mRealm.where(Hand::class.java).equalTo("id", handId).findFirst()
-                                Log.d("kotlintest", "通過3-4")
-                                mRealm.beginTransaction()
-                                Log.d("kotlintest", "通過3-5")
-                                mHand = Hand()
-                                Log.d("kotlintest", "通過3-6")
-                                handDB!!.table1 = cardCom1
-                                Log.d("kotlintest", "通過3-7")
-                                handDB!!.table2 = cardCom2
-                                Log.d("kotlintest", "通過3-8")
-                                handDB!!.table3 = cardCom3
-                                Log.d("kotlintest", "通過3-9")
-                                mRealm.copyToRealmOrUpdate(mHand!!)
-                                Log.d("kotlintest", "通過3-10")
-                                mRealm.commitTransaction()
-
-                                Log.d("kotlintest", "通過4")
-                                intentSet()
-                            }
-                        }
-                    }
+                    cardComSet1 = ""
+                    cardComSet2 = ""
+                    cardComSet3 = ""
                 }
 
                 "turn" -> {
-                    Log.d("kotlintest", "turn通過")
-                    if (cardComSet4 == "set") {
-                        cardCom4 = cardSuit + cardNumber1 + cardNumber2
+                    cardCom4 = ""
+                    cardSuit = ""
+                    cardNumber1 = ""
+                    cardNumber2 = ""
 
-                        val handRealmResults = mRealm.where(Hand::class.java).findAll()
-                        val hand = mRealm.where(Hand::class.java).equalTo("game_id", game_id).findAll()
-                        val handId = hand.max("id")!!.toInt()
-                        val handDB = handRealmResults.get(handId)
-                        mRealm.beginTransaction()
-                        mHand = Hand()
-                        handDB!!.table4 = cardCom4
-                        mRealm.copyToRealmOrUpdate(mHand!!)
-                        mRealm.commitTransaction()
+                    cardComImageView4.setImageResource(R.drawable.card_back)
 
-                        intentSet()
-                    }
+                    cardDoneButton.text = "4枚目決定"
+
+                    cardComSet4 = ""
                 }
 
                 "river" -> {
-                    Log.d("kotlintest", "river通過")
-                    if (cardComSet5 == "set") {
-                        cardCom5 = cardSuit + cardNumber1 + cardNumber2
+                    cardCom5 = ""
+                    cardSuit = ""
+                    cardNumber1 = ""
+                    cardNumber2 = ""
 
-                        val handRealmResults = mRealm.where(Hand::class.java).findAll()
-                        val hand = mRealm.where(Hand::class.java).equalTo("game_id", game_id).findAll()
-                        val handId = hand.max("id")!!.toInt()
-                        val handDB = handRealmResults.get(handId)
-                        mRealm.beginTransaction()
-                        mHand = Hand()
-                        handDB!!.table5 = cardCom5
-                        mRealm.copyToRealmOrUpdate(mHand!!)
-                        mRealm.commitTransaction()
+                    cardComImageView5.setImageResource(R.drawable.card_back)
 
-                        intentSet()
+                    cardDoneButton.text = "5枚目決定"
+
+                    cardComSet5 = ""
+                }
+            }
+        }
+
+        cardDoneButton.setOnClickListener {
+            if (roundCheck != "showdown") {
+                when (round) {
+                    "flop" -> {
+                        when (cardSelect) {
+                            "com1" -> {
+                                if (cardComSet1 == "set") {
+                                    cardSelect = "com2"
+                                    cardDoneButton.text = "2枚目決定"
+                                    cardCom1 = cardSuit + cardNumber1 + cardNumber2
+                                }
+                            }
+
+                            "com2" -> {
+                                if (cardComSet2 == "set") {
+                                    cardSelect = "com3"
+                                    cardDoneButton.text = "3枚目決定"
+                                    cardCom2 = cardSuit + cardNumber1 + cardNumber2
+                                }
+                            }
+
+                            "com3" -> {
+                                Log.d("kotlintest", "flop通過")
+                                Log.d("kotlintest", "通過1")
+                                if (cardComSet3 == "set") {
+                                    Log.d("kotlintest", "通過2")
+                                    cardCom3 = cardSuit + cardNumber1 + cardNumber2
+
+                                    Log.d("kotlintest", "通過3")
+
+                                    val handRealmResults = mRealm.where(Hand::class.java).findAll()
+                                    Log.d("kotlintest", "通過3-1")
+                                    val hand =
+                                        mRealm.where(Hand::class.java).equalTo("game_id", game_id)
+                                            .findAll()
+                                    Log.d("kotlintest", hand.toString())
+                                    Log.d("kotlintest", "通過3-2")
+                                    val handId = hand.max("id")!!.toInt()
+                                    Log.d("kotlintest", "通過3-3")
+                                    val handDB =
+                                        mRealm.where(Hand::class.java).equalTo("id", handId)
+                                            .findFirst()
+                                    Log.d("kotlintest", "通過3-4")
+                                    mRealm.beginTransaction()
+                                    Log.d("kotlintest", "通過3-5")
+                                    mHand = Hand()
+                                    Log.d("kotlintest", "通過3-6")
+                                    handDB!!.table1 = cardCom1
+                                    Log.d("kotlintest", "通過3-7")
+                                    handDB!!.table2 = cardCom2
+                                    Log.d("kotlintest", "通過3-8")
+                                    handDB!!.table3 = cardCom3
+                                    Log.d("kotlintest", "通過3-9")
+                                    mRealm.copyToRealmOrUpdate(mHand!!)
+                                    Log.d("kotlintest", "通過3-10")
+                                    mRealm.commitTransaction()
+
+                                    Log.d("kotlintest", "通過4")
+                                    intentSet()
+                                }
+                            }
+                        }
+                    }
+
+                    "turn" -> {
+                        Log.d("kotlintest", "turn通過")
+                        if (cardComSet4 == "set") {
+                            cardCom4 = cardSuit + cardNumber1 + cardNumber2
+
+                            val handRealmResults = mRealm.where(Hand::class.java).findAll()
+                            val hand =
+                                mRealm.where(Hand::class.java).equalTo("game_id", game_id).findAll()
+                            val handId = hand.max("id")!!.toInt()
+                            val handDB = handRealmResults.get(handId)
+                            mRealm.beginTransaction()
+                            mHand = Hand()
+                            handDB!!.table4 = cardCom4
+                            mRealm.copyToRealmOrUpdate(mHand!!)
+                            mRealm.commitTransaction()
+
+                            intentSet()
+                        }
+                    }
+
+                    "river" -> {
+                        Log.d("kotlintest", "river通過")
+                        if (cardComSet5 == "set") {
+                            cardCom5 = cardSuit + cardNumber1 + cardNumber2
+
+                            val handRealmResults = mRealm.where(Hand::class.java).findAll()
+                            val hand =
+                                mRealm.where(Hand::class.java).equalTo("game_id", game_id).findAll()
+                            val handId = hand.max("id")!!.toInt()
+                            val handDB = handRealmResults.get(handId)
+                            mRealm.beginTransaction()
+                            mHand = Hand()
+                            handDB!!.table5 = cardCom5
+                            mRealm.copyToRealmOrUpdate(mHand!!)
+                            mRealm.commitTransaction()
+
+                            intentSet()
+                        }
+                    }
+                }
+            } else {
+                when (round) {
+                    "flop" -> {
+                        when (cardSelect) {
+                            "com1" -> {
+                                if (cardComSet1 == "set") {
+                                    cardSelect = "com2"
+                                    cardDoneButton.text = "2枚目決定"
+                                    cardCom1 = cardSuit + cardNumber1 + cardNumber2
+                                }
+                            }
+
+                            "com2" -> {
+                                if (cardComSet2 == "set") {
+                                    cardSelect = "com3"
+                                    cardDoneButton.text = "3枚目決定"
+                                    cardCom1 = cardSuit + cardNumber1 + cardNumber2
+                                }
+                            }
+
+                            "com3" -> {
+                                if (cardComSet3 == "set") {
+                                    cardSelect = "com4"
+                                    cardDoneButton.text = "4枚目決定"
+                                    cardCom1 = cardSuit + cardNumber1 + cardNumber2
+                                }
+                            }
+
+                            "com4" -> {
+                                if (cardComSet4 == "set") {
+                                    cardSelect = "com5"
+                                    cardDoneButton.text = "5枚目決定"
+                                    cardCom1 = cardSuit + cardNumber1 + cardNumber2
+                                }
+                            }
+
+                            "com5" -> {
+                                if (cardComSet5 == "set") {
+                                }
+                            }
+                        }
+                    }
+
+                    "turn" -> {
+                        when (cardSelect) {
+                            "com4" -> {
+                                if (cardComSet4 == "set") {
+                                    cardSelect = "com5"
+                                    cardDoneButton.text = "5枚目決定"
+                                    cardCom1 = cardSuit + cardNumber1 + cardNumber2
+                                }
+                            }
+
+                            "com5" -> {
+                                if (cardComSet5 == "set") {
+
+                                }
+                            }
+                        }
+                    }
+
+                    "river" -> {
+                        if (cardComSet5 == "set") {
+
+                        }
                     }
                 }
             }
@@ -1202,7 +1339,7 @@ class CardActivity : AppCompatActivity() {
                 Log.d("kotlintest", "通過9")
                 Log.d("kotlintest", "自分・" + "memberNum：" + memberNum)
                 Log.d("kotlintest", "自分・" + "count：" + count)
-                Log.d("kotlintest", "自分・" + "round：" + round)
+                Log.d("kotlintest", "自分・" + "round：" + roundCheck)
                 Log.d("kotlintest", "自分・" + "round_count：" + round_count)
                 Log.d("kotlintest", "自分・" + "roundNum：" + roundNum)
                 Log.d("kotlintest", "自分・" + "myRound：" + myRound)
@@ -1216,7 +1353,7 @@ class CardActivity : AppCompatActivity() {
                 intent.putExtra("memberNum", memberNum)
                 intent.putExtra("game_id", game_id)
                 intent.putExtra("count", count)
-                intent.putExtra("round", round)
+                intent.putExtra("round", roundCheck)
                 intent.putExtra("round_count", round_count)
                 intent.putExtra("roundNum", roundNum)
                 intent.putExtra("myRound", myRound)
@@ -1242,7 +1379,7 @@ class CardActivity : AppCompatActivity() {
                 Log.d("kotlintest", "通過10")
                 Log.d("kotlintest", "自分・" + "memberNum：" + memberNum)
                 Log.d("kotlintest", "自分・" + "count：" + count)
-                Log.d("kotlintest", "自分・" + "round：" + round)
+                Log.d("kotlintest", "自分・" + "round：" + roundCheck)
                 Log.d("kotlintest", "自分・" + "round_count：" + round_count)
                 Log.d("kotlintest", "自分・" + "roundNum：" + roundNum)
                 Log.d("kotlintest", "自分・" + "myRound：" + myRound)
@@ -1256,7 +1393,7 @@ class CardActivity : AppCompatActivity() {
                 intent.putExtra("memberNum", memberNum)
                 intent.putExtra("game_id", game_id)
                 intent.putExtra("count", count)
-                intent.putExtra("round", round)
+                intent.putExtra("round", roundCheck)
                 intent.putExtra("round_count", round_count)
                 intent.putExtra("roundNum", roundNum)
                 intent.putExtra("myRound", myRound)
@@ -1278,5 +1415,9 @@ class CardActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
+    }
+
+    private fun intentShowDown() {
+        val intent = Intent(this@CardActivity, ShowDownActivity::class.java)
     }
 }

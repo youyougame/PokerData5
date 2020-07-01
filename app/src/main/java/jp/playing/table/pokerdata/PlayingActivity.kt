@@ -510,6 +510,7 @@ class PlayingActivity : AppCompatActivity() {
             chipsNum5 = ""
             chipsNum6 = ""
             chipsNum7 = ""
+            playingCheck = "play"
 
             playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
         }
@@ -663,6 +664,7 @@ class PlayingActivity : AppCompatActivity() {
                         intent.putExtra("foldPlayer", foldPlayer)
                         intent.putExtra("sameChipsPlayer", sameChipsPlayer)
                         startActivity(intent)
+
 
                     } else {
                         Log.d("kotlintest", "自分確認10")
