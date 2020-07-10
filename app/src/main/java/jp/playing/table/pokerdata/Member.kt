@@ -12,6 +12,8 @@ open class Member: RealmObject(), Serializable {
     var hand_count = 0 //ゲーム数
     var memberChips = 0 //プレイヤーのチップ数
     var playingCheck = "" //テーブルに残っているかフォールドしたか、ゲームから離れたかの確認
+    var hand1 = ""
+    var hand2 = ""
 
     @PrimaryKey
     var id: Int = 0

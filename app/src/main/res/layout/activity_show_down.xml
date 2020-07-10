@@ -87,7 +87,9 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:id="@+id/showDownHandImageView1"/>
+                android:id="@+id/showDownHandImageView1"
+                android:src="@drawable/card_back"
+                android:scaleType="fitXY"/>
 
             <Space
                 android:layout_width="0dp"
@@ -98,7 +100,9 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:id="@+id/showDownHandImageView2"/>
+                android:id="@+id/showDownHandImageView2"
+                android:src="@drawable/card_back"
+                android:scaleType="fitXY"/>
 
             <Space
                 android:layout_width="0dp"
