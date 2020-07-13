@@ -1479,6 +1479,7 @@ class CardActivity : AppCompatActivity() {
 
         //ShowDownActivityへ移動
         val intent = Intent(this@CardActivity, ShowDownActivity::class.java)
+        intent.putExtra("memberNum", memberNum)
         intent.putExtra("game_id", game_id)
         intent.putExtra("count", count)
         intent.putExtra("round", roundCheck)

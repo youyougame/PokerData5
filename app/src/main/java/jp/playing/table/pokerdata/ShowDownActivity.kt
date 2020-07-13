@@ -3,6 +3,7 @@ package jp.playing.table.pokerdata
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_card.*
 import kotlinx.android.synthetic.main.activity_hand.*
@@ -108,7 +109,7 @@ class ShowDownActivity : AppCompatActivity() {
 
         if (memberPlayingCheck != "fold" && memberName != "自分") {
             //titleBerに名前を追加
-            supportActionBar?.title = "Showdown" + memberName
+            supportActionBar?.title = "Showdown" + "　プレイヤー：" + memberName
         } else {
             //次のプレイヤーに画面遷移
             //全員終わった時点でHandActivityへ
@@ -179,6 +180,8 @@ class ShowDownActivity : AppCompatActivity() {
                     handSetting2()
                 }
             }
+
+            Log.d("kotlintest", cardSuit + cardNumber1 + cardNumber2)
         }
 
         showDownCardSpade.setOnClickListener {
@@ -191,6 +194,8 @@ class ShowDownActivity : AppCompatActivity() {
                     handSetting2()
                 }
             }
+
+            Log.d("kotlintest", cardSuit + cardNumber1 + cardNumber2)
         }
 
         showDownCardClub.setOnClickListener {
@@ -203,6 +208,8 @@ class ShowDownActivity : AppCompatActivity() {
                     handSetting2()
                 }
             }
+
+            Log.d("kotlintest", cardSuit + cardNumber1 + cardNumber2)
         }
 
         showDownCardDiamond.setOnClickListener {
@@ -215,11 +222,13 @@ class ShowDownActivity : AppCompatActivity() {
                     handSetting2()
                 }
             }
+
+            Log.d("kotlintest", cardSuit + cardNumber1 + cardNumber2)
         }
 
         showDownNum1.setOnClickListener {
             if (cardNumber1 != "1") {
-                cardNumber2 = "1"
+                cardNumber1 = "1"
             } else {
                 if (cardNumber2 == "") {
                     cardNumber2 = "1"
@@ -236,11 +245,13 @@ class ShowDownActivity : AppCompatActivity() {
                     handSetting2()
                 }
             }
+
+            Log.d("kotlintest", cardSuit + cardNumber1 + cardNumber2)
         }
 
         showDownNum2.setOnClickListener {
             if (cardNumber1 != "1") {
-                cardNumber2 = "2"
+                cardNumber1 = "2"
             } else {
                 if (cardNumber2 == "") {
                     cardNumber2 = "2"
@@ -257,11 +268,13 @@ class ShowDownActivity : AppCompatActivity() {
                     handSetting2()
                 }
             }
+
+            Log.d("kotlintest", cardSuit + cardNumber1 + cardNumber2)
         }
 
         showDownNum3.setOnClickListener {
             if (cardNumber1 != "1") {
-                cardNumber2 = "3"
+                cardNumber1 = "3"
             } else {
                 if (cardNumber2 == "") {
                     cardNumber2 = "3"
@@ -278,6 +291,8 @@ class ShowDownActivity : AppCompatActivity() {
                     handSetting2()
                 }
             }
+
+            Log.d("kotlintest", cardSuit + cardNumber1 + cardNumber2)
         }
 
         showDownNum4.setOnClickListener {
@@ -291,6 +306,8 @@ class ShowDownActivity : AppCompatActivity() {
                     handSetting2()
                 }
             }
+
+            Log.d("kotlintest", cardSuit + cardNumber1 + cardNumber2)
         }
 
         showDownNum5.setOnClickListener {
@@ -304,6 +321,8 @@ class ShowDownActivity : AppCompatActivity() {
                     handSetting2()
                 }
             }
+
+            Log.d("kotlintest", cardSuit + cardNumber1 + cardNumber2)
         }
 
         showDownNum6.setOnClickListener {
@@ -317,6 +336,8 @@ class ShowDownActivity : AppCompatActivity() {
                     handSetting2()
                 }
             }
+
+            Log.d("kotlintest", cardSuit + cardNumber1 + cardNumber2)
         }
 
         showDownNum7.setOnClickListener {
@@ -330,6 +351,8 @@ class ShowDownActivity : AppCompatActivity() {
                     handSetting2()
                 }
             }
+
+            Log.d("kotlintest", cardSuit + cardNumber1 + cardNumber2)
         }
 
         showDownNum8.setOnClickListener {
@@ -343,6 +366,8 @@ class ShowDownActivity : AppCompatActivity() {
                     handSetting2()
                 }
             }
+
+            Log.d("kotlintest", cardSuit + cardNumber1 + cardNumber2)
         }
 
         showDownNum9.setOnClickListener {
@@ -356,6 +381,8 @@ class ShowDownActivity : AppCompatActivity() {
                     handSetting2()
                 }
             }
+
+            Log.d("kotlintest", cardSuit + cardNumber1 + cardNumber2)
         }
 
         showDownNum0.setOnClickListener {
@@ -370,6 +397,8 @@ class ShowDownActivity : AppCompatActivity() {
                     handSetting2()
                 }
             }
+
+            Log.d("kotlintest", cardSuit + cardNumber1 + cardNumber2)
         }
 
         showDownDaleteButton.setOnClickListener {  }
@@ -377,16 +406,19 @@ class ShowDownActivity : AppCompatActivity() {
         showDownDoneButton.setOnClickListener {
             //Hand1 or Hand2
             if (cardSelect == "hand1") {
+                Log.d("kotlintest", "hand1")
                 //Hand1
                 if (handCard1Set == "set") {
+                    Log.d("kotlintest", "hand1：通過")
                     //cardSelectをhand2に変更
                     cardSelect = "hand2"
-                    //handDoneButton.textを２枚目決定に変更
-                    handDaleteButton.text = "2枚目決定"
+                    //ShowDownDoneButton.textを２枚目決定に変更
+                    showDownDoneButton.text = "2枚目決定"
                     //playerHand1を設定
                     playerHand1 = cardSuit + cardNumber1 + cardNumber2
                 }
             } else {
+                Log.d("kotlintest", "hand2")
                 //Hand2
                 if (handCard2Set == "set") {
                     if (cardSelect == "hand2") {
@@ -403,9 +435,12 @@ class ShowDownActivity : AppCompatActivity() {
 
                         mRealm.copyToRealmOrUpdate(mMember!!)
                         mRealm.commitTransaction()
-
+                        Log.d("kotlintest", memberRound.toString())
                         memberRound++
-                        if (memberRound <= memberNum) {
+                        Log.d("kotlintest", memberRound.toString())
+                        Log.d("kotlintest", "人数" + memberNum.toString())
+                        if (memberRound < memberNum) {
+                            Log.d("kotlintest", "通過しました")
                             //ShowDownActivityへ
                             val intent = Intent(this@ShowDownActivity, ShowDownActivity::class.java)
                             intent.putExtra("memberNum", memberNum)
@@ -434,6 +469,8 @@ class ShowDownActivity : AppCompatActivity() {
                             startActivity(intent)
 
                         } else {
+                            //Todo 全員の役を確認する
+
                             //HandActivityへ
                             val intent = Intent(this@ShowDownActivity, HandActivity::class.java)
                             intent.putExtra("memberNum", memberNum)
@@ -826,6 +863,7 @@ class ShowDownActivity : AppCompatActivity() {
             "spade12" -> showDownHandImageView1.setImageResource(R.drawable.spade12)
             "spade13" -> showDownHandImageView1.setImageResource(R.drawable.spade13)
         }
+        handCard1Set = "set"
     }
 
     private fun handSetting2() {
@@ -886,5 +924,10 @@ class ShowDownActivity : AppCompatActivity() {
             "spade12" -> showDownHandImageView2.setImageResource(R.drawable.spade12)
             "spade13" -> showDownHandImageView2.setImageResource(R.drawable.spade13)
         }
+        handCard2Set = "set"
+    }
+
+    private fun showDownCheck() {
+
     }
 }
