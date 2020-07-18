@@ -478,6 +478,7 @@ class ShowDownActivity : AppCompatActivity() {
 
                         } else {
                             //Todo 全員の役を確認する
+//                            showDownCheck()
 
                             //HandActivityへ
                             val intent = Intent(this@ShowDownActivity, HandActivity::class.java)
@@ -945,23 +946,21 @@ class ShowDownActivity : AppCompatActivity() {
             val playerNumId = memberPlayerNumRealmResults.max("id")!!.toInt()
             val playerName = memberRealmResults[playerNumId]!!.memberName
             val memberPlayingCheck = memberRealmResults[playerNumId]!!.playingCheck
-            hand1 = memberRealmResults[playerNumId]!!.hand1
-            hand2 = memberRealmResults[playerNumId]!!.hand2
+            if (playerName == "自分") {
+                hand1 = cardHand1
+                hand2 = cardHand2
+            } else {
+                hand1 = memberRealmResults[playerNumId]!!.hand1
+                hand2 = memberRealmResults[playerNumId]!!.hand2
+            }
 
             if (memberPlayingCheck != "fold") {
-                if (playerName == "自分") {
-                    //自分
-
-                } else {
-                    //他のプレイヤー
-
-                }
+                Log.d("kotlintest", "役：" + finalHand + "ペアナンバー：" + onePairNum.toString())
             }
         }
     }
 
-    private fun onePairCheck() {
-        //ワンペア
+    private fun onePairCheckHand1() {
         when (hand1) {
             "club1" -> {
                 when (hand2) {
@@ -6102,7 +6101,9 @@ class ShowDownActivity : AppCompatActivity() {
             }
 
         }
+    }
 
+    private fun onePairCheckHand2() {
         when (hand2) {
             "club1" -> {
                 when (hand1) {
@@ -11243,7 +11244,9 @@ class ShowDownActivity : AppCompatActivity() {
             }
 
         }
+    }
 
+    private fun onePairCheckCom1() {
         when (cardCom1) {
             "club1" -> {
                 when (hand1) {
@@ -16384,7 +16387,9 @@ class ShowDownActivity : AppCompatActivity() {
             }
 
         }
+    }
 
+    private fun onePairCheckCom2() {
         when (cardCom2) {
             "club1" -> {
                 when (hand1) {
@@ -21525,7 +21530,9 @@ class ShowDownActivity : AppCompatActivity() {
             }
 
         }
+    }
 
+    private fun onePairCheckCom3() {
         when (cardCom3) {
             "club1" -> {
                 when (hand1) {
@@ -26666,7 +26673,9 @@ class ShowDownActivity : AppCompatActivity() {
             }
 
         }
+    }
 
+    private fun onePairCheckCom4() {
         when (cardCom4) {
             "club1" -> {
                 when (hand1) {
@@ -31807,7 +31816,9 @@ class ShowDownActivity : AppCompatActivity() {
             }
 
         }
+    }
 
+    private fun onePairCheckCom5() {
         when (cardCom5) {
             "club1" -> {
                 when (hand1) {
@@ -36949,4 +36960,5 @@ class ShowDownActivity : AppCompatActivity() {
 
         }
     }
+
 }
