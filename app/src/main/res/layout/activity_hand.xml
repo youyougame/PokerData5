@@ -39,7 +39,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:text="最小ベッド数を設定してください（ビッグブラインド）"
+            android:text="SB・BBを設定してください"
             android:gravity="center"
             android:layout_weight="0.5"/>
 
@@ -47,6 +47,18 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:id="@+id/smallUpButton"
+                android:src="@drawable/up_button"/>
 
             <Space
                 android:layout_width="0dp"
@@ -63,7 +75,7 @@
             <Space
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"/>
+                android:layout_weight="1"/>
 
         </LinearLayout>
 
@@ -73,9 +85,25 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <Space
+            <ImageButton
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:id="@+id/smallLeftButton"
+                android:src="@drawable/left_button"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/smallChipsText"
+                android:hint="SB"
+                android:layout_weight="1"/>
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/smallRightButton"
+                android:src="@drawable/right_button"
                 android:layout_weight="1"/>
 
             <ImageButton
@@ -89,6 +117,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/handChipsText"
+                android:hint="BB"
                 android:layout_weight="1"/>
 
             <ImageButton
@@ -98,11 +127,6 @@
                 android:src="@drawable/right_button"
                 android:layout_weight="1"/>
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
-
         </LinearLayout>
 
         <LinearLayout
@@ -110,6 +134,18 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal">
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:id="@+id/smallDownButton"
+                android:src="@drawable/down_button"
+                android:layout_weight="1"/>
 
             <Space
                 android:layout_width="0dp"
@@ -126,7 +162,7 @@
             <Space
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"/>
+                android:layout_weight="1"/>
 
         </LinearLayout>
 

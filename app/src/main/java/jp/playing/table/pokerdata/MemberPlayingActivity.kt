@@ -41,6 +41,7 @@ class MemberPlayingActivity : AppCompatActivity() {
     private var cardCom4 = ""
     private var cardCom5 = ""
     private var bigBlind = 0
+    private var smallBlind = 0
     private var tableChips = 0
     private var tableTotalChips = 0
     private var startNum = 0
@@ -82,6 +83,7 @@ class MemberPlayingActivity : AppCompatActivity() {
         cardCom4 = intent.getStringExtra("cardCom4")
         cardCom5 = intent.getStringExtra("cardCom5")
         bigBlind = intent.getIntExtra("bigBlind", 0)
+        smallBlind = intent.getIntExtra("smallBlind", 0)
         tableChips = intent.getIntExtra("tableChips", 0)
         tableTotalChips = intent.getIntExtra("tableTotalChips", 0)
         flopNum = intent.getIntExtra("flopNum", 0)
@@ -132,6 +134,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                 intent.putExtra("cardCom4", cardCom4)
                 intent.putExtra("cardCom5", cardCom5)
                 intent.putExtra("bigBlind", bigBlind)
+                intent.putExtra("smallBlind", smallBlind)
                 intent.putExtra("tableChips", tableChips)
                 intent.putExtra("tableTotalChips", tableTotalChips)
                 intent.putExtra("flopNum", flopNum)
@@ -177,6 +180,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                 intent.putExtra("cardCom4", cardCom4)
                 intent.putExtra("cardCom5", cardCom5)
                 intent.putExtra("bigBlind", bigBlind)
+                intent.putExtra("smallBlind", smallBlind)
                 intent.putExtra("tableChips", tableChips)
                 intent.putExtra("tableTotalChips", tableTotalChips)
                 intent.putExtra("flopNum", flopNum)
@@ -203,6 +207,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                 intent.putExtra("cardCom4", cardCom4)
                 intent.putExtra("cardCom5", cardCom5)
                 intent.putExtra("bigBlind", bigBlind)
+                intent.putExtra("smallBlind", smallBlind)
                 intent.putExtra("tableChips", tableChips)
                 intent.putExtra("tableTotalChips", tableTotalChips)
                 intent.putExtra("flopNum", flopNum)
@@ -629,6 +634,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                     intent.putExtra("count", count)
                     intent.putExtra("myRound", myRound)
                     intent.putExtra("bigBlind", bigBlind)
+                    intent.putExtra("smallBlind", smallBlind)
                     intent.putExtra("flopNum", flopNum)
                     intent.putExtra("playingNum", playingNum)
                     startActivity(intent)
@@ -677,6 +683,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                         intent.putExtra("cardCom4", cardCom4)
                         intent.putExtra("cardCom5", cardCom5)
                         intent.putExtra("bigBlind", bigBlind)
+                        intent.putExtra("smallBlind", smallBlind)
                         intent.putExtra("tableChips", tableChips)
                         intent.putExtra("tableTotalChips", tableTotalChips)
                         intent.putExtra("flopNum", flopNum)
@@ -738,6 +745,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                             intent.putExtra("cardCom4", cardCom4)
                             intent.putExtra("cardCom5", cardCom5)
                             intent.putExtra("bigBlind", bigBlind)
+                            intent.putExtra("smallBlind", smallBlind)
                             intent.putExtra("tableChips", tableChips)
                             intent.putExtra("tableTotalChips", tableTotalChips)
                             intent.putExtra("flopNum", flopNum)
@@ -779,6 +787,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                             intent.putExtra("cardCom4", cardCom4)
                             intent.putExtra("cardCom5", cardCom5)
                             intent.putExtra("bigBlind", bigBlind)
+                            intent.putExtra("smallBlind", smallBlind)
                             intent.putExtra("tableChips", tableChips)
                             intent.putExtra("tableTotalChips", tableTotalChips)
                             intent.putExtra("flopNum", flopNum)

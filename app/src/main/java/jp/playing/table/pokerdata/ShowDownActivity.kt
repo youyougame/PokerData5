@@ -60,6 +60,7 @@ class ShowDownActivity : AppCompatActivity() {
     private var cardCom4 = ""
     private var cardCom5 = ""
     private var bigBlind = 0
+    private var smallBlind = 0
     private var tableChips = 0
     private var tableTotalChips = 0
     private var startNum = 0
@@ -93,6 +94,7 @@ class ShowDownActivity : AppCompatActivity() {
         cardCom4 = intent.getStringExtra("cardCom4")
         cardCom5 = intent.getStringExtra("cardCom5")
         bigBlind = intent.getIntExtra("bigBlind", 0)
+        smallBlind = intent.getIntExtra("smallBlind", 0)
         tableChips = intent.getIntExtra("tableChips", 0)
         tableTotalChips = intent.getIntExtra("tableTotalChips", 0)
         flopNum = intent.getIntExtra("flopNum", 0)
@@ -139,6 +141,7 @@ class ShowDownActivity : AppCompatActivity() {
                 intent.putExtra("cardCom4", cardCom4)
                 intent.putExtra("cardCom5", cardCom5)
                 intent.putExtra("bigBlind", bigBlind)
+                intent.putExtra("smallBlind", smallBlind)
                 intent.putExtra("tableChips", tableChips)
                 intent.putExtra("tableTotalChips", tableTotalChips)
                 intent.putExtra("flopNum", flopNum)
@@ -165,6 +168,7 @@ class ShowDownActivity : AppCompatActivity() {
                 intent.putExtra("cardCom4", cardCom4)
                 intent.putExtra("cardCom5", cardCom5)
                 intent.putExtra("bigBlind", bigBlind)
+                intent.putExtra("smallBlind", smallBlind)
                 intent.putExtra("tableChips", tableChips)
                 intent.putExtra("tableTotalChips", tableTotalChips)
                 intent.putExtra("flopNum", flopNum)
@@ -466,6 +470,7 @@ class ShowDownActivity : AppCompatActivity() {
                             intent.putExtra("cardCom4", cardCom4)
                             intent.putExtra("cardCom5", cardCom5)
                             intent.putExtra("bigBlind", bigBlind)
+                            intent.putExtra("smallBlind", smallBlind)
                             intent.putExtra("tableChips", tableChips)
                             intent.putExtra("tableTotalChips", tableTotalChips)
                             intent.putExtra("flopNum", flopNum)
@@ -478,7 +483,7 @@ class ShowDownActivity : AppCompatActivity() {
 
                         } else {
                             //Todo 全員の役を確認する
-//                            showDownCheck()
+                            showDownCheck()
 
                             //HandActivityへ
                             val intent = Intent(this@ShowDownActivity, HandActivity::class.java)
@@ -497,6 +502,7 @@ class ShowDownActivity : AppCompatActivity() {
                             intent.putExtra("cardCom4", cardCom4)
                             intent.putExtra("cardCom5", cardCom5)
                             intent.putExtra("bigBlind", bigBlind)
+                            intent.putExtra("snallBlind", smallBlind)
                             intent.putExtra("tableChips", tableChips)
                             intent.putExtra("tableTotalChips", tableTotalChips)
                             intent.putExtra("flopNum", flopNum)
@@ -953,9 +959,17 @@ class ShowDownActivity : AppCompatActivity() {
                 hand1 = memberRealmResults[playerNumId]!!.hand1
                 hand2 = memberRealmResults[playerNumId]!!.hand2
             }
+            Log.d("kotlintest", "プレイヤー：" + playerName + "　ハンド１：" + hand1 + "　ハンド２：" + hand2)
 
             if (memberPlayingCheck != "fold") {
-                Log.d("kotlintest", "役：" + finalHand + "ペアナンバー：" + onePairNum.toString())
+                onePairCheckHand1()
+                onePairCheckHand2()
+                onePairCheckCom1()
+                onePairCheckCom2()
+                onePairCheckCom3()
+                onePairCheckCom4()
+                onePairCheckCom5()
+                Log.d("kotlintest", "プレイヤー：" + playerName + " 役：" + finalHand + " ペアナンバー：" + onePairNum.toString())
             }
         }
     }

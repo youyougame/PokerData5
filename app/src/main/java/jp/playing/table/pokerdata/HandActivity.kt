@@ -25,6 +25,10 @@ class HandActivity : AppCompatActivity() {
     //チップ2桁目（0）
     private var secondNum:String = ""
 
+    private var smallFirstNum: Int = 1
+
+    private var smallSecondNum:String = ""
+
     //スート
     private var cardSuit = ""
 
@@ -53,6 +57,8 @@ class HandActivity : AppCompatActivity() {
 
     private var bigBlind = 0
 
+    private var smallBlind = 0
+
     private var myRound = 0
 
     private var roundPlayer = ""
@@ -78,16 +84,24 @@ class HandActivity : AppCompatActivity() {
         playingNum = intent.getIntExtra("playingNum", 0)
         count = intent.getIntExtra("count", 0)
         bigBlind = intent.getIntExtra("bigBlind", 0)
+        smallBlind = intent.getIntExtra("smallBlind", 0)
         myRound = intent.getIntExtra("myRound", myRound)
 
 
         handChipsText.text = bigBlind.toString()
+        smallChipsText.text = smallBlind.toString()
 
         //チップ数の表示
         if (secondNum == "") {
             handChipsText.text = firstNum.toString()
         } else {
             handChipsText.text = firstNum.toString() + secondNum
+        }
+
+        if (smallSecondNum == "") {
+            smallChipsText.text = smallFirstNum.toString()
+        } else {
+            smallChipsText.text = smallFirstNum.toString() + smallSecondNum
         }
 
 
@@ -118,6 +132,20 @@ class HandActivity : AppCompatActivity() {
             }
         }
 
+        smallUpButton.setOnClickListener {
+            if (smallFirstNum != 9) {
+                smallFirstNum++
+            } else {
+                smallFirstNum = 1
+            }
+
+            if (smallSecondNum == "") {
+                smallChipsText.text = smallFirstNum.toString()
+            } else {
+                smallChipsText.text = smallFirstNum.toString() + smallSecondNum
+            }
+        }
+
         //チップ下ボタン
         handDownButton.setOnClickListener {
             if (firstNum != 1) {
@@ -130,6 +158,20 @@ class HandActivity : AppCompatActivity() {
                 handChipsText.text = firstNum.toString()
             } else {
                 handChipsText.text = firstNum.toString() + secondNum
+            }
+        }
+
+        smallDownButton.setOnClickListener {
+            if (smallFirstNum != 1) {
+                smallFirstNum--
+            } else {
+                smallFirstNum = 9
+            }
+
+            if (smallSecondNum == "") {
+                smallChipsText.text = smallFirstNum.toString()
+            } else {
+                smallChipsText.text = smallFirstNum.toString() + smallSecondNum
             }
         }
 
@@ -153,6 +195,25 @@ class HandActivity : AppCompatActivity() {
             }
         }
 
+        smallRightButton.setOnClickListener {
+            when(smallSecondNum) {
+                "" -> smallSecondNum = "0"
+                "0" -> smallSecondNum = "00"
+                "00" -> smallSecondNum = "000"
+                "000" -> smallSecondNum = "0000"
+                "0000" -> smallSecondNum = "00000"
+                "00000" -> smallSecondNum = "000000"
+                "000000" -> smallSecondNum = "0000000"
+                "0000000" -> smallSecondNum = ""
+            }
+
+            if (smallSecondNum == "") {
+                smallChipsText.text = smallFirstNum.toString()
+            } else {
+                smallChipsText.text = smallFirstNum.toString() + smallSecondNum
+            }
+        }
+
         //チップ左ボタン
         handLeftButton.setOnClickListener {
             when(secondNum) {
@@ -170,6 +231,25 @@ class HandActivity : AppCompatActivity() {
                 handChipsText.text = firstNum.toString()
             } else {
                 handChipsText.text = firstNum.toString() + secondNum
+            }
+        }
+
+        smallLeftButton.setOnClickListener {
+            when(smallSecondNum) {
+                "" -> smallSecondNum = "0000000"
+                "0" -> smallSecondNum = ""
+                "00" -> smallSecondNum = "0"
+                "000" -> smallSecondNum = "00"
+                "0000" -> smallSecondNum = "000"
+                "00000" -> smallSecondNum = "0000"
+                "000000" -> smallSecondNum = "00000"
+                "0000000" -> smallSecondNum = "000000"
+            }
+
+            if (secondNum == "") {
+                smallChipsText.text = smallFirstNum.toString()
+            } else {
+                smallChipsText.text = smallFirstNum.toString() + smallSecondNum
             }
         }
 
@@ -453,6 +533,7 @@ class HandActivity : AppCompatActivity() {
                         mHand!!.hand1 = playerHand1
                         mHand!!.hand2 = playerHand2
                         mHand!!.bigBlind = handChipsText.text.toString().toInt()
+                        mHand!!.smallBlind = smallChipsText.text.toString().toInt()
 
                         mRealm.copyToRealmOrUpdate(mHand!!)
                         mRealm.commitTransaction()
@@ -488,6 +569,7 @@ class HandActivity : AppCompatActivity() {
                                 intent.putExtra("cardCom4", "")
                                 intent.putExtra("cardCom5", "")
                                 intent.putExtra("bigBlind", handChipsText.text.toString().toInt())
+                                intent.putExtra("smallBlind", smallChipsText.text.toString().toInt())
                                 intent.putExtra("tableChips", handChipsText.text.toString().toInt())
                                 intent.putExtra(
                                     "tableTotalChips",
@@ -519,6 +601,7 @@ class HandActivity : AppCompatActivity() {
                                 intent.putExtra("cardCom4", "")
                                 intent.putExtra("cardCom5", "")
                                 intent.putExtra("bigBlind", handChipsText.text.toString().toInt())
+                                intent.putExtra("smallBlind", smallChipsText.text.toString().toInt())
                                 intent.putExtra("tableChips", handChipsText.text.toString().toInt())
                                 intent.putExtra(
                                     "tableTotalChips",
