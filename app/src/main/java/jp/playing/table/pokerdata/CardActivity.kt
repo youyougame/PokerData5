@@ -113,8 +113,7 @@ class CardActivity : AppCompatActivity() {
             startNum = preFlopNum
         }
 
-        Log.d("kotlintest", cardHand1)
-        Log.d("kotlintest", cardHand2)
+
 
         cardSetting1()
         cardSetting2()
@@ -444,42 +443,25 @@ class CardActivity : AppCompatActivity() {
                             }
 
                             "com3" -> {
-                                Log.d("kotlintest", "flop通過")
-                                Log.d("kotlintest", "通過1")
                                 if (cardComSet3 == "set") {
-                                    Log.d("kotlintest", "通過2")
                                     cardCom3 = cardSuit + cardNumber1 + cardNumber2
 
-                                    Log.d("kotlintest", "通過3")
-
                                     val handRealmResults = mRealm.where(Hand::class.java).findAll()
-                                    Log.d("kotlintest", "通過3-1")
                                     val hand =
                                         mRealm.where(Hand::class.java).equalTo("game_id", game_id)
                                             .findAll()
-                                    Log.d("kotlintest", hand.toString())
-                                    Log.d("kotlintest", "通過3-2")
                                     val handId = hand.max("id")!!.toInt()
-                                    Log.d("kotlintest", "通過3-3")
                                     val handDB =
                                         mRealm.where(Hand::class.java).equalTo("id", handId)
                                             .findFirst()
-                                    Log.d("kotlintest", "通過3-4")
                                     mRealm.beginTransaction()
-                                    Log.d("kotlintest", "通過3-5")
                                     mHand = Hand()
-                                    Log.d("kotlintest", "通過3-6")
                                     handDB!!.table1 = cardCom1
-                                    Log.d("kotlintest", "通過3-7")
                                     handDB!!.table2 = cardCom2
-                                    Log.d("kotlintest", "通過3-8")
                                     handDB!!.table3 = cardCom3
-                                    Log.d("kotlintest", "通過3-9")
                                     mRealm.copyToRealmOrUpdate(mHand!!)
-                                    Log.d("kotlintest", "通過3-10")
                                     mRealm.commitTransaction()
 
-                                    Log.d("kotlintest", "通過4")
                                     intentSet()
                                 }
                             }
@@ -487,7 +469,6 @@ class CardActivity : AppCompatActivity() {
                     }
 
                     "turn" -> {
-                        Log.d("kotlintest", "turn通過")
                         if (cardComSet4 == "set") {
                             cardCom4 = cardSuit + cardNumber1 + cardNumber2
 
@@ -507,7 +488,6 @@ class CardActivity : AppCompatActivity() {
                     }
 
                     "river" -> {
-                        Log.d("kotlintest", "river通過")
                         if (cardComSet5 == "set") {
                             cardCom5 = cardSuit + cardNumber1 + cardNumber2
 
@@ -1370,30 +1350,14 @@ class CardActivity : AppCompatActivity() {
     }
 
     private fun intentSet() {
-        Log.d("kotlintest", "通過5")
         if (myRound == preFlopNum) {
-            Log.d("kotlintest", "通過6")
             roundPlayer = "you"
         } else {
-            Log.d("kotlintest", "通過7")
             roundPlayer = "other"
         }
 
-        Log.d("kotlintest", "通過8")
         when (roundPlayer) {
             "you" -> {
-                Log.d("kotlintest", "通過9")
-                Log.d("kotlintest", "自分・" + "memberNum：" + memberNum)
-                Log.d("kotlintest", "自分・" + "count：" + count)
-                Log.d("kotlintest", "自分・" + "round：" + roundCheck)
-                Log.d("kotlintest", "自分・" + "round_count：" + round_count)
-                Log.d("kotlintest", "自分・" + "roundNum：" + roundNum)
-                Log.d("kotlintest", "自分・" + "myRound：" + myRound)
-                Log.d("kotlintest", "自分・" + "tableChips：" + tableChips)
-                Log.d("kotlintest", "自分・" + "tableTotalChips：" + tableTotalChips)
-                Log.d("kotlintest", "自分・" + "playingNum：" + playingNum)
-                Log.d("kotlintest", "自分・" + "foldPlayer：" + foldPlayer)
-                Log.d("kotlintest", "自分・" + "sameChipsPlayer：" + sameChipsPlayer)
 
                 // PlayingActivityへ移動
                 val intent = Intent(this@CardActivity, PlayingActivity::class.java)
@@ -1424,18 +1388,6 @@ class CardActivity : AppCompatActivity() {
             }
 
             "other" -> {
-                Log.d("kotlintest", "通過10")
-                Log.d("kotlintest", "自分・" + "memberNum：" + memberNum)
-                Log.d("kotlintest", "自分・" + "count：" + count)
-                Log.d("kotlintest", "自分・" + "round：" + roundCheck)
-                Log.d("kotlintest", "自分・" + "round_count：" + round_count)
-                Log.d("kotlintest", "自分・" + "roundNum：" + roundNum)
-                Log.d("kotlintest", "自分・" + "myRound：" + myRound)
-                Log.d("kotlintest", "自分・" + "tableChips：" + tableChips)
-                Log.d("kotlintest", "自分・" + "tableTotalChips：" + tableTotalChips)
-                Log.d("kotlintest", "自分・" + "playingNum：" + playingNum)
-                Log.d("kotlintest", "自分・" + "foldPlayer：" + foldPlayer)
-                Log.d("kotlintest", "自分・" + "sameChipsPlayer：" + sameChipsPlayer)
 
                 //MemberPlayingActivityへ移動
                 val intent = Intent(this@CardActivity, MemberPlayingActivity::class.java)
@@ -1468,18 +1420,6 @@ class CardActivity : AppCompatActivity() {
     }
 
     private fun intentShowDown() {
-        Log.d("kotlintest", "通過10")
-        Log.d("kotlintest", "自分・" + "memberNum：" + memberNum)
-        Log.d("kotlintest", "自分・" + "count：" + count)
-        Log.d("kotlintest", "自分・" + "round：" + roundCheck)
-        Log.d("kotlintest", "自分・" + "round_count：" + round_count)
-        Log.d("kotlintest", "自分・" + "roundNum：" + roundNum)
-        Log.d("kotlintest", "自分・" + "myRound：" + myRound)
-        Log.d("kotlintest", "自分・" + "tableChips：" + tableChips)
-        Log.d("kotlintest", "自分・" + "tableTotalChips：" + tableTotalChips)
-        Log.d("kotlintest", "自分・" + "playingNum：" + playingNum)
-        Log.d("kotlintest", "自分・" + "foldPlayer：" + foldPlayer)
-        Log.d("kotlintest", "自分・" + "sameChipsPlayer：" + sameChipsPlayer)
 
         //ShowDownActivityへ移動
         val intent = Intent(this@CardActivity, ShowDownActivity::class.java)

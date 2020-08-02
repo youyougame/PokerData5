@@ -105,9 +105,6 @@ class MemberPlayingActivity : AppCompatActivity() {
         val dataPlayerId = memberPlayerRealmResults[memberPlayerRealmResultsId]!!.member_id
         val memberPlayingCheck = memberPlayerRealmResults[memberPlayerRealmResultsId]!!.playingCheck
 
-        Log.d("kotlintest", "playerName：" + playerName)
-        Log.d("kotlintest", "playerId" + memberPlayerRealmResultsId)
-
         if (memberPlayingCheck == "fold") {
             if (sameChipsPlayer == memberNum - foldPlayer) {
                 when (round) {
@@ -555,7 +552,6 @@ class MemberPlayingActivity : AppCompatActivity() {
             //チップ値が入力されているか確認
             if (memberChangeChipsText.text != "") {
                 tableTotalChips = tableTotalChips + memberChangeChipsText.text.toString().toInt()
-                Log.d("kotlintest", "他人合計" + tableTotalChips)
 
                 //テーブルチップとの比較
                 when {
@@ -613,11 +609,15 @@ class MemberPlayingActivity : AppCompatActivity() {
                     foldPlayer++
                 }
 
+                member!!.playChips = memberChangeChipsText.text.toString().toInt() - turnDataChips.toString().toInt()
                 member!!.memberChips = playerTotalChips - memberChangeChipsText.text.toString().toInt()
+                member!!.tableChips = tableChips
+                member!!.tableTotalChips = tableTotalChips
 
                 mRealm.copyToRealmOrUpdate(mTurn!!)
                 mRealm.copyToRealmOrUpdate(mMember!!)
                 mRealm.commitTransaction()
+
 
                 if (foldPlayer == memberNum - 1) {
                     count++
@@ -654,17 +654,6 @@ class MemberPlayingActivity : AppCompatActivity() {
                         sameChipsPlayer = 0
 
                         //CardActivityへ移動
-                        Log.d("kotlintest", "他人・" + "memberNum：" + memberNum)
-                        Log.d("kotlintest", "他人・" + "count：" + count)
-                        Log.d("kotlintest", "他人・" + "round：" + round)
-                        Log.d("kotlintest", "他人・" + "round_count：" + round_count)
-                        Log.d("kotlintest", "他人・" + "roundNum：" + roundNum)
-                        Log.d("kotlintest", "他人・" + "myRound：" + myRound)
-                        Log.d("kotlintest", "他人・" + "tableChips：" + tableChips)
-                        Log.d("kotlintest", "他人・" + "tableTotalChips：" + tableTotalChips)
-                        Log.d("kotlintest", "他人・" + "playingNum：" + playingNum)
-                        Log.d("kotlintest", "他人・" + "foldPlayer：" + foldPlayer)
-                        Log.d("kotlintest", "他人・" + "sameChipsPlayer：" + sameChipsPlayer)
 
                         val intent =
                             Intent(this@MemberPlayingActivity, CardActivity::class.java)
@@ -716,18 +705,6 @@ class MemberPlayingActivity : AppCompatActivity() {
 
                         if (nextPlayerName == "自分") {
                             //PlayingActivityに移動
-                            Log.d("kotlintest", "他人・" + "memberNum：" + memberNum)
-                            Log.d("kotlintest", "他人・" + "count：" + count)
-                            Log.d("kotlintest", "他人・" + "round：" + round)
-                            Log.d("kotlintest", "他人・" + "round_count：" + round_count)
-                            Log.d("kotlintest", "他人・" + "roundNum：" + roundNum)
-                            Log.d("kotlintest", "他人・" + "myRound：" + myRound)
-                            Log.d("kotlintest", "他人・" + "tableChips：" + tableChips)
-                            Log.d("kotlintest", "他人・" + "tableTotalChips：" + tableTotalChips)
-                            Log.d("kotlintest", "他人・" + "playingNum：" + playingNum)
-                            Log.d("kotlintest", "他人・" + "foldPlayer：" + foldPlayer)
-                            Log.d("kotlintest", "他人・" + "sameChipsPlayer：" + sameChipsPlayer)
-
                             val intent =
                                 Intent(this@MemberPlayingActivity, PlayingActivity::class.java)
                             intent.putExtra("memberNum", memberNum)
@@ -756,17 +733,6 @@ class MemberPlayingActivity : AppCompatActivity() {
                             startActivity(intent)
                         } else {
                             //MemberPlayingActivityに移動
-                            Log.d("kotlintest", "他人・" + "memberNum：" + memberNum)
-                            Log.d("kotlintest", "他人・" + "count：" + count)
-                            Log.d("kotlintest", "他人・" + "round：" + round)
-                            Log.d("kotlintest", "他人・" + "round_count：" + round_count)
-                            Log.d("kotlintest", "他人・" + "roundNum：" + roundNum)
-                            Log.d("kotlintest", "他人・" + "myRound：" + myRound)
-                            Log.d("kotlintest", "他人・" + "tableChips：" + tableChips)
-                            Log.d("kotlintest", "他人・" + "tableTotalChips：" + tableTotalChips)
-                            Log.d("kotlintest", "他人・" + "playingNum：" + playingNum)
-                            Log.d("kotlintest", "他人・" + "foldPlayer：" + foldPlayer)
-                            Log.d("kotlintest", "他人・" + "sameChipsPlayer：" + sameChipsPlayer)
 
                             val intent = Intent(
                                 this@MemberPlayingActivity,
