@@ -1,5 +1,6 @@
 package jp.playing.table.pokerdata
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -348,6 +349,26 @@ class WinnerCheckActivity : AppCompatActivity() {
 
         winnerCheckDoneButton.setOnClickListener {
             saveData()
+            playingNum = flopNum
+
+            //HandActivityへ移動
+            val intent = Intent(this@WinnerCheckActivity, HandActivity::class.java)
+            Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[count]:" + count.toString())
+            Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[myRound]:" + myRound.toString())
+            Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[flopNum]:" + flopNum.toString())
+            Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[playingNum]:" + playingNum.toString())
+            Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[smallBlind]:" + smallBlind.toString())
+            Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[bigBlind]:" + bigBlind.toString())
+
+            intent.putExtra("memberNum", memberNum)
+            intent.putExtra("flopNum", flopNum)
+            intent.putExtra("playingNum", playingNum)
+            intent.putExtra("count", count)
+            intent.putExtra("bigBlind", bigBlind)
+            intent.putExtra("smallBlind", smallBlind)
+            intent.putExtra("myRound", myRound)
+            startActivity(intent)
+
         }
     }
 
@@ -870,6 +891,8 @@ class WinnerCheckActivity : AppCompatActivity() {
             "spade11" -> comWinnerCheckImageView1.setImageResource(R.drawable.spade11)
             "spade12" -> comWinnerCheckImageView1.setImageResource(R.drawable.spade12)
             "spade13" -> comWinnerCheckImageView1.setImageResource(R.drawable.spade13)
+
+            "" -> comWinnerCheckImageView1.setImageResource(R.drawable.card_back)
         }
     }
 
@@ -930,6 +953,8 @@ class WinnerCheckActivity : AppCompatActivity() {
             "spade11" -> comWinnerCheckImageView2.setImageResource(R.drawable.spade11)
             "spade12" -> comWinnerCheckImageView2.setImageResource(R.drawable.spade12)
             "spade13" -> comWinnerCheckImageView2.setImageResource(R.drawable.spade13)
+
+            "" -> comWinnerCheckImageView2.setImageResource(R.drawable.card_back)
         }
     }
 
@@ -990,6 +1015,8 @@ class WinnerCheckActivity : AppCompatActivity() {
             "spade11" -> comWinnerCheckImageView3.setImageResource(R.drawable.spade11)
             "spade12" -> comWinnerCheckImageView3.setImageResource(R.drawable.spade12)
             "spade13" -> comWinnerCheckImageView3.setImageResource(R.drawable.spade13)
+
+            "" -> comWinnerCheckImageView3.setImageResource(R.drawable.card_back)
         }
     }
 
@@ -1050,6 +1077,8 @@ class WinnerCheckActivity : AppCompatActivity() {
             "spade11" -> comWinnerCheckImageView4.setImageResource(R.drawable.spade11)
             "spade12" -> comWinnerCheckImageView4.setImageResource(R.drawable.spade12)
             "spade13" -> comWinnerCheckImageView4.setImageResource(R.drawable.spade13)
+
+            "" -> comWinnerCheckImageView4.setImageResource(R.drawable.card_back)
         }
     }
 
@@ -1110,6 +1139,8 @@ class WinnerCheckActivity : AppCompatActivity() {
             "spade11" -> comWinnerCheckImageView5.setImageResource(R.drawable.spade11)
             "spade12" -> comWinnerCheckImageView5.setImageResource(R.drawable.spade12)
             "spade13" -> comWinnerCheckImageView5.setImageResource(R.drawable.spade13)
+
+            "" -> comWinnerCheckImageView5.setImageResource(R.drawable.card_back)
         }
     }
 
@@ -1230,6 +1261,9 @@ class WinnerCheckActivity : AppCompatActivity() {
                 "spade12" -> secondHandWinnerCheckImageView1.setImageResource(R.drawable.spade12)
                 "spade13" -> secondHandWinnerCheckImageView1.setImageResource(R.drawable.spade13)
             }
+        } else {
+            firstHandWinnerCheckImageView1.setImageResource(R.drawable.card_back)
+            secondHandWinnerCheckImageView1.setImageResource(R.drawable.card_back)
         }
     }
     private fun  handPlayer2() {
@@ -1350,6 +1384,9 @@ class WinnerCheckActivity : AppCompatActivity() {
                 "spade13" -> secondHandWinnerCheckImageView2.setImageResource(R.drawable.spade13)
             }
 
+        } else {
+            firstHandWinnerCheckImageView2.setImageResource(R.drawable.card_back)
+            secondHandWinnerCheckImageView2.setImageResource(R.drawable.card_back)
         }
     }
     private fun  handPlayer3() {
@@ -1470,6 +1507,9 @@ class WinnerCheckActivity : AppCompatActivity() {
                 "spade13" -> secondHandWinnerCheckImageView3.setImageResource(R.drawable.spade13)
             }
 
+        } else {
+            firstHandWinnerCheckImageView3.setImageResource(R.drawable.card_back)
+            secondHandWinnerCheckImageView3.setImageResource(R.drawable.card_back)
         }
     }
     private fun  handPlayer4() {
@@ -1590,6 +1630,9 @@ class WinnerCheckActivity : AppCompatActivity() {
                 "spade13" -> secondHandWinnerCheckImageView4.setImageResource(R.drawable.spade13)
             }
 
+        } else {
+            firstHandWinnerCheckImageView4.setImageResource(R.drawable.card_back)
+            secondHandWinnerCheckImageView4.setImageResource(R.drawable.card_back)
         }
     }
     private fun  handPlayer5() {
@@ -1710,6 +1753,9 @@ class WinnerCheckActivity : AppCompatActivity() {
                 "spade13" -> secondHandWinnerCheckImageView5.setImageResource(R.drawable.spade13)
             }
 
+        } else {
+            firstHandWinnerCheckImageView5.setImageResource(R.drawable.card_back)
+            secondHandWinnerCheckImageView5.setImageResource(R.drawable.card_back)
         }
     }
     private fun  handPlayer6() {
@@ -1830,6 +1876,9 @@ class WinnerCheckActivity : AppCompatActivity() {
                 "spade13" -> secondHandWinnerCheckImageView6.setImageResource(R.drawable.spade13)
             }
 
+        } else {
+            firstHandWinnerCheckImageView6.setImageResource(R.drawable.card_back)
+            secondHandWinnerCheckImageView6.setImageResource(R.drawable.card_back)
         }
     }
     private fun  handPlayer7() {
@@ -1950,6 +1999,9 @@ class WinnerCheckActivity : AppCompatActivity() {
                 "spade13" -> secondHandWinnerCheckImageView7.setImageResource(R.drawable.spade13)
             }
 
+        } else {
+            firstHandWinnerCheckImageView7.setImageResource(R.drawable.card_back)
+            secondHandWinnerCheckImageView7.setImageResource(R.drawable.card_back)
         }
     }
     private fun  handPlayer8() {
@@ -2070,6 +2122,9 @@ class WinnerCheckActivity : AppCompatActivity() {
                 "spade13" -> secondHandWinnerCheckImageView8.setImageResource(R.drawable.spade13)
             }
 
+        } else {
+            firstHandWinnerCheckImageView8.setImageResource(R.drawable.card_back)
+            secondHandWinnerCheckImageView8.setImageResource(R.drawable.card_back)
         }
     }
     private fun  handPlayer9() {
@@ -2190,6 +2245,9 @@ class WinnerCheckActivity : AppCompatActivity() {
                 "spade13" -> secondHandWinnerCheckImageView9.setImageResource(R.drawable.spade13)
             }
 
+        } else {
+            firstHandWinnerCheckImageView9.setImageResource(R.drawable.card_back)
+            secondHandWinnerCheckImageView9.setImageResource(R.drawable.card_back)
         }
     }
     private fun  handPlayer10() {
@@ -2310,6 +2368,9 @@ class WinnerCheckActivity : AppCompatActivity() {
                 "spade13" -> secondHandWinnerCheckImageView10.setImageResource(R.drawable.spade13)
             }
 
+        } else {
+            firstHandWinnerCheckImageView10.setImageResource(R.drawable.card_back)
+            secondHandWinnerCheckImageView10.setImageResource(R.drawable.card_back)
         }
     }
 
@@ -2572,17 +2633,16 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val player1 = memberRealmResults[playerId1]!!.playingCheck
                 val player2 = memberRealmResults[playerId2]!!.playingCheck
 
-                when("fold") {
-                    player1 -> {
-                        playerWinnerCheckSpinner1.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText1.visibility = View.INVISIBLE
-                    }
-
-                    player2 -> {
-                        playerWinnerCheckSpinner2.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText2.visibility = View.INVISIBLE
-                    }
+                if (player1 == "fold") {
+                    playerWinnerCheckSpinner1.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText1.visibility = View.INVISIBLE
                 }
+
+                if (player2 == "fold") {
+                    playerWinnerCheckSpinner2.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText2.visibility = View.INVISIBLE
+                }
+
             }
 
             3 -> {
@@ -2598,22 +2658,21 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val player2 = memberRealmResults[playerId2]!!.playingCheck
                 val player3 = memberRealmResults[playerId3]!!.playingCheck
 
-                when("fold") {
-                    player1 -> {
-                        playerWinnerCheckSpinner1.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText1.visibility = View.INVISIBLE
-                    }
-
-                    player2 -> {
-                        playerWinnerCheckSpinner2.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText2.visibility = View.INVISIBLE
-                    }
-
-                    player3 -> {
-                        playerWinnerCheckSpinner3.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText3.visibility = View.INVISIBLE
-                    }
+                if (player1 == "fold") {
+                    playerWinnerCheckSpinner1.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText1.visibility = View.INVISIBLE
                 }
+
+                if (player2 == "fold") {
+                    playerWinnerCheckSpinner2.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText2.visibility = View.INVISIBLE
+                }
+
+                if (player3 == "fold") {
+                    playerWinnerCheckSpinner3.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText3.visibility = View.INVISIBLE
+                }
+
             }
 
             4 -> {
@@ -2632,27 +2691,26 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val player3 = memberRealmResults[playerId3]!!.playingCheck
                 val player4 = memberRealmResults[playerId4]!!.playingCheck
 
-                when("fold") {
-                    player1 -> {
-                        playerWinnerCheckSpinner1.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText1.visibility = View.INVISIBLE
-                    }
-
-                    player2 -> {
-                        playerWinnerCheckSpinner2.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText2.visibility = View.INVISIBLE
-                    }
-
-                    player3 -> {
-                        playerWinnerCheckSpinner3.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText3.visibility = View.INVISIBLE
-                    }
-
-                    player4 -> {
-                        playerWinnerCheckSpinner4.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText4.visibility = View.INVISIBLE
-                    }
+                if (player1 == "fold") {
+                    playerWinnerCheckSpinner1.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText1.visibility = View.INVISIBLE
                 }
+
+                if (player2 == "fold") {
+                    playerWinnerCheckSpinner2.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText2.visibility = View.INVISIBLE
+                }
+
+                if (player3 == "fold") {
+                    playerWinnerCheckSpinner3.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText3.visibility = View.INVISIBLE
+                }
+
+                if (player4 == "fold") {
+                    playerWinnerCheckSpinner4.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText4.visibility = View.INVISIBLE
+                }
+
             }
 
             5 -> {
@@ -2674,32 +2732,31 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val player4 = memberRealmResults[playerId4]!!.playingCheck
                 val player5 = memberRealmResults[playerId5]!!.playingCheck
 
-                when("fold") {
-                    player1 -> {
-                        playerWinnerCheckSpinner1.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText1.visibility = View.INVISIBLE
-                    }
-
-                    player2 -> {
-                        playerWinnerCheckSpinner2.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText2.visibility = View.INVISIBLE
-                    }
-
-                    player3 -> {
-                        playerWinnerCheckSpinner3.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText3.visibility = View.INVISIBLE
-                    }
-
-                    player4 -> {
-                        playerWinnerCheckSpinner4.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText4.visibility = View.INVISIBLE
-                    }
-
-                    player5 -> {
-                        playerWinnerCheckSpinner5.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText5.visibility = View.INVISIBLE
-                    }
+                if (player1 == "fold") {
+                    playerWinnerCheckSpinner1.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText1.visibility = View.INVISIBLE
                 }
+
+                if (player2 == "fold") {
+                    playerWinnerCheckSpinner2.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText2.visibility = View.INVISIBLE
+                }
+
+                if (player3 == "fold") {
+                    playerWinnerCheckSpinner3.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText3.visibility = View.INVISIBLE
+                }
+
+                if (player4 == "fold") {
+                    playerWinnerCheckSpinner4.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText4.visibility = View.INVISIBLE
+                }
+
+                if (player5 == "fold") {
+                    playerWinnerCheckSpinner5.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText5.visibility = View.INVISIBLE
+                }
+
             }
 
             6 -> {
@@ -2724,37 +2781,36 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val player5 = memberRealmResults[playerId5]!!.playingCheck
                 val player6 = memberRealmResults[playerId6]!!.playingCheck
 
-                when("fold") {
-                    player1 -> {
-                        playerWinnerCheckSpinner1.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText1.visibility = View.INVISIBLE
-                    }
-
-                    player2 -> {
-                        playerWinnerCheckSpinner2.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText2.visibility = View.INVISIBLE
-                    }
-
-                    player3 -> {
-                        playerWinnerCheckSpinner3.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText3.visibility = View.INVISIBLE
-                    }
-
-                    player4 -> {
-                        playerWinnerCheckSpinner4.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText4.visibility = View.INVISIBLE
-                    }
-
-                    player5 -> {
-                        playerWinnerCheckSpinner5.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText5.visibility = View.INVISIBLE
-                    }
-
-                    player6 -> {
-                        playerWinnerCheckSpinner6.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText6.visibility = View.INVISIBLE
-                    }
+                if (player1 == "fold") {
+                    playerWinnerCheckSpinner1.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText1.visibility = View.INVISIBLE
                 }
+
+                if (player2 == "fold") {
+                    playerWinnerCheckSpinner2.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText2.visibility = View.INVISIBLE
+                }
+
+                if (player3 == "fold") {
+                    playerWinnerCheckSpinner3.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText3.visibility = View.INVISIBLE
+                }
+
+                if (player4 == "fold") {
+                    playerWinnerCheckSpinner4.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText4.visibility = View.INVISIBLE
+                }
+
+                if (player5 == "fold") {
+                    playerWinnerCheckSpinner5.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText5.visibility = View.INVISIBLE
+                }
+
+                if (player6 == "fold") {
+                    playerWinnerCheckSpinner6.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText6.visibility = View.INVISIBLE
+                }
+
             }
 
             7 -> {
@@ -2782,42 +2838,41 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val player6 = memberRealmResults[playerId6]!!.playingCheck
                 val player7 = memberRealmResults[playerId7]!!.playingCheck
 
-                when("fold") {
-                    player1 -> {
-                        playerWinnerCheckSpinner1.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText1.visibility = View.INVISIBLE
-                    }
-
-                    player2 -> {
-                        playerWinnerCheckSpinner2.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText2.visibility = View.INVISIBLE
-                    }
-
-                    player3 -> {
-                        playerWinnerCheckSpinner3.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText3.visibility = View.INVISIBLE
-                    }
-
-                    player4 -> {
-                        playerWinnerCheckSpinner4.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText4.visibility = View.INVISIBLE
-                    }
-
-                    player5 -> {
-                        playerWinnerCheckSpinner5.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText5.visibility = View.INVISIBLE
-                    }
-
-                    player6 -> {
-                        playerWinnerCheckSpinner6.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText6.visibility = View.INVISIBLE
-                    }
-
-                    player7 -> {
-                        playerWinnerCheckSpinner7.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText7.visibility = View.INVISIBLE
-                    }
+                if (player1 == "fold") {
+                    playerWinnerCheckSpinner1.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText1.visibility = View.INVISIBLE
                 }
+
+                if (player2 == "fold") {
+                    playerWinnerCheckSpinner2.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText2.visibility = View.INVISIBLE
+                }
+
+                if (player3 == "fold") {
+                    playerWinnerCheckSpinner3.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText3.visibility = View.INVISIBLE
+                }
+
+                if (player4 == "fold") {
+                    playerWinnerCheckSpinner4.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText4.visibility = View.INVISIBLE
+                }
+
+                if (player5 == "fold") {
+                    playerWinnerCheckSpinner5.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText5.visibility = View.INVISIBLE
+                }
+
+                if (player6 == "fold") {
+                    playerWinnerCheckSpinner6.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText6.visibility = View.INVISIBLE
+                }
+
+                if (player7 == "fold") {
+                    playerWinnerCheckSpinner7.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText7.visibility = View.INVISIBLE
+                }
+
             }
 
             8 -> {
@@ -2848,47 +2903,46 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val player7 = memberRealmResults[playerId7]!!.playingCheck
                 val player8 = memberRealmResults[playerId8]!!.playingCheck
 
-                when("fold") {
-                    player1 -> {
-                        playerWinnerCheckSpinner1.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText1.visibility = View.INVISIBLE
-                    }
-
-                    player2 -> {
-                        playerWinnerCheckSpinner2.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText2.visibility = View.INVISIBLE
-                    }
-
-                    player3 -> {
-                        playerWinnerCheckSpinner3.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText3.visibility = View.INVISIBLE
-                    }
-
-                    player4 -> {
-                        playerWinnerCheckSpinner4.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText4.visibility = View.INVISIBLE
-                    }
-
-                    player5 -> {
-                        playerWinnerCheckSpinner5.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText5.visibility = View.INVISIBLE
-                    }
-
-                    player6 -> {
-                        playerWinnerCheckSpinner6.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText6.visibility = View.INVISIBLE
-                    }
-
-                    player7 -> {
-                        playerWinnerCheckSpinner7.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText7.visibility = View.INVISIBLE
-                    }
-
-                    player8 -> {
-                        playerWinnerCheckSpinner8.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText8.visibility = View.INVISIBLE
-                    }
+                if (player1 == "fold") {
+                    playerWinnerCheckSpinner1.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText1.visibility = View.INVISIBLE
                 }
+
+                if (player2 == "fold") {
+                    playerWinnerCheckSpinner2.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText2.visibility = View.INVISIBLE
+                }
+
+                if (player3 == "fold") {
+                    playerWinnerCheckSpinner3.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText3.visibility = View.INVISIBLE
+                }
+
+                if (player4 == "fold") {
+                    playerWinnerCheckSpinner4.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText4.visibility = View.INVISIBLE
+                }
+
+                if (player5 == "fold") {
+                    playerWinnerCheckSpinner5.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText5.visibility = View.INVISIBLE
+                }
+
+                if (player6 == "fold") {
+                    playerWinnerCheckSpinner6.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText6.visibility = View.INVISIBLE
+                }
+
+                if (player7 == "fold") {
+                    playerWinnerCheckSpinner7.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText7.visibility = View.INVISIBLE
+                }
+
+                if (player8 == "fold") {
+                    playerWinnerCheckSpinner8.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText8.visibility = View.INVISIBLE
+                }
+
             }
 
             9 -> {
@@ -2922,52 +2976,51 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val player8 = memberRealmResults[playerId8]!!.playingCheck
                 val player9 = memberRealmResults[playerId9]!!.playingCheck
 
-                when("fold") {
-                    player1 -> {
-                        playerWinnerCheckSpinner1.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText1.visibility = View.INVISIBLE
-                    }
-
-                    player2 -> {
-                        playerWinnerCheckSpinner2.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText2.visibility = View.INVISIBLE
-                    }
-
-                    player3 -> {
-                        playerWinnerCheckSpinner3.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText3.visibility = View.INVISIBLE
-                    }
-
-                    player4 -> {
-                        playerWinnerCheckSpinner4.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText4.visibility = View.INVISIBLE
-                    }
-
-                    player5 -> {
-                        playerWinnerCheckSpinner5.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText5.visibility = View.INVISIBLE
-                    }
-
-                    player6 -> {
-                        playerWinnerCheckSpinner6.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText6.visibility = View.INVISIBLE
-                    }
-
-                    player7 -> {
-                        playerWinnerCheckSpinner7.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText7.visibility = View.INVISIBLE
-                    }
-
-                    player8 -> {
-                        playerWinnerCheckSpinner8.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText8.visibility = View.INVISIBLE
-                    }
-
-                    player9 -> {
-                        playerWinnerCheckSpinner9.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText9.visibility = View.INVISIBLE
-                    }
+                if (player1 == "fold") {
+                    playerWinnerCheckSpinner1.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText1.visibility = View.INVISIBLE
                 }
+
+                if (player2 == "fold") {
+                    playerWinnerCheckSpinner2.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText2.visibility = View.INVISIBLE
+                }
+
+                if (player3 == "fold") {
+                    playerWinnerCheckSpinner3.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText3.visibility = View.INVISIBLE
+                }
+
+                if (player4 == "fold") {
+                    playerWinnerCheckSpinner4.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText4.visibility = View.INVISIBLE
+                }
+
+                if (player5 == "fold") {
+                    playerWinnerCheckSpinner5.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText5.visibility = View.INVISIBLE
+                }
+
+                if (player6 == "fold") {
+                    playerWinnerCheckSpinner6.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText6.visibility = View.INVISIBLE
+                }
+
+                if (player7 == "fold") {
+                    playerWinnerCheckSpinner7.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText7.visibility = View.INVISIBLE
+                }
+
+                if (player8 == "fold") {
+                    playerWinnerCheckSpinner8.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText8.visibility = View.INVISIBLE
+                }
+
+                if (player9 == "fold") {
+                    playerWinnerCheckSpinner9.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText9.visibility = View.INVISIBLE
+                }
+
             }
 
             10 -> {
@@ -3004,56 +3057,54 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val player9 = memberRealmResults[playerId9]!!.playingCheck
                 val player10 = memberRealmResults[palyerId10]!!.playingCheck
 
-                when("fold") {
-                    player1 -> {
-                        playerWinnerCheckSpinner1.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText1.visibility = View.INVISIBLE
-                    }
+                if (player1 == "fold") {
+                    playerWinnerCheckSpinner1.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText1.visibility = View.INVISIBLE
+                }
 
-                    player2 -> {
-                        playerWinnerCheckSpinner2.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText2.visibility = View.INVISIBLE
-                    }
+                if (player2 == "fold") {
+                    playerWinnerCheckSpinner2.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText2.visibility = View.INVISIBLE
+                }
 
-                    player3 -> {
-                        playerWinnerCheckSpinner3.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText3.visibility = View.INVISIBLE
-                    }
+                if (player3 == "fold") {
+                    playerWinnerCheckSpinner3.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText3.visibility = View.INVISIBLE
+                }
 
-                    player4 -> {
-                        playerWinnerCheckSpinner4.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText4.visibility = View.INVISIBLE
-                    }
+                if (player4 == "fold") {
+                    playerWinnerCheckSpinner4.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText4.visibility = View.INVISIBLE
+                }
 
-                    player5 -> {
-                        playerWinnerCheckSpinner5.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText5.visibility = View.INVISIBLE
-                    }
+                if (player5 == "fold") {
+                    playerWinnerCheckSpinner5.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText5.visibility = View.INVISIBLE
+                }
 
-                    player6 -> {
-                        playerWinnerCheckSpinner6.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText6.visibility = View.INVISIBLE
-                    }
+                if (player6 == "fold") {
+                    playerWinnerCheckSpinner6.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText6.visibility = View.INVISIBLE
+                }
 
-                    player7 -> {
-                        playerWinnerCheckSpinner7.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText7.visibility = View.INVISIBLE
-                    }
+                if (player7 == "fold") {
+                    playerWinnerCheckSpinner7.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText7.visibility = View.INVISIBLE
+                }
 
-                    player8 -> {
-                        playerWinnerCheckSpinner8.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText8.visibility = View.INVISIBLE
-                    }
+                if (player8 == "fold") {
+                    playerWinnerCheckSpinner8.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText8.visibility = View.INVISIBLE
+                }
 
-                    player9 -> {
-                        playerWinnerCheckSpinner9.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText9.visibility = View.INVISIBLE
-                    }
+                if (player9 == "fold") {
+                    playerWinnerCheckSpinner9.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText9.visibility = View.INVISIBLE
+                }
 
-                    player10 -> {
-                        playerWinnerCheckSpinner10.visibility = View.INVISIBLE
-                        playerWinnerCheckEditText10.visibility = View.INVISIBLE
-                    }
+                if (player10 == "fold") {
+                    playerWinnerCheckSpinner10.visibility = View.INVISIBLE
+                    playerWinnerCheckEditText10.visibility = View.INVISIBLE
                 }
             }
         }
