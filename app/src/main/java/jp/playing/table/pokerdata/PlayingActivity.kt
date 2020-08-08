@@ -59,6 +59,10 @@ class PlayingActivity : AppCompatActivity() {
     private var playingCheck = ""
 
     private var turnDataChips = 0
+    private var turnDataCount = 0
+    private var turnDataRound = ""
+    private var turnDataRoundCount = 0
+    private var turnDataPlayer = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -237,26 +241,31 @@ class PlayingActivity : AppCompatActivity() {
         }
 
         val turnRealmResults = mRealm.where(Turn::class.java).findAll()
-        val turnDataRealmResults = mRealm.where(Turn::class.java).equalTo("player_id", dataPlayerId).findAll()
+        val turnDataRealmResults = mRealm.where(Turn::class.java).equalTo("player", "自分").findAll()
         if (turnDataRealmResults.toString() != "[]") {
             val turnDataRealmResultsId = turnDataRealmResults.max("id")!!.toInt()
             turnDataChips = turnRealmResults[turnDataRealmResultsId]!!.playChips
-            var turnDataRound = turnRealmResults[turnDataRealmResultsId]!!.round
+            turnDataRound = turnRealmResults[turnDataRealmResultsId]!!.round //前回の自分のラウンド
+            turnDataCount = turnRealmResults[turnDataRealmResultsId]!!.count //前回のゲーム数
+            turnDataRoundCount = turnRealmResults[turnDataRealmResultsId]!!.round_count //ラウンド内の周数
+            turnDataPlayer = turnRealmResults[turnDataRealmResultsId]!!.player //プレイヤー名
 
             if (turnDataChips == null || turnDataRound != round) {
                 turnDataChips = 0
             }
         }
 
-        playingHandText.text = "ミニマムベット：" + tableChips + "  " + "ミニマムレイズ：" + tableChips * 2
+        playingHandText.text = "ミニマムベット：" + tableChips + " " + "ポット：" + tableTotalChips
 
         Log.d("kotlintest", turnDataChips.toString())
 
-        if (round == "preflop" && round_count == 1) {
-            playingChipsText.text = "0"
-        } else {
-            playingChipsText.text = turnDataChips.toString()
-        }
+        playingChipsText.text = "0"
+
+//        if (round == "preflop" && round_count == 1) {
+//            playingChipsText.text = "0"
+//        } else {
+//            playingChipsText.text = turnDataChips.toString()
+//        }
 
         cardSetting1()
         cardSetting2()
@@ -276,22 +285,68 @@ class PlayingActivity : AppCompatActivity() {
 
         //UI部品の設定
         playingCheckButton.setOnClickListener {
+            chipsNum1 = ""
+            chipsNum2 = ""
+            chipsNum3 = ""
+            chipsNum4 = ""
+            chipsNum5 = ""
+            chipsNum6 = ""
+            chipsNum7 = ""
             playingChipsText.text = playChips.toString()
             playingCheck = "play"
         }
 
         playingCallButton.setOnClickListener {
-            playChips = tableChips
+            chipsNum1 = ""
+            chipsNum2 = ""
+            chipsNum3 = ""
+            chipsNum4 = ""
+            chipsNum5 = ""
+            chipsNum6 = ""
+            chipsNum7 = ""
+
+            if (turnDataCount == count && turnDataRound == round && turnDataRoundCount + 1 == round_count) {
+                Log.d("kotlintest", "playChips = tableChips - turnDataChips")
+                playChips = tableChips - turnDataChips
+            } else {
+                Log.d("kotlintest", "playChips = tableChips")
+                playChips = tableChips
+            }
+
+            Log.d("kotlintest", "turnDataCount:" + turnDataCount.toString())
+            Log.d("kotlintest", "count:" + count.toString())
+            Log.d("kotlintest", "turnDataRound:" + turnDataRound)
+            Log.d("kotlintest", "round:" + round)
+            Log.d("kotlintest", "turnDataRoundCount:" + turnDataRoundCount.toString())
+            Log.d("kotlintest", "round_count:" + round_count.toString())
+            Log.d("kotlintest", "tableChips:" + tableChips.toString())
+            Log.d("kotlintest", "turnDataChips:" + turnDataChips.toString() )
+            Log.d("kotlintest", "playChips:" + playChips.toString())
+
             playingChipsText.text = playChips.toString()
             playingCheck = "play"
         }
 
         playingFoldButton.setOnClickListener {
+            chipsNum1 = ""
+            chipsNum2 = ""
+            chipsNum3 = ""
+            chipsNum4 = ""
+            chipsNum5 = ""
+            chipsNum6 = ""
+            chipsNum7 = ""
             playingChipsText.text = "0"
             playingCheck = "fold"
         }
 
         playingAllInButton.setOnClickListener {
+            chipsNum1 = ""
+            chipsNum2 = ""
+            chipsNum3 = ""
+            chipsNum4 = ""
+            chipsNum5 = ""
+            chipsNum6 = ""
+            chipsNum7 = ""
             playChips = memberChips
             playingChipsText.text = playChips.toString()
             playingCheck = "play"
@@ -572,17 +627,31 @@ class PlayingActivity : AppCompatActivity() {
             if (playingChipsText.text != "") {
                 tableTotalChips = tableTotalChips + playingChipsText.text.toString().toInt()
                 //テーブルチップとの比較
-                when {
-                    playingChipsText.text.toString().toInt() == tableChips -> {
-                        if(playingCheck != "fold") {
-                            sameChipsPlayer++
+                if (turnDataCount == count && turnDataRound == round && turnDataRoundCount + 1 == round_count) {
+                    when {
+                        playingChipsText.text.toString().toInt() == tableChips - turnDataChips -> {
+                            if(playingCheck != "fold") {
+                                sameChipsPlayer++
+                            }
+                        }
+                        playingChipsText.text.toString().toInt() > tableChips - turnDataChips -> {
+                            sameChipsPlayer = 1
+                            tableChips = playingChipsText.text.toString().toInt()
                         }
                     }
-                    playingChipsText.text.toString().toInt() > tableChips -> {
-                        sameChipsPlayer = 1
-                        tableChips = playingChipsText.text.toString().toInt()
+                } else {
+                    when {
+                        playingChipsText.text.toString().toInt() == tableChips -> {
+                            if (playingCheck != "fold") {
+                                sameChipsPlayer++
+                            }
+                        }
+                        playingChipsText.text.toString().toInt() > tableChips -> {
+                            sameChipsPlayer = 1
+                            tableChips = playingChipsText.text.toString().toInt()
+                        }
                     }
-                 }
+                }
                 mRealm.beginTransaction()
                 val turnRealmResults = mRealm.where(Turn::class.java).findAll()
 
@@ -618,7 +687,7 @@ class PlayingActivity : AppCompatActivity() {
                 mTurn!!.round_count = round_count
                 mTurn!!.player = "自分"
                 mTurn!!.player_id = player_id
-                if (playingCheck == "fold" && round == "preflop" && bigBlind == tableChips) {
+                if (playingCheck == "fold" && round == "preflop" && round_count == 1) {
                     when (playingNum) {
                         preFlopNum -> {
                             Log.d("kotlintest", "登録PA:SB")
@@ -626,6 +695,7 @@ class PlayingActivity : AppCompatActivity() {
                             mTurn!!.memberChips = playerTotalChips - smallBlind
                             member!!.playChips = smallBlind
                             member!!.memberChips = playerTotalChips - smallBlind
+                            tableTotalChips += smallBlind
                         }
                         bigBlindNum -> {
                             Log.d("kotlintest", "登録PA:BB")
@@ -633,6 +703,7 @@ class PlayingActivity : AppCompatActivity() {
                             mTurn!!.memberChips = playerTotalChips - bigBlind
                             member!!.playChips = bigBlind
                             member!!.memberChips = playerTotalChips - bigBlind
+                            tableTotalChips += bigBlind
                         }
                         else -> {
                             Log.d("kotlintest", "登録PA:else")
