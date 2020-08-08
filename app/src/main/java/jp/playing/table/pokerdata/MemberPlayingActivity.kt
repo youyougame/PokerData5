@@ -47,6 +47,7 @@ class MemberPlayingActivity : AppCompatActivity() {
     private var startNum = 0
     private var flopNum = 0
     private var preFlopNum = 0
+    private var bigBlindNum = 0
     private var playingNum = 0
     private var foldPlayer = 0
     private var sameChipsPlayer = 0
@@ -59,6 +60,10 @@ class MemberPlayingActivity : AppCompatActivity() {
     private var player_id = ""
 
     private var turnDataChips = 0
+    private var turnDataCount = 0
+    private var turnDataRound = ""
+    private var turnDataRoundCount = 0
+    private var turnDataPlayer = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,9 +93,11 @@ class MemberPlayingActivity : AppCompatActivity() {
         tableTotalChips = intent.getIntExtra("tableTotalChips", 0)
         flopNum = intent.getIntExtra("flopNum", 0)
         preFlopNum = intent.getIntExtra("preFlopNum", 0)
+        bigBlindNum = intent.getIntExtra("bigBlindNum", 0)
         playingNum = intent.getIntExtra("playingNum", 0)
         foldPlayer = intent.getIntExtra("foldPlayer", 0)
         sameChipsPlayer = intent.getIntExtra("sameChipsPlayer", 0)
+
 
         if (round == "flop") {
             startNum = flopNum
@@ -124,6 +131,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                 Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[myRound]:" + myRound.toString())
                 Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[flopNum]:" + flopNum.toString())
                 Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[preFlopNum]:" + preFlopNum.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[bigBlindNum]" + bigBlindNum.toString())
                 Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[playingNum]:" + playingNum.toString())
                 Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[foldPlayer]:" + foldPlayer.toString())
                 Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[sameChipsPlayer]:" + sameChipsPlayer.toString())
@@ -131,6 +139,10 @@ class MemberPlayingActivity : AppCompatActivity() {
                 Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[bigBlind]:" + bigBlind.toString())
                 Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[tableChips]:" + tableChips.toString())
                 Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[tableTotalChips]:" + tableTotalChips.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[bigBlind]:" + bigBlind)
+                Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[smallBlind]:" + smallBlind)
+                Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[tableChips]:" + tableChips)
+                Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[tableTotalChips]:" + tableTotalChips)
 
                 intent.putExtra("memberNum", memberNum)
                 intent.putExtra("game_id", game_id)
@@ -152,6 +164,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                 intent.putExtra("tableTotalChips", tableTotalChips)
                 intent.putExtra("flopNum", flopNum)
                 intent.putExtra("preFlopNum", preFlopNum)
+                intent.putExtra("bigBlindNum", bigBlindNum)
                 intent.putExtra("playingNum", playingNum)
                 intent.putExtra("foldPlayer", foldPlayer)
                 intent.putExtra("sameChipsPlayer", sameChipsPlayer)
@@ -186,6 +199,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                 Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[myRound]:" + myRound.toString())
                 Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[flopNum]:" + flopNum.toString())
                 Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[preFlopNum]:" + preFlopNum.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[bigBlindNum]" + bigBlindNum.toString())
                 Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[playingNum]:" + playingNum.toString())
                 Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[foldPlayer]:" + foldPlayer.toString())
                 Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[sameChipsPlayer]:" + sameChipsPlayer.toString())
@@ -193,6 +207,11 @@ class MemberPlayingActivity : AppCompatActivity() {
                 Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[bigBlind]:" + bigBlind.toString())
                 Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[tableChips]:" + tableChips.toString())
                 Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[tableTotalChips]:" + tableTotalChips.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[bigBlind]:" + bigBlind)
+                Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[smallBlind]:" + smallBlind)
+                Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[tableChips]:" + tableChips)
+                Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[tableTotalChips]:" + tableTotalChips)
+
 
                 intent.putExtra("memberNum", memberNum)
                 intent.putExtra("game_id", game_id)
@@ -214,6 +233,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                 intent.putExtra("tableTotalChips", tableTotalChips)
                 intent.putExtra("flopNum", flopNum)
                 intent.putExtra("preFlopNum", preFlopNum)
+                intent.putExtra("bigBlindNum", bigBlindNum)
                 intent.putExtra("playingNum", playingNum)
                 intent.putExtra("foldPlayer", foldPlayer)
                 intent.putExtra("sameChipsPlayer", sameChipsPlayer)
@@ -229,6 +249,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                 Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[myRound]:" + myRound.toString())
                 Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[flopNum]:" + flopNum.toString())
                 Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[preFlopNum]:" + preFlopNum.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[bigBlindNum]" + bigBlindNum.toString())
                 Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[playingNum]:" + playingNum.toString())
                 Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[foldPlayer]:" + foldPlayer.toString())
                 Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[sameChipsPlayer]:" + sameChipsPlayer.toString())
@@ -236,6 +257,10 @@ class MemberPlayingActivity : AppCompatActivity() {
                 Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[bigBlind]:" + bigBlind.toString())
                 Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[tableChips]:" + tableChips.toString())
                 Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[tableTotalChips]:" + tableTotalChips.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[bigBlind]:" + bigBlind)
+                Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[smallBlind]:" + smallBlind)
+                Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[tableChips]:" + tableChips)
+                Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[tableTotalChips]:" + tableTotalChips)
 
                 intent.putExtra("memberNum", memberNum)
                 intent.putExtra("game_id", game_id)
@@ -257,6 +282,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                 intent.putExtra("tableTotalChips", tableTotalChips)
                 intent.putExtra("flopNum", flopNum)
                 intent.putExtra("preFlopNum", preFlopNum)
+                intent.putExtra("bigBlindNum", bigBlindNum)
                 intent.putExtra("playingNum", playingNum)
                 intent.putExtra("foldPlayer", foldPlayer)
                 intent.putExtra("sameChipsPlayer", sameChipsPlayer)
@@ -266,11 +292,14 @@ class MemberPlayingActivity : AppCompatActivity() {
 
 
         val turnRealmResults = mRealm.where(Turn::class.java).findAll()
-        val turnDataRealmResults = mRealm.where(Turn::class.java).equalTo("player_id", dataPlayerId).findAll()
+        val turnDataRealmResults = mRealm.where(Turn::class.java).equalTo("player", playerName).findAll()
         if (turnDataRealmResults.toString() != "[]") {
             val turnDataRealmResultsId = turnDataRealmResults.max("id")!!.toInt()
             turnDataChips = turnRealmResults[turnDataRealmResultsId]!!.playChips
-            var turnDataRound = turnRealmResults[turnDataRealmResultsId]!!.round //前回の自分のラウンド
+            turnDataRound = turnRealmResults[turnDataRealmResultsId]!!.round //前回の自分のラウンド
+            turnDataCount = turnRealmResults[turnDataRealmResultsId]!!.count //前回のゲーム数
+            turnDataRoundCount = turnRealmResults[turnDataRealmResultsId]!!.round_count //ラウンド内の周数
+            turnDataPlayer = turnRealmResults[turnDataRealmResultsId]!!.player //プレイヤー名
 
             if (turnDataChips == null || turnDataRound != round) {
                 turnDataChips = 0
@@ -279,13 +308,17 @@ class MemberPlayingActivity : AppCompatActivity() {
 
         supportActionBar?.title = playerName
 
-        memberPlayingNameText.text = "ミニマムベット：" + tableChips + "  " + "ミニマムレイズ：" + tableChips * 2
+        memberPlayingNameText.text = "ミニマムベット：" + tableChips + " " + "ポット：" + tableTotalChips
 
-        if (round == "preflop" && round_count == 1) {
-            memberChangeChipsText.text = "0"
-        } else {
-            memberChangeChipsText.text = turnDataChips.toString()
-        }
+        Log.d("kotlintest", turnDataChips.toString())
+
+        memberChangeChipsText.text = "0"
+
+//        if (round == "preflop" && round_count == 1) {
+//            memberChangeChipsText.text = "0"
+//        } else {
+//            memberChangeChipsText.text = turnDataChips.toString()
+//        }
 
 
         //アクションボタンのUI表示設定
@@ -305,22 +338,81 @@ class MemberPlayingActivity : AppCompatActivity() {
 
         //UI部品の設定
         memberPlayingCheckButton.setOnClickListener {
+            chipsNum1 = ""
+            chipsNum2 = ""
+            chipsNum3 = ""
+            chipsNum4 = ""
+            chipsNum5 = ""
+            chipsNum6 = ""
+            chipsNum7 = ""
             memberChangeChipsText.text = playChips.toString()
             playingCheck = "play"
         }
 
         memberPlayingCallButton.setOnClickListener {
-            playChips = tableChips
+            chipsNum1 = ""
+            chipsNum2 = ""
+            chipsNum3 = ""
+            chipsNum4 = ""
+            chipsNum5 = ""
+            chipsNum6 = ""
+            chipsNum7 = ""
+            Log.d("kotlintest", "turnDataCount:" + turnDataCount.toString())
+            Log.d("kotlintest", "count:" + count.toString())
+            Log.d("kotlintest", "turnDataRound:" + turnDataRound)
+            Log.d("kotlintest", "round:" + round)
+            Log.d("kotlintest", "turnDataRoundCount:" + turnDataRoundCount.toString())
+            Log.d("kotlintest", "round_count:" + round_count.toString())
+            Log.d("kotlintest", "turnDataPlayer:" + turnDataPlayer)
+            Log.d("kotlintest", "playerName:" + playerName)
+            Log.d("kotlintest", "tableChips:" + tableChips.toString())
+            Log.d("kotlintest", "turnDataChips:" + turnDataChips.toString() )
+            Log.d("kotlintest", "playChips:" + playChips.toString())
+
+            if (turnDataCount == count && turnDataRound == round && turnDataRoundCount + 1 == round_count && turnDataPlayer == playerName) {
+                Log.d("kotlintest", "playChips = tableChips - turnDataChips")
+                playChips = tableChips - turnDataChips
+            } else {
+                Log.d("kotlintest", "playChips = tableChips")
+                playChips = tableChips
+            }
+
+            Log.d("kotlintest", "turnDataCount:" + turnDataCount.toString())
+            Log.d("kotlintest", "count:" + count.toString())
+            Log.d("kotlintest", "turnDataRound:" + turnDataRound)
+            Log.d("kotlintest", "round:" + round)
+            Log.d("kotlintest", "turnDataRoundCount:" + turnDataRoundCount.toString())
+            Log.d("kotlintest", "round_count:" + round_count.toString())
+            Log.d("kotlintest", "turnDataPlayer:" + turnDataPlayer)
+            Log.d("kotlintest", "playerName:" + playerName)
+            Log.d("kotlintest", "tableChips:" + tableChips.toString())
+            Log.d("kotlintest", "turnDataChips:" + turnDataChips.toString() )
+            Log.d("kotlintest", "playChips:" + playChips.toString())
+
             memberChangeChipsText.text = playChips.toString()
             playingCheck = "play"
         }
 
         memberPlayingFoldButton.setOnClickListener {
+            chipsNum1 = ""
+            chipsNum2 = ""
+            chipsNum3 = ""
+            chipsNum4 = ""
+            chipsNum5 = ""
+            chipsNum6 = ""
+            chipsNum7 = ""
             memberChangeChipsText.text = "0"
             playingCheck = "fold"
         }
 
         memberPlayingAllInButton.setOnClickListener {
+            chipsNum1 = ""
+            chipsNum2 = ""
+            chipsNum3 = ""
+            chipsNum4 = ""
+            chipsNum5 = ""
+            chipsNum6 = ""
+            chipsNum7 = ""
             playChips = memberChips
             memberChangeChipsText.text = playChips.toString()
             playingCheck = "play"
@@ -602,15 +694,29 @@ class MemberPlayingActivity : AppCompatActivity() {
                 tableTotalChips = tableTotalChips + memberChangeChipsText.text.toString().toInt()
 
                 //テーブルチップとの比較
-                when {
-                    memberChangeChipsText.text.toString().toInt() == tableChips -> {
-                        if(playingCheck != "fold") {
-                            sameChipsPlayer++
+                if (turnDataCount == count && turnDataRound == round && turnDataRoundCount + 1 == round_count && turnDataPlayer == playerName) {
+                    when {
+                        memberChangeChipsText.text.toString().toInt() == tableChips - turnDataChips -> {
+                            if(playingCheck != "fold") {
+                                sameChipsPlayer++
+                            }
+                        }
+                        memberChangeChipsText.text.toString().toInt() > tableChips - turnDataChips -> {
+                            sameChipsPlayer = 1
+                            tableChips = memberChangeChipsText.text.toString().toInt()
                         }
                     }
-                    memberChangeChipsText.text.toString().toInt() > tableChips -> {
-                        sameChipsPlayer = 1
-                        tableChips = memberChangeChipsText.text.toString().toInt()
+                } else {
+                    when {
+                        memberChangeChipsText.text.toString().toInt() == tableChips -> {
+                            if (playingCheck != "fold") {
+                                sameChipsPlayer++
+                            }
+                        }
+                        memberChangeChipsText.text.toString().toInt() > tableChips -> {
+                            sameChipsPlayer = 1
+                            tableChips = memberChangeChipsText.text.toString().toInt()
+                        }
                     }
                 }
 
@@ -639,6 +745,9 @@ class MemberPlayingActivity : AppCompatActivity() {
                 player_id = memberRealmResults[playerNumId]!!.member_id
                 val playerTotalChips = memberRealmResults[playerNumId]!!.memberChips
 
+                //Memberを更新
+                var member = mRealm.where(Member::class.java).equalTo("id", playerNumId).findFirst()
+
                 //Turnを新規登録
                 mTurn!!.game_id = game_id
                 mTurn!!.count = count
@@ -646,23 +755,67 @@ class MemberPlayingActivity : AppCompatActivity() {
                 mTurn!!.round_count = round_count
                 mTurn!!.player = playerName
                 mTurn!!.player_id = player_id
-                mTurn!!.playChips = memberChangeChipsText.text.toString().toInt() - turnDataChips.toString().toInt()
-                mTurn!!.memberChips = playerTotalChips - memberChangeChipsText.text.toString().toInt()
+                if (playingCheck == "fold" && round == "preflop" && round_count == 1) {
+                    when (playingNum) {
+                        preFlopNum -> {
+                            Log.d("kotlintest", "登録MPA:SB")
+                            mTurn!!.playChips = smallBlind
+                            mTurn!!.memberChips = playerTotalChips - smallBlind
+                            member!!.playChips = smallBlind
+                            member!!.memberChips = playerTotalChips - smallBlind
+                            tableTotalChips += smallBlind
+                        }
+                        bigBlindNum -> {
+                            Log.d("kotlintest", "登録MPA:BB")
+                            mTurn!!.playChips = bigBlind
+                            mTurn!!.memberChips = playerTotalChips - bigBlind
+                            member!!.playChips = bigBlind
+                            member!!.memberChips = playerTotalChips - bigBlind
+                            tableTotalChips += bigBlind
+                        }
+                        else -> {
+                            Log.d("kotlintest", "登録MPA:else")
+                            mTurn!!.playChips = 0
+                            mTurn!!.memberChips = playerTotalChips
+                            member!!.playChips = 0
+                            member!!.memberChips = playerTotalChips
+
+                        }
+                    }
+                } else {
+                    Log.d("kotlintest", "登録MPA:play")
+                    mTurn!!.playChips = memberChangeChipsText.text.toString().toInt()
+                    mTurn!!.memberChips = playerTotalChips - memberChangeChipsText.text.toString().toInt()
+                    member!!.playChips = memberChangeChipsText.text.toString().toInt()
+                    member!!.memberChips = playerTotalChips - memberChangeChipsText.text.toString().toInt()
+                }
                 mTurn!!.tableChips = tableChips
                 mTurn!!.tableTotalChips = tableTotalChips
 
-                //Memberを更新
-                var member = mRealm.where(Member::class.java).equalTo("id", playerNumId).findFirst()
+                Log.d("kotlintest", "mTurn!!.game_id:" + mTurn!!.game_id.toString())
+                Log.d("kotlintest", "mTurn!!.count:" + mTurn!!.count.toString())
+                Log.d("kotlintest", "mTurn!!.round:" + mTurn!!.round)
+                Log.d("kotlintest", "mTurn!!.round_count:" + mTurn!!.round_count.toString())
+                Log.d("kotlintest", "mTurn!!.player:" + mTurn!!.player)
+                Log.d("kotlintest", "mTurn!!.player_id:" + mTurn!!.player_id)
+                Log.d("kotlintest", "mTurn!!.playChips:" + mTurn!!.playChips.toString())
+                Log.d("kotlintest", "mTurn!!.memberChips:" + mTurn!!.memberChips.toString())
+                Log.d("kotlintest", "mTurn!!.tableChips:" + mTurn!!.tableChips.toString())
+                Log.d("kotlintest", "mTurn!!.tableTotalChips:" + mTurn!!.tableTotalChips.toString())
 
                 if (playingCheck == "fold") {
                     member!!.playingCheck = "fold"
                     foldPlayer++
                 }
 
-                member!!.playChips = memberChangeChipsText.text.toString().toInt() - turnDataChips.toString().toInt()
-                member!!.memberChips = playerTotalChips - memberChangeChipsText.text.toString().toInt()
+
                 member!!.tableChips = tableChips
                 member!!.tableTotalChips = tableTotalChips
+
+                Log.d("kotlintest", "member!!.playChips:" + member!!.playChips.toString())
+                Log.d("kotlintest", "member!!.memberChips:" + member!!.memberChips.toString())
+                Log.d("kotlintest", "member!!.tableChips:" + member!!.tableChips.toString())
+                Log.d("kotlintest", "member!!.tableTotalChips:" + member!!.tableTotalChips.toString())
 
                 mRealm.copyToRealmOrUpdate(mTurn!!)
                 mRealm.copyToRealmOrUpdate(mMember!!)
@@ -682,20 +835,25 @@ class MemberPlayingActivity : AppCompatActivity() {
                     //WinnerCheckAcitivtyへ移動
                     val intent = Intent(this@MemberPlayingActivity, WinnerCheckActivity::class.java)
                     Log.d("kotlintest", "通過MPA4")
-                    Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[count]:" + count.toString())
-                    Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[round]:" + round)
-                    Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[round_count]:" + round_count.toString())
-                    Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[roundNum]:" + roundNum.toString())
-                    Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[myRound]:" + myRound.toString())
-                    Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[flopNum]:" + flopNum.toString())
-                    Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[preFlopNum]:" + preFlopNum.toString())
-                    Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[playingNum]:" + playingNum.toString())
-                    Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[foldPlayer]:" + foldPlayer.toString())
-                    Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[sameChipsPlayer]:" + sameChipsPlayer.toString())
-                    Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[smallBlind]:" + smallBlind.toString())
-                    Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[bigBlind]:" + bigBlind.toString())
-                    Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[tableChips]:" + tableChips.toString())
-                    Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[tableTotalChips]:" + tableTotalChips.toString())
+                    Log.d("kotlintest", "MemberPlayingActivity -> WinnerCheckActivity[count]:" + count.toString())
+                    Log.d("kotlintest", "MemberPlayingActivity -> WinnerCheckActivity[round]:" + round)
+                    Log.d("kotlintest", "MemberPlayingActivity -> WinnerCheckActivity[round_count]:" + round_count.toString())
+                    Log.d("kotlintest", "MemberPlayingActivity -> WinnerCheckActivity[roundNum]:" + roundNum.toString())
+                    Log.d("kotlintest", "MemberPlayingActivity -> WinnerCheckActivity[myRound]:" + myRound.toString())
+                    Log.d("kotlintest", "MemberPlayingActivity -> WinnerCheckActivity[flopNum]:" + flopNum.toString())
+                    Log.d("kotlintest", "MemberPlayingActivity -> WinnerCheckActivity[preFlopNum]:" + preFlopNum.toString())
+                    Log.d("kotlintest", "MemberPlayingActivity -> WinnerCheckActivity[bigBlindNum]" + bigBlindNum.toString())
+                    Log.d("kotlintest", "MemberPlayingActivity -> WinnerCheckActivity[playingNum]:" + playingNum.toString())
+                    Log.d("kotlintest", "MemberPlayingActivity -> WinnerCheckActivity[foldPlayer]:" + foldPlayer.toString())
+                    Log.d("kotlintest", "MemberPlayingActivity -> WinnerCheckActivity[sameChipsPlayer]:" + sameChipsPlayer.toString())
+                    Log.d("kotlintest", "MemberPlayingActivity -> WinnerCheckActivity[smallBlind]:" + smallBlind.toString())
+                    Log.d("kotlintest", "MemberPlayingActivity -> WinnerCheckActivity[bigBlind]:" + bigBlind.toString())
+                    Log.d("kotlintest", "MemberPlayingActivity -> WinnerCheckActivity[tableChips]:" + tableChips.toString())
+                    Log.d("kotlintest", "MemberPlayingActivity -> WinnerCheckActivity[tableTotalChips]:" + tableTotalChips.toString())
+                    Log.d("kotlintest", "MemberPlayingActivity -> WinnerCheckActivity[bigBlind]:" + bigBlind)
+                    Log.d("kotlintest", "MemberPlayingActivity -> WinnerCheckActivity[smallBlind]:" + smallBlind)
+                    Log.d("kotlintest", "MemberPlayingActivity -> WinnerCheckActivity[tableChips]:" + tableChips)
+                    Log.d("kotlintest", "MemberPlayingActivity -> WinnerCheckActivity[tableTotalChips]:" + tableTotalChips)
 
                     intent.putExtra("memberNum", memberNum)
                     intent.putExtra("game_id", game_id)
@@ -717,6 +875,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                     intent.putExtra("tableTotalChips", tableTotalChips)
                     intent.putExtra("flopNum", flopNum)
                     intent.putExtra("preFlopNum", preFlopNum)
+                    intent.putExtra("bigBlindNum", bigBlindNum)
                     intent.putExtra("playingNum", playingNum)
                     intent.putExtra("foldPlayer", foldPlayer)
                     intent.putExtra("sameChipsPlayer", sameChipsPlayer)
@@ -750,6 +909,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                         Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[myRound]:" + myRound.toString())
                         Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[flopNum]:" + flopNum.toString())
                         Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[preFlopNum]:" + preFlopNum.toString())
+                        Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[bigBlindNum]" + bigBlindNum.toString())
                         Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[playingNum]:" + playingNum.toString())
                         Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[foldPlayer]:" + foldPlayer.toString())
                         Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[sameChipsPlayer]:" + sameChipsPlayer.toString())
@@ -757,6 +917,10 @@ class MemberPlayingActivity : AppCompatActivity() {
                         Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[bigBlind]:" + bigBlind.toString())
                         Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[tableChips]:" + tableChips.toString())
                         Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[tableTotalChips]:" + tableTotalChips.toString())
+                        Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[bigBlind]:" + bigBlind)
+                        Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[smallBlind]:" + smallBlind)
+                        Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[tableChips]:" + tableChips)
+                        Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[tableTotalChips]:" + tableTotalChips)
 
                         intent.putExtra("memberNum", memberNum)
                         intent.putExtra("game_id", game_id)
@@ -778,6 +942,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                         intent.putExtra("tableTotalChips", tableTotalChips)
                         intent.putExtra("flopNum", flopNum)
                         intent.putExtra("preFlopNum", preFlopNum)
+                        intent.putExtra("bigBlindNum", bigBlindNum)
                         intent.putExtra("playingNum", playingNum)
                         intent.putExtra("foldPlayer", foldPlayer)
                         intent.putExtra("sameChipsPlayer", sameChipsPlayer)
@@ -816,6 +981,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                             Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[myRound]:" + myRound.toString())
                             Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[flopNum]:" + flopNum.toString())
                             Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[preFlopNum]:" + preFlopNum.toString())
+                            Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[bigBlindNum]" + bigBlindNum.toString())
                             Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[playingNum]:" + playingNum.toString())
                             Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[foldPlayer]:" + foldPlayer.toString())
                             Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[sameChipsPlayer]:" + sameChipsPlayer.toString())
@@ -823,6 +989,10 @@ class MemberPlayingActivity : AppCompatActivity() {
                             Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[bigBlind]:" + bigBlind.toString())
                             Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[tableChips]:" + tableChips.toString())
                             Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[tableTotalChips]:" + tableTotalChips.toString())
+                            Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[bigBlind]:" + bigBlind)
+                            Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[smallBlind]:" + smallBlind)
+                            Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[tableChips]:" + tableChips)
+                            Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[tableTotalChips]:" + tableTotalChips)
 
                             intent.putExtra("memberNum", memberNum)
                             intent.putExtra("game_id", game_id)
@@ -844,6 +1014,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                             intent.putExtra("tableTotalChips", tableTotalChips)
                             intent.putExtra("flopNum", flopNum)
                             intent.putExtra("preFlopNum", preFlopNum)
+                            intent.putExtra("bigBlindNum", bigBlindNum)
                             intent.putExtra("playingNum", playingNum)
                             intent.putExtra("foldPlayer", foldPlayer)
                             intent.putExtra("sameChipsPlayer", sameChipsPlayer)
@@ -863,6 +1034,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                             Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[myRound]:" + myRound.toString())
                             Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[flopNum]:" + flopNum.toString())
                             Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[preFlopNum]:" + preFlopNum.toString())
+                            Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[bigBlindNum]" + bigBlindNum.toString())
                             Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[playingNum]:" + playingNum.toString())
                             Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[foldPlayer]:" + foldPlayer.toString())
                             Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[sameChipsPlayer]:" + sameChipsPlayer.toString())
@@ -870,6 +1042,11 @@ class MemberPlayingActivity : AppCompatActivity() {
                             Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[bigBlind]:" + bigBlind.toString())
                             Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[tableChips]:" + tableChips.toString())
                             Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[tableTotalChips]:" + tableTotalChips.toString())
+                            Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[bigBlind]:" + bigBlind)
+                            Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[smallBlind]:" + smallBlind)
+                            Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[tableChips]:" + tableChips)
+                            Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[tableTotalChips]:" + tableTotalChips)
+
 
                             intent.putExtra("memberNum", memberNum)
                             intent.putExtra("game_id", game_id)
@@ -891,6 +1068,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                             intent.putExtra("tableTotalChips", tableTotalChips)
                             intent.putExtra("flopNum", flopNum)
                             intent.putExtra("preFlopNum", preFlopNum)
+                            intent.putExtra("bigBlindNum", bigBlindNum)
                             intent.putExtra("playingNum", playingNum)
                             intent.putExtra("foldPlayer", foldPlayer)
                             intent.putExtra("sameChipsPlayer", sameChipsPlayer)

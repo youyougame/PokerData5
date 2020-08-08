@@ -261,11 +261,6 @@ class PlayingActivity : AppCompatActivity() {
 
         playingChipsText.text = "0"
 
-//        if (round == "preflop" && round_count == 1) {
-//            playingChipsText.text = "0"
-//        } else {
-//            playingChipsText.text = turnDataChips.toString()
-//        }
 
         cardSetting1()
         cardSetting2()

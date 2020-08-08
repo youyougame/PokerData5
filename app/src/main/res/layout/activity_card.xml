@@ -40,8 +40,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:id="@+id/cardHandImageView1"
-                android:scaleType="fitXY"/>
+                android:id="@+id/cardHandImageView1" />
 
             <Space
                 android:layout_width="0dp"
@@ -52,8 +51,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:id="@+id/cardHandImageView2"
-                android:scaleType="fitXY"/>
+                android:id="@+id/cardHandImageView2" />
 
             <Space
                 android:layout_width="0dp"
@@ -81,40 +79,35 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:id="@+id/cardComImageView1"
-                android:src="@drawable/card_back"
-                android:scaleType="fitXY"/>
+                android:src="@drawable/card_back" />
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:id="@+id/cardComImageView2"
-                android:src="@drawable/card_back"
-                android:scaleType="fitXY"/>
+                android:src="@drawable/card_back" />
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:id="@+id/cardComImageView3"
-                android:src="@drawable/card_back"
-                android:scaleType="fitXY"/>
+                android:src="@drawable/card_back" />
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:id="@+id/cardComImageView4"
-                android:src="@drawable/card_back"
-                android:scaleType="fitXY"/>
+                android:src="@drawable/card_back" />
 
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:id="@+id/cardComImageView5"
-                android:src="@drawable/card_back"
-                android:scaleType="fitXY"/>
+                android:src="@drawable/card_back" />
 
         </LinearLayout>
 

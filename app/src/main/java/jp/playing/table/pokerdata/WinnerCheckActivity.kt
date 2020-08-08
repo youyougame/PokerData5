@@ -41,6 +41,7 @@ class WinnerCheckActivity : AppCompatActivity() {
     private var startNum = 0
     private var flopNum = 0
     private var preFlopNum = 0
+    private var bigBlindNum = 0
     private var playingNum = 0
     private var foldPlayer = 0
     private var sameChipsPlayer = 0
@@ -118,6 +119,7 @@ class WinnerCheckActivity : AppCompatActivity() {
         tableTotalChips = intent.getIntExtra("tableTotalChips", 0)
         flopNum = intent.getIntExtra("flopNum", 0)
         preFlopNum = intent.getIntExtra("preFlopNum", 0)
+        bigBlindNum = intent.getIntExtra("bigBlindNum", 0)
         playingNum = intent.getIntExtra("playingNum", 0)
         foldPlayer = intent.getIntExtra("foldPlayer", 0)
         sameChipsPlayer = intent.getIntExtra("sameChipsPlayer", 0)
@@ -349,7 +351,14 @@ class WinnerCheckActivity : AppCompatActivity() {
 
         winnerCheckDoneButton.setOnClickListener {
             saveData()
+            if (flopNum == memberNum) {
+                flopNum = 1
+            } else {
+                flopNum++
+            }
             playingNum = flopNum
+
+            count++
 
             //HandActivityへ移動
             val intent = Intent(this@WinnerCheckActivity, HandActivity::class.java)
