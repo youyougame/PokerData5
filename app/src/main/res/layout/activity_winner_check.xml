@@ -105,7 +105,15 @@
                 android:id="@+id/playerWinnerCheckEditText1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"/>
+                android:layout_weight="2"
+                android:inputType="number"/>
+
+            <Button
+                android:id="@+id/playerWinnerCheckButton1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:text="全額" />
 
         </LinearLayout>
 
@@ -146,12 +154,20 @@
                 android:id="@+id/playerWinnerCheckEditText2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"/>
+                android:layout_weight="2"
+                android:inputType="number"/>
+
+            <Button
+                android:id="@+id/playerWinnerCheckButton2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:text="全額" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal">
@@ -161,7 +177,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:gravity="center"/>
+                android:gravity="center" />
 
             <ImageView
                 android:id="@+id/firstHandWinnerCheckImageView3"
@@ -181,13 +197,21 @@
                 android:id="@+id/playerWinnerCheckSpinner3"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="3"/>
+                android:layout_weight="3" />
 
             <EditText
                 android:id="@+id/playerWinnerCheckEditText3"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"/>
+                android:layout_weight="2"
+                android:inputType="number" />
+
+            <Button
+                android:id="@+id/playerWinnerCheckButton3"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:text="全額" />
 
         </LinearLayout>
 
@@ -228,7 +252,15 @@
                 android:id="@+id/playerWinnerCheckEditText4"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"/>
+                android:layout_weight="2"
+                android:inputType="number"/>
+
+            <Button
+                android:id="@+id/playerWinnerCheckButton4"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:text="全額" />
 
         </LinearLayout>
 
@@ -269,7 +301,15 @@
                 android:id="@+id/playerWinnerCheckEditText5"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"/>
+                android:layout_weight="2"
+                android:inputType="number"/>
+
+            <Button
+                android:id="@+id/playerWinnerCheckButton5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:text="全額" />
 
         </LinearLayout>
 
@@ -310,7 +350,15 @@
                 android:id="@+id/playerWinnerCheckEditText6"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"/>
+                android:layout_weight="2"
+                android:inputType="number"/>
+
+            <Button
+                android:id="@+id/playerWinnerCheckButton6"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:text="全額" />
 
         </LinearLayout>
 
@@ -351,7 +399,15 @@
                 android:id="@+id/playerWinnerCheckEditText7"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"/>
+                android:layout_weight="2"
+                android:inputType="number"/>
+
+            <Button
+                android:id="@+id/playerWinnerCheckButton7"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:text="全額" />
 
         </LinearLayout>
 
@@ -392,7 +448,15 @@
                 android:id="@+id/playerWinnerCheckEditText8"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"/>
+                android:layout_weight="2"
+                android:inputType="number"/>
+
+            <Button
+                android:id="@+id/playerWinnerCheckButton8"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:text="全額" />
 
         </LinearLayout>
 
@@ -433,7 +497,15 @@
                 android:id="@+id/playerWinnerCheckEditText9"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"/>
+                android:layout_weight="2"
+                android:inputType="number"/>
+
+            <Button
+                android:id="@+id/playerWinnerCheckButton9"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:text="全額" />
 
         </LinearLayout>
 
@@ -474,7 +546,15 @@
                 android:id="@+id/playerWinnerCheckEditText10"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"/>
+                android:layout_weight="2"
+                android:inputType="number"/>
+
+            <Button
+                android:id="@+id/playerWinnerCheckButton10"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:text="全額" />
 
         </LinearLayout>
 

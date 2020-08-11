@@ -63,6 +63,8 @@ class CardActivity : AppCompatActivity() {
     private var cardComSet4 = ""
     private var cardComSet5 = ""
 
+    private var firstRealm = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_card)
@@ -95,6 +97,7 @@ class CardActivity : AppCompatActivity() {
         playingNum = intent.getIntExtra("playingNum", 0)
         foldPlayer = intent.getIntExtra("foldPlayer", 0)
         sameChipsPlayer = intent.getIntExtra("sameChipsPlayer", 0)
+        firstRealm = intent.getStringExtra("firstRealm")
 
         if (roundCheck == "showdown") {
             when {
@@ -461,6 +464,7 @@ class CardActivity : AppCompatActivity() {
                                         mRealm.where(Hand::class.java).equalTo("game_id", game_id)
                                             .findAll()
                                     val handId = hand.max("id")!!.toInt()
+                                    Log.d("kotlintest", "保存したハンド：" + hand.max("id")!!.toInt())
                                     val handDB =
                                         mRealm.where(Hand::class.java).equalTo("id", handId)
                                             .findFirst()
@@ -490,6 +494,7 @@ class CardActivity : AppCompatActivity() {
                             val hand =
                                 mRealm.where(Hand::class.java).equalTo("game_id", game_id).findAll()
                             val handId = hand.max("id")!!.toInt()
+                            Log.d("kotlintest", "保存したハンド：" + hand.max("id")!!.toInt())
                             val handDB = handRealmResults.get(handId)
                             mRealm.beginTransaction()
                             mHand = Hand()
@@ -513,6 +518,7 @@ class CardActivity : AppCompatActivity() {
                             val hand =
                                 mRealm.where(Hand::class.java).equalTo("game_id", game_id).findAll()
                             val handId = hand.max("id")!!.toInt()
+                            Log.d("kotlintest", "保存したハンド：" + hand.max("id")!!.toInt())
                             val handDB = handRealmResults.get(handId)
                             mRealm.beginTransaction()
                             mHand = Hand()
@@ -583,6 +589,7 @@ class CardActivity : AppCompatActivity() {
                                     val handRealmResults = mRealm.where(Hand::class.java).findAll()
                                     val hand = mRealm.where(Hand::class.java).equalTo("game_id", game_id).findAll()
                                     val handId = hand.max("id")!!.toInt()
+                                    Log.d("kotlintest", "保存したハンド：" + hand.max("id")!!.toInt())
                                     val handDB = handRealmResults.get(handId)
                                     mRealm.beginTransaction()
                                     mHand = Hand()
@@ -625,6 +632,7 @@ class CardActivity : AppCompatActivity() {
                                     val handRealmResults = mRealm.where(Hand::class.java).findAll()
                                     val hand = mRealm.where(Hand::class.java).equalTo("game_id", game_id).findAll()
                                     val handId = hand.max("id")!!.toInt()
+                                    Log.d("kotlintest", "保存したハンド：" + hand.max("id")!!.toInt())
                                     val handDB = handRealmResults.get(handId)
                                     mRealm.beginTransaction()
                                     mHand = Hand()
@@ -650,6 +658,7 @@ class CardActivity : AppCompatActivity() {
                             val handRealmResults = mRealm.where(Hand::class.java).findAll()
                             val hand = mRealm.where(Hand::class.java).equalTo("game_id", game_id).findAll()
                             val handId = hand.max("id")!!.toInt()
+                            Log.d("kotlintest", "保存したハンド：" + hand.max("id")!!.toInt())
                             val handDB = handRealmResults.get(handId)
                             mRealm.beginTransaction()
                             mHand = Hand()
@@ -1451,6 +1460,7 @@ class CardActivity : AppCompatActivity() {
                 intent.putExtra("playingNum", playingNum)
                 intent.putExtra("foldPlayer", foldPlayer)
                 intent.putExtra("sameChipsPlayer", sameChipsPlayer)
+                intent.putExtra("firstRealm", firstRealm)
                 startActivity(intent)
             }
 
@@ -1503,6 +1513,7 @@ class CardActivity : AppCompatActivity() {
                 intent.putExtra("playingNum", playingNum)
                 intent.putExtra("foldPlayer", foldPlayer)
                 intent.putExtra("sameChipsPlayer", sameChipsPlayer)
+                intent.putExtra("firstRealm", firstRealm)
                 startActivity(intent)
             }
         }
@@ -1556,6 +1567,13 @@ class CardActivity : AppCompatActivity() {
         intent.putExtra("playingNum", playingNum)
         intent.putExtra("foldPlayer", foldPlayer)
         intent.putExtra("sameChipsPlayer", sameChipsPlayer)
+        intent.putExtra("firstRealm", firstRealm)
         startActivity(intent)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        mRealm.close()
     }
 }

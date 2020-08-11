@@ -77,6 +77,7 @@ class TitleActivity : AppCompatActivity() {
             }
 
         mGame!!.id = identifier
+        Log.d("kotlintest","Game保存：" + identifier.toString())
 
         //タイトルの設定
         val title = titleNameEdit.text.toString()

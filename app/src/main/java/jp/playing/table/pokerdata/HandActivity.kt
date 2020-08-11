@@ -71,6 +71,8 @@ class HandActivity : AppCompatActivity() {
 
     private var handCard2Set = ""
 
+    private var firstRealm = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hand)
@@ -90,6 +92,7 @@ class HandActivity : AppCompatActivity() {
         bigBlind = intent.getIntExtra("bigBlind", 0)
         smallBlind = intent.getIntExtra("smallBlind", 0)
         myRound = intent.getIntExtra("myRound", myRound)
+        firstRealm = intent.getStringExtra("firstRealm")
 
 
         handChipsText.text = bigBlind.toString()
@@ -526,6 +529,7 @@ class HandActivity : AppCompatActivity() {
                                     0
                                 }
                             mHand!!.id = identifier
+                            Log.d("kotlintest", "保存したハンド：" + identifier.toString())
 
                             countCheack =
                                 if (handRealmResults.max("count") != null) {
@@ -548,6 +552,10 @@ class HandActivity : AppCompatActivity() {
                         val memberDataRealmResults = mRealm.where(Member::class.java).equalTo("memberName", "自分").findAll()
                         val memberRealmResultsId = memberDataRealmResults.max("id")!!.toInt()
                         val memberAdd = mRealm.where(Member::class.java).equalTo("id", memberRealmResultsId).findFirst()
+
+                        Log.d("kotlintest", "Handのプレイヤー名" + memberAdd!!.memberName)
+
+                        Log.d("kotlintest", "memberId:" + memberRealmResultsId.toString())
 
                         memberAdd!!.hand1 = playerHand1
                         memberAdd!!.hand2 = playerHand2
@@ -626,6 +634,7 @@ class HandActivity : AppCompatActivity() {
                                 intent.putExtra("playingNum", playingNum)
                                 intent.putExtra("foldPlayer", 0)
                                 intent.putExtra("sameChipsPlayer", 0)
+                                intent.putExtra("firstRealm", firstRealm)
                                 startActivity(intent)
                             }
 
@@ -676,6 +685,7 @@ class HandActivity : AppCompatActivity() {
                                 intent.putExtra("playingNum", playingNum)
                                 intent.putExtra("foldPlayer", 0)
                                 intent.putExtra("sameChipsPlayer", 0)
+                                intent.putExtra("firstRealm", firstRealm)
                                 startActivity(intent)
                             }
                         }

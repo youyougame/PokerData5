@@ -20,5 +20,5 @@ open class Member: RealmObject(), Serializable {
     var winnerHand = ""
 
     @PrimaryKey
-    var id: Int = 0
+    var id: Int? = null
 }

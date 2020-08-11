@@ -15,6 +15,9 @@ open class Turn : RealmObject(), Serializable {
     var memberChips: Int = 0 //プレイヤーの所持チップ
     var tableChips: Int = 0 //テーブルに出されたチップ
     var tableTotalChips: Int = 0 //テーブルの合計チップ
+    var hand1 = ""
+    var hand2 = ""
+    var winnerHand = ""
 
     @PrimaryKey
     var id: Int = 0

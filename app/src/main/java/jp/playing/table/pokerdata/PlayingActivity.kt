@@ -54,6 +54,7 @@ class PlayingActivity : AppCompatActivity() {
     private var sameChipsPlayer = 0
 
     private var memberChips = 0
+    private var turnMemberChips = 0
     private var playChips = 0
     private var player_id = ""
     private var playingCheck = ""
@@ -63,6 +64,8 @@ class PlayingActivity : AppCompatActivity() {
     private var turnDataRound = ""
     private var turnDataRoundCount = 0
     private var turnDataPlayer = ""
+
+    private var firstRealm = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,6 +107,7 @@ class PlayingActivity : AppCompatActivity() {
         playingNum = intent.getIntExtra("playingNum", 0)
         foldPlayer = intent.getIntExtra("foldPlayer", 0)
         sameChipsPlayer = intent.getIntExtra("sameChipsPlayer", 0)
+        firstRealm = intent.getStringExtra("firstRealm")
 
         if (round == "flop") {
             startNum = flopNum
@@ -113,9 +117,15 @@ class PlayingActivity : AppCompatActivity() {
 
         val memberRealmResults = mRealm.where(Member::class.java).findAll()
         val memberPlayerNumRealmResults = mRealm.where(Member::class.java).equalTo("memberRound", playingNum).findAll()
+        Log.d("kotlintest", memberPlayerNumRealmResults.toString())
         val playerNumId = memberPlayerNumRealmResults.max("id")!!.toInt()
-        val memberPlayingCheck = memberRealmResults[playerNumId]!!.playingCheck
-        val dataPlayerId = memberRealmResults[playerNumId]!!.member_id
+        val memberRealmData = mRealm.where(Member::class.java).equalTo("id", playerNumId).findFirst()
+        val memberPlayingCheck = memberRealmData!!.playingCheck
+        val turnChips = memberRealmData!!.memberChips
+//        Log.d("kotlintest", "受け取ったID：" + playerNumId)
+//        Log.d("kotlintest", memberRealmResults[playerNumId]!!.memberName)
+//        val memberPlayingCheck = memberRealmResults[playerNumId]!!.playingCheck
+//        val turnChips = memberRealmResults[playerNumId]!!.memberChips
 
         if (memberPlayingCheck == "fold") {
             if (sameChipsPlayer == memberNum - foldPlayer) {
@@ -173,6 +183,7 @@ class PlayingActivity : AppCompatActivity() {
                 intent.putExtra("playingNum", playingNum)
                 intent.putExtra("foldPlayer", foldPlayer)
                 intent.putExtra("sameChipsPlayer", sameChipsPlayer)
+                intent.putExtra("firstRealm", firstRealm)
                 startActivity(intent)
 
             }
@@ -237,6 +248,7 @@ class PlayingActivity : AppCompatActivity() {
             intent.putExtra("playingNum", playingNum)
             intent.putExtra("foldPlayer", foldPlayer)
             intent.putExtra("sameChipsPlayer", sameChipsPlayer)
+            intent.putExtra("firstRealm", firstRealm)
             startActivity(intent)
         }
 
@@ -289,6 +301,7 @@ class PlayingActivity : AppCompatActivity() {
             chipsNum7 = ""
             playingChipsText.text = playChips.toString()
             playingCheck = "play"
+            playingFoldText.text = ""
         }
 
         playingCallButton.setOnClickListener {
@@ -320,6 +333,7 @@ class PlayingActivity : AppCompatActivity() {
 
             playingChipsText.text = playChips.toString()
             playingCheck = "play"
+            playingFoldText.text = ""
         }
 
         playingFoldButton.setOnClickListener {
@@ -332,6 +346,8 @@ class PlayingActivity : AppCompatActivity() {
             chipsNum7 = ""
             playingChipsText.text = "0"
             playingCheck = "fold"
+
+            playingFoldText.text = "fold"
         }
 
         playingAllInButton.setOnClickListener {
@@ -342,9 +358,10 @@ class PlayingActivity : AppCompatActivity() {
             chipsNum5 = ""
             chipsNum6 = ""
             chipsNum7 = ""
-            playChips = memberChips
-            playingChipsText.text = playChips.toString()
+            playChips = turnChips
+            playingChipsText.text = turnChips.toString()
             playingCheck = "play"
+            playingFoldText.text = ""
         }
 
         playingNum1.setOnClickListener {
@@ -361,6 +378,7 @@ class PlayingActivity : AppCompatActivity() {
             }
             playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
             playingCheck = "play"
+            playingFoldText.text = ""
         }
 
         playingNum2.setOnClickListener {
@@ -377,6 +395,7 @@ class PlayingActivity : AppCompatActivity() {
             }
             playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
             playingCheck = "play"
+            playingFoldText.text = ""
         }
 
         playingNum3.setOnClickListener {
@@ -393,6 +412,7 @@ class PlayingActivity : AppCompatActivity() {
             }
             playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
             playingCheck = "play"
+            playingFoldText.text = ""
         }
 
         playingNum4.setOnClickListener {
@@ -409,6 +429,7 @@ class PlayingActivity : AppCompatActivity() {
             }
             playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
             playingCheck = "play"
+            playingFoldText.text = ""
         }
 
         playingNum5.setOnClickListener {
@@ -425,6 +446,7 @@ class PlayingActivity : AppCompatActivity() {
             }
             playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
             playingCheck = "play"
+            playingFoldText.text = ""
         }
 
         playingNum6.setOnClickListener {
@@ -441,6 +463,7 @@ class PlayingActivity : AppCompatActivity() {
             }
             playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
             playingCheck = "play"
+            playingFoldText.text = ""
         }
 
         playingNum7.setOnClickListener {
@@ -456,6 +479,7 @@ class PlayingActivity : AppCompatActivity() {
             }
             playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
             playingCheck = "play"
+            playingFoldText.text = ""
         }
 
         playingNum8.setOnClickListener {
@@ -472,6 +496,7 @@ class PlayingActivity : AppCompatActivity() {
             }
             playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
             playingCheck = "play"
+            playingFoldText.text = ""
         }
 
         playingNum9.setOnClickListener {
@@ -488,6 +513,7 @@ class PlayingActivity : AppCompatActivity() {
             }
             playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
             playingCheck = "play"
+            playingFoldText.text = ""
         }
 
         playingNum0.setOnClickListener {
@@ -501,6 +527,7 @@ class PlayingActivity : AppCompatActivity() {
             }
             playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
             playingCheck = "play"
+            playingFoldText.text = ""
         }
 
         playingNum00.setOnClickListener {
@@ -531,6 +558,7 @@ class PlayingActivity : AppCompatActivity() {
             }
             playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
             playingCheck = "play"
+            playingFoldText.text = ""
         }
 
         playingNum000.setOnClickListener {
@@ -565,6 +593,7 @@ class PlayingActivity : AppCompatActivity() {
             }
             playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
             playingCheck = "play"
+            playingFoldText.text = ""
         }
 
         playingNum0000.setOnClickListener {
@@ -602,10 +631,11 @@ class PlayingActivity : AppCompatActivity() {
             }
             playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
             playingCheck = "play"
+            playingFoldText.text = ""
         }
 
         playingDaleteButton.setOnClickListener {
-            chipsNum1 = ""
+            chipsNum1 = "0"
             chipsNum2 = ""
             chipsNum3 = ""
             chipsNum4 = ""
@@ -615,6 +645,7 @@ class PlayingActivity : AppCompatActivity() {
             playingCheck = "play"
 
             playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
+            playingFoldText.text = ""
         }
 
         playingDoneButton.setOnClickListener {
@@ -661,6 +692,7 @@ class PlayingActivity : AppCompatActivity() {
                             0
                         }
                     mTurn!!.id = identifier
+                    Log.d("kotlintest","Turn保存：" + identifier.toString())
                 }
 
                 mMember = Member()
@@ -669,11 +701,14 @@ class PlayingActivity : AppCompatActivity() {
                 //player_idを取得
 //                val memberPlayerNumRealmResults = mRealm.where(Member::class.java).equalTo("memberRound", playingNum).findAll()
 //                val playerNumId = memberPlayerNumRealmResults.max("id")!!.toInt()
+
+                val playerNumId = memberPlayerNumRealmResults.max("id")!!.toInt()
                 player_id = memberRealmResults[playerNumId]!!.member_id
                 val playerTotalChips = memberRealmResults[playerNumId]!!.memberChips
 
                 //Memberを更新
                 var member = mRealm.where(Member::class.java).equalTo("id", playerNumId ).findFirst()
+                Log.d("kotlintest", "memberId:" + playerNumId.toString())
 
                 //Turnを新規登録
                 mTurn!!.game_id = game_id
@@ -807,6 +842,7 @@ class PlayingActivity : AppCompatActivity() {
                     intent.putExtra("playingNum", playingNum)
                     intent.putExtra("foldPlayer", foldPlayer)
                     intent.putExtra("sameChipsPlayer", sameChipsPlayer)
+                    intent.putExtra("firstRealm", firstRealm)
                     startActivity(intent)
 
                 } else {
@@ -872,6 +908,7 @@ class PlayingActivity : AppCompatActivity() {
                         intent.putExtra("playingNum", playingNum)
                         intent.putExtra("foldPlayer", foldPlayer)
                         intent.putExtra("sameChipsPlayer", sameChipsPlayer)
+                        intent.putExtra("firstRealm", firstRealm)
                         startActivity(intent)
 
 
@@ -939,6 +976,7 @@ class PlayingActivity : AppCompatActivity() {
                         intent.putExtra("playingNum", playingNum)
                         intent.putExtra("foldPlayer", foldPlayer)
                         intent.putExtra("sameChipsPlayer", sameChipsPlayer)
+                        intent.putExtra("firstRealm", firstRealm)
                         startActivity(intent)
 
                     }
@@ -1068,5 +1106,11 @@ class PlayingActivity : AppCompatActivity() {
             "spade12" -> playingHand2.setImageResource(R.drawable.spade12)
             "spade13" -> playingHand2.setImageResource(R.drawable.spade13)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        mRealm.close()
     }
 }

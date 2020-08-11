@@ -71,6 +71,8 @@ class ShowDownActivity : AppCompatActivity() {
     private var foldPlayer = 0
     private var sameChipsPlayer = 0
 
+    private var firstRealm = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_down)
@@ -105,6 +107,7 @@ class ShowDownActivity : AppCompatActivity() {
         foldPlayer = intent.getIntExtra("foldPlayer", 0)
         sameChipsPlayer = intent.getIntExtra("sameChipsPlayer", 0)
         memberRound = intent.getIntExtra("memberRound", 1)
+        firstRealm = intent.getStringExtra("firstRealm")
 
         cardSetting1()
         cardSetting2()
@@ -173,6 +176,7 @@ class ShowDownActivity : AppCompatActivity() {
                 intent.putExtra("foldPlayer", foldPlayer)
                 intent.putExtra("sameChipsPlayer", sameChipsPlayer)
                 intent.putExtra("memberRound", memberRound)
+                intent.putExtra("firstRealm", firstRealm)
                 startActivity(intent)
             } else {
                 val intent = Intent(this@ShowDownActivity, ShowDownActivity::class.java)
@@ -221,6 +225,7 @@ class ShowDownActivity : AppCompatActivity() {
                 intent.putExtra("foldPlayer", foldPlayer)
                 intent.putExtra("sameChipsPlayer", sameChipsPlayer)
                 intent.putExtra("memberRound", memberRound)
+                intent.putExtra("firstRealm", firstRealm)
                 startActivity(intent)
             }
         }
@@ -444,7 +449,7 @@ class ShowDownActivity : AppCompatActivity() {
             showDownHandImageView2.setImageResource(R.drawable.card_back)
 
             cardSelect = "hand1"
-            handDoneButton.text = "1枚目決定"
+            showDownDoneButton.text = "1枚目決定"
 
             handCard1Set = ""
             handCard2Set = ""
@@ -481,6 +486,7 @@ class ShowDownActivity : AppCompatActivity() {
                     mMember = Member()
 
                     val memberIdRealmResults = mRealm.where(Member::class.java).equalTo("id", playerNumId).findAll()
+                    Log.d("kotlintest", "memberId:" + playerNumId.toString())
                     val memberMaxId = memberIdRealmResults.max("id")!!.toInt()
                     val member = mRealm.where(Member::class.java).equalTo("id", memberMaxId).findFirst()
 
@@ -539,6 +545,7 @@ class ShowDownActivity : AppCompatActivity() {
                         intent.putExtra("foldPlayer", foldPlayer)
                         intent.putExtra("sameChipsPlayer", sameChipsPlayer)
                         intent.putExtra("memberRound", memberRound)
+                        intent.putExtra("firstRealm", firstRealm)
                         startActivity(intent)
 
                     } else {
@@ -589,6 +596,7 @@ class ShowDownActivity : AppCompatActivity() {
                         intent.putExtra("playingNum", playingNum)
                         intent.putExtra("foldPlayer", foldPlayer)
                         intent.putExtra("sameChipsPlayer", sameChipsPlayer)
+                        intent.putExtra("firstRealm", firstRealm)
                         startActivity(intent)
                     }
                 }
@@ -1017,6 +1025,12 @@ class ShowDownActivity : AppCompatActivity() {
             "spade13" -> showDownHandImageView2.setImageResource(R.drawable.spade13)
         }
         handCard2Set = "set"
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        mRealm.close()
     }
 
 }

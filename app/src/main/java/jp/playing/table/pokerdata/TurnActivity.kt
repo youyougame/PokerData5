@@ -72,6 +72,8 @@ class TurnActivity : AppCompatActivity() {
 
     private var myRound = 0
 
+    private var firstRealm = ""
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -318,19 +320,20 @@ class TurnActivity : AppCompatActivity() {
         //決定ボタンのリスナー
         turnDoneButton.setOnClickListener {
 
+
             cheackSpinner()
+
             cheackChips()
+
 
             if (
                 spinnerText1 == "自分" || spinnerText2 == "自分" || spinnerText3 == "自分" || spinnerText4 == "自分" || spinnerText5 == "自分" ||
                 spinnerText6 == "自分" || spinnerText7 == "自分" || spinnerText8 == "自分" || spinnerText9 == "自分" || spinnerText10 == "自分"
                     ) {
-
                 if (
                     chips1 != "" && chips2 != "" && chips3 != "" && chips4 != "" && chips5 != "" &&
                     chips6 != "" && chips7 != "" && chips8 != "" && chips9 != "" && chips10 != ""
                         ) {
-
                     if (
                         chips1 != "0" && chips2 != "0" && chips3 != "0" && chips4 != "0" && chips5 != "0" &&
                         chips6 != "0" && chips7 != "0" && chips8 != "0" && chips9 != "0" && chips10 != "0"
@@ -340,7 +343,6 @@ class TurnActivity : AppCompatActivity() {
                             doneChecker1 == "OK" && doneChecker2 == "OK" && doneChecker3 == "OK" && doneChecker4 == "OK" && doneChecker5 == "OK" &&
                             doneChecker6 == "OK" && doneChecker7 == "OK" && doneChecker8 == "OK" && doneChecker9 == "OK" && doneChecker10 == "OK"
                         ) {
-
                             when (mMember) {
                                 2 -> {
                                     if (spinnerText2 == "自分") {
@@ -519,11 +521,11 @@ class TurnActivity : AppCompatActivity() {
                                     }
                                 }
                             }
-
                             addPlayer()
 
+                            val realmrealm = mRealm.where(Member::class.java).findAll()
+                            Log.d("kotlintest", realmrealm.toString())
                             val intent = Intent(this@TurnActivity, HandActivity::class.java)
-
                             intent.putExtra("memberNum", mMember)
                             intent.putExtra("roundPlayer", roundPlayer)
                             intent.putExtra("game_id", gameLength)
@@ -533,6 +535,7 @@ class TurnActivity : AppCompatActivity() {
                             intent.putExtra("bigBlind", 1 )
                             intent.putExtra("smallBlind", 1)
                             intent.putExtra("myRound", myRound)
+                            intent.putExtra("firstRealm", firstRealm)
 
 
                             startActivity(intent)
@@ -545,9 +548,12 @@ class TurnActivity : AppCompatActivity() {
 
     //プレイヤー登録
     private fun addPlayer() {
+        Log.d("kotlintest", "通過1")
 
         val userRealmResutls = mRealm.where(User::class.java).contains("name", String()).findAll()
         val length = userRealmResutls.size
+
+        Log.d("kotlintest", "通過2")
 
         var playerId1 = ""
         var playerId2 = ""
@@ -560,7 +566,10 @@ class TurnActivity : AppCompatActivity() {
         var playerId9 = ""
         var playerId10 = ""
 
+        Log.d("kotlintest", "通過3")
+
         for (i in 0 .. length - 1) {
+            Log.d("kotlintest", "通過4")
             val name = userRealmResutls[i]!!.name
             if (name == spinnerText1) {
                 playerId1 = i.toString()
@@ -630,11 +639,14 @@ class TurnActivity : AppCompatActivity() {
             }
         }
 
+        Log.d("kotlintest", "通過5")
+
         val gameRealmResults = mRealm.where(Game::class.java).findAll()
 
         gameLength = gameRealmResults.max("id")!!.toInt()
 
         mRealm.beginTransaction()
+        Log.d("kotlintest", "通過6")
 
         var round = 1
 
@@ -642,7 +654,10 @@ class TurnActivity : AppCompatActivity() {
 
         mPlayer = Player()
 
+        Log.d("kotlintest", "通過7")
+
         for (i  in userArray) {
+            Log.d("kotlintest", "通過8")
             if (i != "") {
                 val playerRealmResults = mRealm.where(Player::class.java).findAll()
 
@@ -671,7 +686,7 @@ class TurnActivity : AppCompatActivity() {
 
         for (i in memberArray) {
             if (i != "") {
-
+                Log.d("kotlintest", "通過9")
                 val memberRealmResults = mRealm.where(Member::class.java).findAll()
 
                 val identifier: Int =
@@ -681,11 +696,18 @@ class TurnActivity : AppCompatActivity() {
                         0
                     }
                 mMemBerPlay!!.id = identifier
+                Log.d("kotlintest","Member保存：" + identifier.toString())
                 mMemBerPlay!!.hand_count = 1
                 mMemBerPlay!!.memberName = i
                 mMemBerPlay!!.memberRound = playRound
                 mMemBerPlay!!.game_id = gameLength
                 mMemBerPlay!!.playingCheck = "play"
+
+                if (identifier == 0) {
+                    firstRealm = i
+                }
+
+                Log.d("kotlintest", "通過10")
 
                 when (i) {
                     spinnerText1 -> if (playerId1 != "") {mMemBerPlay!!.member_id = playerId1}
@@ -701,6 +723,8 @@ class TurnActivity : AppCompatActivity() {
 
                 }
 
+                Log.d("kotlintest", "通過11")
+
                 when (playRound) {
                     1 -> mMemBerPlay!!.memberChips = chips1.toInt()
                     2 -> mMemBerPlay!!.memberChips = chips2.toInt()
@@ -714,7 +738,18 @@ class TurnActivity : AppCompatActivity() {
                     10 -> mMemBerPlay!!.memberChips = chips10.toInt()
 
                 }
+
+                Log.d("kotlintest", "id:" + mMemBerPlay!!.id.toString())
+                Log.d("kotlintest", "hand_count:" + mMemBerPlay!!.hand_count.toString())
+                Log.d("kotlintest", "memberName:" + mMemBerPlay!!.memberName)
+                Log.d("kotlintest", "memberRound:" + mMemBerPlay!!.memberRound.toString())
+                Log.d("kotlintest", "game_id:" + mMemBerPlay!!.game_id.toString())
+                Log.d("kotlintest", "playingCheck:" + mMemBerPlay!!.playingCheck)
+                Log.d("kotlintest", "member_id:" + mMemBerPlay!!.member_id)
+                Log.d("kotlintest", "memberChips:" + mMemBerPlay!!.memberChips.toString())
+
                 mRealm.copyToRealmOrUpdate(mMemBerPlay!!)
+                Log.d("kotlintest", "通過12")
 
             }
 
@@ -837,6 +872,8 @@ class TurnActivity : AppCompatActivity() {
                 if (spinnerText2 == "") {
                     spinnerText2 = "player2"
                     doneChecker2 = "OK"
+                } else {
+                    doneChecker2 = "OK"
                 }
 
                 doneChecker3 = "OK"
@@ -889,6 +926,8 @@ class TurnActivity : AppCompatActivity() {
 
                 if (spinnerText3 == "") {
                     spinnerText3 = "player3"
+                    doneChecker3 = "OK"
+                } else {
                     doneChecker3 = "OK"
                 }
 
@@ -968,6 +1007,8 @@ class TurnActivity : AppCompatActivity() {
 
                 if (spinnerText4 == "") {
                     spinnerText4 = "player4"
+                    doneChecker4 = "OK"
+                } else {
                     doneChecker4 = "OK"
                 }
 
@@ -1079,6 +1120,8 @@ class TurnActivity : AppCompatActivity() {
 
                 if (spinnerText5 == "") {
                     spinnerText5 = "player5"
+                    doneChecker5 = "OK"
+                } else {
                     doneChecker5 = "OK"
                 }
 
@@ -1228,6 +1271,8 @@ class TurnActivity : AppCompatActivity() {
 
                 if (spinnerText6 == "") {
                     spinnerText6 = "player6"
+                    doneChecker6 = "OK"
+                } else {
                     doneChecker6 = "OK"
                 }
 
@@ -1421,6 +1466,8 @@ class TurnActivity : AppCompatActivity() {
 
                 if (spinnerText7 == "") {
                     spinnerText7 = "player7"
+                    doneChecker7 = "OK"
+                } else {
                     doneChecker7 = "OK"
                 }
 
@@ -1664,6 +1711,8 @@ class TurnActivity : AppCompatActivity() {
 
                 if (spinnerText8 == "") {
                     spinnerText8 = "player8"
+                    doneChecker8 = "OK"
+                } else {
                     doneChecker8 = "OK"
                 }
 
@@ -1963,7 +2012,9 @@ class TurnActivity : AppCompatActivity() {
 
                 if (spinnerText9 == "") {
                     spinnerText9 = "player9"
-                    doneChecker1 = "OK"
+                    doneChecker9 = "OK"
+                } else {
+                    doneChecker9 = "OK"
                 }
 
                 doneChecker10 = "OK"
@@ -2324,6 +2375,8 @@ class TurnActivity : AppCompatActivity() {
 
                 if (spinnerText10 == "") {
                     spinnerText10 = "player10"
+                    doneChecker10 = "OK"
+                } else {
                     doneChecker10 = "OK"
                 }
             }
