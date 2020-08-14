@@ -118,9 +118,16 @@ class ShowDownActivity : AppCompatActivity() {
         val memberRealmResults = mRealm.where(Member::class.java).findAll()
         val memberPlayerNumRealmResults = mRealm.where(Member::class.java).equalTo("memberRound", memberRound).findAll()
         val playerNumId = memberPlayerNumRealmResults.max("id")!!.toInt()
-        val memberPlayingCheck = memberRealmResults[playerNumId]!!.playingCheck //foldしたかチェック
-        val dataPlayerId = memberRealmResults[playerNumId]!!.member_id //該当プレイヤーのid
-        val memberName = memberRealmResults[playerNumId]!!.memberName //該当プレイヤーの名前
+        val memberData = mRealm.where(Member::class.java).equalTo("id", playerNumId).findFirst()
+        val memberPlayingCheck = memberData!!.playingCheck
+        val dataPlayerId = memberData!!.member_id
+        val memberName = memberData!!.memberName
+
+//        val memberPlayingCheck = memberRealmResults[playerNumId]!!.playingCheck //foldしたかチェック
+//        val dataPlayerId = memberRealmResults[playerNumId]!!.member_id //該当プレイヤーのid
+//        val memberName = memberRealmResults[playerNumId]!!.memberName //該当プレイヤーの名前
+
+        Log.d("kotlintest", "memberRound:" + memberRound.toString() + " playerNumId:" + playerNumId.toString() + " memberPlayingCheck:" + memberPlayingCheck + " memberName:" + memberName)
 
         if (memberPlayingCheck != "fold" && memberName != "自分") {
             //titleBerに名前を追加

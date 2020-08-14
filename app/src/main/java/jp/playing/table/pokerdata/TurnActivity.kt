@@ -532,8 +532,8 @@ class TurnActivity : AppCompatActivity() {
                             intent.putExtra("flopNum", startNum)
                             intent.putExtra("playingNum", playingNum)
                             intent.putExtra("count", 0)
-                            intent.putExtra("bigBlind", 1 )
-                            intent.putExtra("smallBlind", 1)
+                            intent.putExtra("bigBlind", 0 )
+                            intent.putExtra("smallBlind", 0)
                             intent.putExtra("myRound", myRound)
                             intent.putExtra("firstRealm", firstRealm)
 

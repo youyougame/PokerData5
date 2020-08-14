@@ -48,10 +48,12 @@
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <Space
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:text="SB"
+                android:gravity="center"/>
 
             <ImageButton
                 android:layout_width="0dp"
@@ -63,7 +65,14 @@
             <Space
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"/>
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="BB"
+                android:gravity="center"/>
 
             <ImageButton
                 android:id="@+id/handUpButton"
@@ -90,14 +99,16 @@
                 android:layout_height="match_parent"
                 android:id="@+id/smallLeftButton"
                 android:src="@drawable/left_button"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                />
 
-            <TextView
+            <EditText
+                android:id="@+id/smallChipsText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/smallChipsText"
+                android:layout_weight="1"
                 android:hint="SB"
-                android:layout_weight="1"/>
+                android:textSize="10sp" />
 
             <ImageButton
                 android:layout_width="match_parent"
@@ -113,12 +124,13 @@
                 android:src="@drawable/left_button"
                 android:layout_weight="1"/>
 
-            <TextView
+            <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/handChipsText"
                 android:hint="BB"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:textSize="10sp"/>
 
             <ImageButton
                 android:layout_width="match_parent"

@@ -94,21 +94,32 @@ class HandActivity : AppCompatActivity() {
         myRound = intent.getIntExtra("myRound", myRound)
         firstRealm = intent.getStringExtra("firstRealm")
 
-
-        handChipsText.text = bigBlind.toString()
-        smallChipsText.text = smallBlind.toString()
-
         //チップ数の表示
-        if (secondNum == "") {
-            handChipsText.text = firstNum.toString()
+//        if (secondNum == "") {
+//            handChipsText.text = firstNum.toString()
+//        } else {
+//            handChipsText.text = firstNum.toString() + secondNum
+//        }
+//
+//        if (smallSecondNum == "") {
+//            smallChipsText.text = smallFirstNum.toString()
+//        } else {
+//            smallChipsText.text = smallFirstNum.toString() + smallSecondNum
+//        }
+
+        Log.d("kotlintest", "bigBlind:" + bigBlind)
+        Log.d("kotlintest", "smallBlind:" + smallBlind)
+
+        if (bigBlind == 0) {
+            handChipsText.setText(firstNum.toString())
         } else {
-            handChipsText.text = firstNum.toString() + secondNum
+            handChipsText.setText(bigBlind.toString())
         }
 
-        if (smallSecondNum == "") {
-            smallChipsText.text = smallFirstNum.toString()
+        if (smallBlind == 0) {
+            smallChipsText.setText(smallFirstNum.toString())
         } else {
-            smallChipsText.text = smallFirstNum.toString() + smallSecondNum
+            smallChipsText.setText(smallBlind.toString())
         }
 
 
@@ -133,9 +144,9 @@ class HandActivity : AppCompatActivity() {
             }
 
             if (secondNum == "") {
-                handChipsText.text = firstNum.toString()
+                handChipsText.setText(firstNum.toString())
             } else {
-                handChipsText.text = firstNum.toString() + secondNum
+                handChipsText.setText(firstNum.toString() + secondNum)
             }
         }
 
@@ -147,9 +158,9 @@ class HandActivity : AppCompatActivity() {
             }
 
             if (smallSecondNum == "") {
-                smallChipsText.text = smallFirstNum.toString()
+                smallChipsText.setText(smallFirstNum.toString())
             } else {
-                smallChipsText.text = smallFirstNum.toString() + smallSecondNum
+                smallChipsText.setText(smallFirstNum.toString() + smallSecondNum)
             }
         }
 
@@ -162,9 +173,9 @@ class HandActivity : AppCompatActivity() {
             }
 
             if (secondNum == "") {
-                handChipsText.text = firstNum.toString()
+                handChipsText.setText(firstNum.toString())
             } else {
-                handChipsText.text = firstNum.toString() + secondNum
+                handChipsText.setText(firstNum.toString() + secondNum)
             }
         }
 
@@ -176,9 +187,9 @@ class HandActivity : AppCompatActivity() {
             }
 
             if (smallSecondNum == "") {
-                smallChipsText.text = smallFirstNum.toString()
+                smallChipsText.setText(smallFirstNum.toString())
             } else {
-                smallChipsText.text = smallFirstNum.toString() + smallSecondNum
+                smallChipsText.setText(smallFirstNum.toString() + smallSecondNum)
             }
         }
 
@@ -196,9 +207,9 @@ class HandActivity : AppCompatActivity() {
             }
 
             if (secondNum == "") {
-                handChipsText.text = firstNum.toString()
+                handChipsText.setText(firstNum.toString())
             } else {
-                handChipsText.text = firstNum.toString() + secondNum
+                handChipsText.setText(firstNum.toString() + secondNum)
             }
         }
 
@@ -215,9 +226,9 @@ class HandActivity : AppCompatActivity() {
             }
 
             if (smallSecondNum == "") {
-                smallChipsText.text = smallFirstNum.toString()
+                smallChipsText.setText(smallFirstNum.toString())
             } else {
-                smallChipsText.text = smallFirstNum.toString() + smallSecondNum
+                smallChipsText.setText(smallFirstNum.toString() + smallSecondNum)
             }
         }
 
@@ -235,9 +246,9 @@ class HandActivity : AppCompatActivity() {
             }
 
             if (secondNum == "") {
-                handChipsText.text = firstNum.toString()
+                handChipsText.setText(firstNum.toString())
             } else {
-                handChipsText.text = firstNum.toString() + secondNum
+                handChipsText.setText(firstNum.toString() + secondNum)
             }
         }
 
@@ -254,9 +265,9 @@ class HandActivity : AppCompatActivity() {
             }
 
             if (secondNum == "") {
-                smallChipsText.text = smallFirstNum.toString()
+                smallChipsText.setText(smallFirstNum.toString())
             } else {
-                smallChipsText.text = smallFirstNum.toString() + smallSecondNum
+                smallChipsText.setText(smallFirstNum.toString() + smallSecondNum)
             }
         }
 

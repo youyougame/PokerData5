@@ -539,12 +539,12 @@ class WinnerCheckActivity : AppCompatActivity() {
 
             //HandActivityへ移動
             val intent = Intent(this@WinnerCheckActivity, HandActivity::class.java)
-            Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[count]:" + count.toString())
-            Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[myRound]:" + myRound.toString())
-            Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[flopNum]:" + flopNum.toString())
-            Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[playingNum]:" + playingNum.toString())
-            Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[smallBlind]:" + smallBlind.toString())
-            Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[bigBlind]:" + bigBlind.toString())
+            Log.d("kotlintest", "WinnerCheckActivity -> CardActivity[count]:" + count.toString())
+            Log.d("kotlintest", "WinnerCheckActivity -> CardActivity[myRound]:" + myRound.toString())
+            Log.d("kotlintest", "WinnerCheckActivity -> CardActivity[flopNum]:" + flopNum.toString())
+            Log.d("kotlintest", "WinnerCheckActivity -> CardActivity[playingNum]:" + playingNum.toString())
+            Log.d("kotlintest", "WinnerCheckActivity -> CardActivity[smallBlind]:" + smallBlind.toString())
+            Log.d("kotlintest", "WinnerCheckActivity -> CardActivity[bigBlind]:" + bigBlind.toString())
 
             intent.putExtra("memberNum", memberNum)
             intent.putExtra("flopNum", flopNum)

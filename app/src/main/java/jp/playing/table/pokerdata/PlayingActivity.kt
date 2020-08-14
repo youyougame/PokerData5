@@ -272,6 +272,7 @@ class PlayingActivity : AppCompatActivity() {
         Log.d("kotlintest", turnDataChips.toString())
 
         playingChipsText.text = "0"
+        chipsNum1 = "0"
 
 
         cardSetting1()
@@ -650,239 +651,265 @@ class PlayingActivity : AppCompatActivity() {
 
         playingDoneButton.setOnClickListener {
             //チップ値が入力されているか確認
-            if (playingChipsText.text != "") {
-                tableTotalChips = tableTotalChips + playingChipsText.text.toString().toInt()
-                //テーブルチップとの比較
-                if (turnDataCount == count && turnDataRound == round && turnDataRoundCount + 1 == round_count) {
-                    when {
-                        playingChipsText.text.toString().toInt() == tableChips - turnDataChips -> {
-                            if(playingCheck != "fold") {
-                                sameChipsPlayer++
+            if (tableChips == 0 || chipsNum1 != "0") {
+                if (playingChipsText.text != "") {
+                    tableTotalChips = tableTotalChips + playingChipsText.text.toString().toInt()
+                    //テーブルチップとの比較
+                    if (turnDataCount == count && turnDataRound == round && turnDataRoundCount + 1 == round_count) {
+                        when {
+                            playingChipsText.text.toString()
+                                .toInt() == tableChips - turnDataChips -> {
+                                if (playingCheck != "fold") {
+                                    sameChipsPlayer++
+                                }
+                            }
+                            playingChipsText.text.toString()
+                                .toInt() > tableChips - turnDataChips -> {
+                                sameChipsPlayer = 1
+                                tableChips = playingChipsText.text.toString().toInt()
                             }
                         }
-                        playingChipsText.text.toString().toInt() > tableChips - turnDataChips -> {
-                            sameChipsPlayer = 1
-                            tableChips = playingChipsText.text.toString().toInt()
-                        }
-                    }
-                } else {
-                    when {
-                        playingChipsText.text.toString().toInt() == tableChips -> {
-                            if (playingCheck != "fold") {
-                                sameChipsPlayer++
+                    } else {
+                        when {
+                            playingChipsText.text.toString().toInt() == tableChips -> {
+                                if (playingCheck != "fold") {
+                                    sameChipsPlayer++
+                                }
+                            }
+                            playingChipsText.text.toString().toInt() > tableChips -> {
+                                sameChipsPlayer = 1
+                                tableChips = playingChipsText.text.toString().toInt()
                             }
                         }
-                        playingChipsText.text.toString().toInt() > tableChips -> {
-                            sameChipsPlayer = 1
-                            tableChips = playingChipsText.text.toString().toInt()
-                        }
                     }
-                }
-                mRealm.beginTransaction()
-                val turnRealmResults = mRealm.where(Turn::class.java).findAll()
+                    mRealm.beginTransaction()
+                    val turnRealmResults = mRealm.where(Turn::class.java).findAll()
 
-                //Turnへデータ保存
-                if (mTurn == null) {
-                    mTurn = Turn()
+                    //Turnへデータ保存
+                    if (mTurn == null) {
+                        mTurn = Turn()
 
-                    val identifier: Int =
-                        if (turnRealmResults.max("id") != null) {
-                            turnRealmResults.max("id")!!.toInt() + 1
-                        } else {
-                            0
-                        }
-                    mTurn!!.id = identifier
-                    Log.d("kotlintest","Turn保存：" + identifier.toString())
-                }
+                        val identifier: Int =
+                            if (turnRealmResults.max("id") != null) {
+                                turnRealmResults.max("id")!!.toInt() + 1
+                            } else {
+                                0
+                            }
+                        mTurn!!.id = identifier
+                        Log.d("kotlintest", "Turn保存：" + identifier.toString())
+                    }
 
-                mMember = Member()
+                    mMember = Member()
 
 //                val memberRealmResults = mRealm.where(Member::class.java).findAll()
-                //player_idを取得
+                    //player_idを取得
 //                val memberPlayerNumRealmResults = mRealm.where(Member::class.java).equalTo("memberRound", playingNum).findAll()
 //                val playerNumId = memberPlayerNumRealmResults.max("id")!!.toInt()
 
-                val playerNumId = memberPlayerNumRealmResults.max("id")!!.toInt()
-                player_id = memberRealmResults[playerNumId]!!.member_id
-                val playerTotalChips = memberRealmResults[playerNumId]!!.memberChips
+                    val playerNumId = memberPlayerNumRealmResults.max("id")!!.toInt()
+                    player_id = memberRealmData!!.member_id
+                    val playerTotalChips = memberRealmData!!.memberChips
+//                    player_id = memberRealmResults[playerNumId]!!.member_id
+//                    val playerTotalChips = memberRealmResults[playerNumId]!!.memberChips
 
-                //Memberを更新
-                var member = mRealm.where(Member::class.java).equalTo("id", playerNumId ).findFirst()
-                Log.d("kotlintest", "memberId:" + playerNumId.toString())
+                    //Memberを更新
+                    var member =
+                        mRealm.where(Member::class.java).equalTo("id", playerNumId).findFirst()
+                    Log.d("kotlintest", "memberId:" + playerNumId.toString())
 
-                //Turnを新規登録
-                mTurn!!.game_id = game_id
-                mTurn!!.count = count
-                mTurn!!.round = round
-                mTurn!!.round_count = round_count
-                mTurn!!.player = "自分"
-                mTurn!!.player_id = player_id
-                if (playingCheck == "fold" && round == "preflop" && round_count == 1) {
-                    when (playingNum) {
-                        preFlopNum -> {
-                            Log.d("kotlintest", "登録PA:SB")
-                            mTurn!!.playChips = smallBlind
-                            mTurn!!.memberChips = playerTotalChips - smallBlind
-                            member!!.playChips = smallBlind
-                            member!!.memberChips = playerTotalChips - smallBlind
-                            tableTotalChips += smallBlind
+                    //Turnを新規登録
+                    mTurn!!.game_id = game_id
+                    mTurn!!.count = count
+                    mTurn!!.round = round
+                    mTurn!!.round_count = round_count
+                    mTurn!!.player = "自分"
+                    mTurn!!.player_id = player_id
+                    if (playingCheck == "fold" && round == "preflop" && round_count == 1) {
+                        when (playingNum) {
+                            preFlopNum -> {
+                                Log.d("kotlintest", "登録PA:SB")
+                                mTurn!!.playChips = smallBlind
+                                mTurn!!.memberChips = playerTotalChips - smallBlind
+                                member!!.playChips = smallBlind
+                                member!!.memberChips = playerTotalChips - smallBlind
+                                tableTotalChips += smallBlind
+                            }
+                            bigBlindNum -> {
+                                Log.d("kotlintest", "登録PA:BB")
+                                mTurn!!.playChips = bigBlind
+                                mTurn!!.memberChips = playerTotalChips - bigBlind
+                                member!!.playChips = bigBlind
+                                member!!.memberChips = playerTotalChips - bigBlind
+                                tableTotalChips += bigBlind
+                            }
+                            else -> {
+                                Log.d("kotlintest", "登録PA:else")
+                                mTurn!!.playChips = 0
+                                mTurn!!.memberChips = playerTotalChips
+                                member!!.playChips = 0
+                                member!!.memberChips = playerTotalChips
+
+                            }
                         }
-                        bigBlindNum -> {
-                            Log.d("kotlintest", "登録PA:BB")
-                            mTurn!!.playChips = bigBlind
-                            mTurn!!.memberChips = playerTotalChips - bigBlind
-                            member!!.playChips = bigBlind
-                            member!!.memberChips = playerTotalChips - bigBlind
-                            tableTotalChips += bigBlind
-                        }
-                        else -> {
-                            Log.d("kotlintest", "登録PA:else")
-                            mTurn!!.playChips = 0
-                            mTurn!!.memberChips = playerTotalChips
-                            member!!.playChips = 0
-                            member!!.memberChips = playerTotalChips
-
-                        }
-                    }
-                } else {
-                    Log.d("kotlintest", "登録PA:play")
-                    mTurn!!.playChips = playingChipsText.text.toString().toInt()
-                    mTurn!!.memberChips = playerTotalChips - playingChipsText.text.toString().toInt()
-                    member!!.playChips = playingChipsText.text.toString().toInt()
-                    member!!.memberChips = playerTotalChips - playingChipsText.text.toString().toInt()
-                }
-                mTurn!!.tableChips = tableChips
-                mTurn!!.tableTotalChips = tableTotalChips
-
-                Log.d("kotlintest", "mTurn!!.game_id:" + mTurn!!.game_id.toString())
-                Log.d("kotlintest", "mTurn!!.count:" + mTurn!!.count.toString())
-                Log.d("kotlintest", "mTurn!!.round:" + mTurn!!.round)
-                Log.d("kotlintest", "mTurn!!.round_count:" + mTurn!!.round_count.toString())
-                Log.d("kotlintest", "mTurn!!.player:" + mTurn!!.player)
-                Log.d("kotlintest", "mTurn!!.player_id:" + mTurn!!.player_id)
-                Log.d("kotlintest", "mTurn!!.playChips:" + mTurn!!.playChips.toString())
-                Log.d("kotlintest", "mTurn!!.memberChips:" + mTurn!!.memberChips.toString())
-                Log.d("kotlintest", "mTurn!!.tableChips:" + mTurn!!.tableChips.toString())
-                Log.d("kotlintest", "mTurn!!.tableTotalChips:" + mTurn!!.tableTotalChips.toString())
-
-
-                if (playingCheck == "fold"){
-                    member!!.playingCheck = "fold"
-                    foldPlayer++
-
-                }
-
-
-                member!!.tableChips = tableChips
-                member!!.tableTotalChips = tableTotalChips
-
-                Log.d("kotlintest", "member!!.playChips:" + member!!.playChips.toString())
-                Log.d("kotlintest", "member!!.memberChips:" + member!!.memberChips.toString())
-                Log.d("kotlintest", "member!!.tableChips:" + member!!.tableChips.toString())
-                Log.d("kotlintest", "member!!.tableTotalChips:" + member!!.tableTotalChips.toString())
-
-
-                mRealm.copyToRealmOrUpdate(mTurn!!)
-                mRealm.copyToRealmOrUpdate(mMember!!)
-                mRealm.commitTransaction()
-
-                if (foldPlayer == memberNum - 1) {
-                    count++
-                    if (flopNum == memberNum) {
-                        flopNum = 1
-                        playingNum = 1
                     } else {
-                        flopNum++
-                        playingNum = flopNum
+                        Log.d("kotlintest", "登録PA:play")
+                        mTurn!!.playChips = playingChipsText.text.toString().toInt()
+                        mTurn!!.memberChips =
+                            playerTotalChips - playingChipsText.text.toString().toInt()
+                        member!!.playChips = playingChipsText.text.toString().toInt()
+                        member!!.memberChips =
+                            playerTotalChips - playingChipsText.text.toString().toInt()
                     }
-                    //WinnerCheckActivityへ移動
-                    val intent = Intent(this@PlayingActivity, WinnerCheckActivity::class.java)
-                    Log.d("kotlintest", "通過PA3")
-                    Log.d("kotlintest", "PlayingActivity -> WinnerCheckActivity[count]:" + count.toString())
-                    Log.d("kotlintest", "PlayingActivity -> WinnerCheckActivity[round]:" + round)
-                    Log.d("kotlintest", "PlayingActivity -> WinnerCheckActivity[round_count]:" + round_count.toString())
-                    Log.d("kotlintest", "PlayingActivity -> WinnerCheckActivity[roundNum]:" + roundNum.toString())
-                    Log.d("kotlintest", "PlayingActivity -> WinnerCheckActivity[myRound]:" + myRound.toString())
-                    Log.d("kotlintest", "PlayingActivity -> WinnerCheckActivity[flopNum]:" + flopNum.toString())
-                    Log.d("kotlintest", "PlayingActivity -> WinnerCheckActivity[preFlopNum]:" + preFlopNum.toString())
-                    Log.d("kotlintest", "PlayingActivity -> WinnerCheckActivity[bigBlindNum]" + bigBlindNum.toString())
-                    Log.d("kotlintest", "PlayingActivity -> WinnerCheckActivity[playingNum]:" + playingNum.toString())
-                    Log.d("kotlintest", "PlayingActivity -> WinnerCheckActivity[foldPlayer]:" + foldPlayer.toString())
-                    Log.d("kotlintest", "PlayingActivity -> WinnerCheckActivity[sameChipsPlayer]:" + sameChipsPlayer.toString())
-                    Log.d("kotlintest", "PlayingActivity -> WinnerCheckActivity[smallBlind]:" + smallBlind.toString())
-                    Log.d("kotlintest", "PlayingActivity -> WinnerCheckActivity[bigBlind]:" + bigBlind.toString())
-                    Log.d("kotlintest", "PlayingActivity -> WinnerCheckActivity[tableChips]:" + tableChips.toString())
-                    Log.d("kotlintest", "PlayingActivity -> WinnerCheckActivity[tableTotalChips]:" + tableTotalChips.toString())
-                    Log.d("kotlintest", "PlayingActivity -> WinnerCheckActivity[bigBlind]:" + bigBlind)
-                    Log.d("kotlintest", "PlayingActivity -> WinnerCheckActivity[smallBlind]:" + smallBlind)
-                    Log.d("kotlintest", "PlayingActivity -> WinnerCheckActivity[tableChips]:" + tableChips)
-                    Log.d("kotlintest", "PlayingActivity -> WinnerCheckActivity[tableTotalChips]:" + tableTotalChips)
+                    mTurn!!.tableChips = tableChips
+                    mTurn!!.tableTotalChips = tableTotalChips
 
-                    intent.putExtra("memberNum", memberNum)
-                    intent.putExtra("game_id", game_id)
-                    intent.putExtra("count", count)
-                    intent.putExtra("round", round)
-                    intent.putExtra("round_count", round_count)
-                    intent.putExtra("roundNum", roundNum)
-                    intent.putExtra("myRound", myRound)
-                    intent.putExtra("cardHand1", cardHand1)
-                    intent.putExtra("cardHand2", cardHand2)
-                    intent.putExtra("cardCom1", cardCom1)
-                    intent.putExtra("cardCom2", cardCom2)
-                    intent.putExtra("cardCom3", cardCom3)
-                    intent.putExtra("cardCom4", cardCom4)
-                    intent.putExtra("cardCom5", cardCom5)
-                    intent.putExtra("bigBlind", bigBlind)
-                    intent.putExtra("smallBlind", smallBlind)
-                    intent.putExtra("tableChips", tableChips)
-                    intent.putExtra("tableTotalChips", tableTotalChips)
-                    intent.putExtra("flopNum", flopNum)
-                    intent.putExtra("preFlopNum", preFlopNum)
-                    intent.putExtra("bigBlindNum", bigBlindNum)
-                    intent.putExtra("playingNum", playingNum)
-                    intent.putExtra("foldPlayer", foldPlayer)
-                    intent.putExtra("sameChipsPlayer", sameChipsPlayer)
-                    intent.putExtra("firstRealm", firstRealm)
-                    startActivity(intent)
+                    Log.d("kotlintest", "mTurn!!.game_id:" + mTurn!!.game_id.toString())
+                    Log.d("kotlintest", "mTurn!!.count:" + mTurn!!.count.toString())
+                    Log.d("kotlintest", "mTurn!!.round:" + mTurn!!.round)
+                    Log.d("kotlintest", "mTurn!!.round_count:" + mTurn!!.round_count.toString())
+                    Log.d("kotlintest", "mTurn!!.player:" + mTurn!!.player)
+                    Log.d("kotlintest", "mTurn!!.player_id:" + mTurn!!.player_id)
+                    Log.d("kotlintest", "mTurn!!.playChips:" + mTurn!!.playChips.toString())
+                    Log.d("kotlintest", "mTurn!!.memberChips:" + mTurn!!.memberChips.toString())
+                    Log.d("kotlintest", "mTurn!!.tableChips:" + mTurn!!.tableChips.toString())
+                    Log.d(
+                        "kotlintest",
+                        "mTurn!!.tableTotalChips:" + mTurn!!.tableTotalChips.toString()
+                    )
 
-                } else {
-                    if (sameChipsPlayer >= memberNum - foldPlayer) {
-                        when (round) {
-                            "preflop" -> round = "flop"
-                            "flop" -> round = "turn"
-                            "turn" -> round = "river"
-                            "river" -> round = "showdown"
+
+                    if (playingCheck == "fold") {
+                        member!!.playingCheck = "fold"
+                        foldPlayer++
+
+                    }
+
+
+                    member!!.tableChips = tableChips
+                    member!!.tableTotalChips = tableTotalChips
+
+                    Log.d("kotlintest", "member!!.playChips:" + member!!.playChips.toString())
+                    Log.d("kotlintest", "member!!.memberChips:" + member!!.memberChips.toString())
+                    Log.d("kotlintest", "member!!.tableChips:" + member!!.tableChips.toString())
+                    Log.d(
+                        "kotlintest",
+                        "member!!.tableTotalChips:" + member!!.tableTotalChips.toString()
+                    )
+
+
+                    mRealm.copyToRealmOrUpdate(mTurn!!)
+                    mRealm.copyToRealmOrUpdate(mMember!!)
+                    mRealm.commitTransaction()
+
+                    var playerAllIn = 0
+                    for (i in 1..memberNum) {
+                        val playerRealmResults = mRealm.where(Member::class.java).findAll()
+                        val playerNumRealmResults =
+                            mRealm.where(Member::class.java).equalTo("memberRound", i).findAll()
+                        val playerNumId = playerNumRealmResults.max("id")!!.toInt()
+                        val playerData =
+                            mRealm.where(Member::class.java).equalTo("id", playerNumId)
+                                .findFirst()
+                        val playerChips = playerData!!.memberChips
+                        val playerFoldCheck = playerData!!.playingCheck
+                        if (playingNum != i) {
+                            if (playerFoldCheck == "fold" || playerChips == 0) {
+                                playerAllIn++
+                            }
                         }
+                        Log.d("kotlintest", "player:" + playerData!!.memberName + " playerChips:" + playerChips.toString() + " playerFoldCheck:" + playerFoldCheck)
+                    }
 
-                        playingNum = preFlopNum
-                        roundNum = 1
-                        round_count = 1
-                        tableChips = 0
-                        sameChipsPlayer = 0
+                    Log.d("kotlintest", "playerAllIn:" + playerAllIn.toString() + " == memberNum - 1:" + memberNum.toString())
 
-                        // CardActivityへ移動
-
-                        val intent = Intent(this@PlayingActivity, CardActivity::class.java)
-                        Log.d("kotlintest", "通過PA4")
-                        Log.d("kotlintest", "PlayingActivity -> CardActivity[count]:" + count.toString())
-                        Log.d("kotlintest", "PlayingActivity -> CardActivity[round]:" + round)
-                        Log.d("kotlintest", "PlayingActivity -> CardActivity[round_count]:" + round_count.toString())
-                        Log.d("kotlintest", "PlayingActivity -> CardActivity[roundNum]:" + roundNum.toString())
-                        Log.d("kotlintest", "PlayingActivity -> CardActivity[myRound]:" + myRound.toString())
-                        Log.d("kotlintest", "PlayingActivity -> CardActivity[flopNum]:" + flopNum.toString())
-                        Log.d("kotlintest", "PlayingActivity -> CardActivity[preFlopNum]:" + preFlopNum.toString())
-                        Log.d("kotlintest", "PlayingActivity -> CardActivity[bigBlindNum]" + bigBlindNum.toString())
-                        Log.d("kotlintest", "PlayingActivity -> CardActivity[playingNum]:" + playingNum.toString())
-                        Log.d("kotlintest", "PlayingActivity -> CardActivity[foldPlayer]:" + foldPlayer.toString())
-                        Log.d("kotlintest", "PlayingActivity -> CardActivity[sameChipsPlayer]:" + sameChipsPlayer.toString())
-                        Log.d("kotlintest", "PlayingActivity -> CardActivity[smallBlind]:" + smallBlind.toString())
-                        Log.d("kotlintest", "PlayingActivity -> CardActivity[bigBlind]:" + bigBlind.toString())
-                        Log.d("kotlintest", "PlayingActivity -> CardActivity[tableChips]:" + tableChips.toString())
-                        Log.d("kotlintest", "PlayingActivity -> CardActivity[tableTotalChips]:" + tableTotalChips.toString())
-                        Log.d("kotlintest", "PlayingActivity -> CardActivity[bigBlind]:" + bigBlind)
-                        Log.d("kotlintest", "PlayingActivity -> CardActivity[smallBlind]:" + smallBlind)
-                        Log.d("kotlintest", "PlayingActivity -> CardActivity[tableChips]:" + tableChips)
-                        Log.d("kotlintest", "PlayingActivity -> CardActivity[tableTotalChips]:" + tableTotalChips)
+                    if (foldPlayer == memberNum - 1 || playerAllIn == memberNum - 1) {
+//                        count++
+//                        if (flopNum == memberNum) {
+//                            flopNum = 1
+//                            playingNum = 1
+//                        } else {
+//                            flopNum++
+//                            playingNum = flopNum
+//                        }
+                        //WinnerCheckActivityへ移動
+                        val intent = Intent(this@PlayingActivity, WinnerCheckActivity::class.java)
+                        Log.d("kotlintest", "通過PA3")
+                        Log.d(
+                            "kotlintest",
+                            "PlayingActivity -> WinnerCheckActivity[count]:" + count.toString()
+                        )
+                        Log.d(
+                            "kotlintest",
+                            "PlayingActivity -> WinnerCheckActivity[round]:" + round
+                        )
+                        Log.d(
+                            "kotlintest",
+                            "PlayingActivity -> WinnerCheckActivity[round_count]:" + round_count.toString()
+                        )
+                        Log.d(
+                            "kotlintest",
+                            "PlayingActivity -> WinnerCheckActivity[roundNum]:" + roundNum.toString()
+                        )
+                        Log.d(
+                            "kotlintest",
+                            "PlayingActivity -> WinnerCheckActivity[myRound]:" + myRound.toString()
+                        )
+                        Log.d(
+                            "kotlintest",
+                            "PlayingActivity -> WinnerCheckActivity[flopNum]:" + flopNum.toString()
+                        )
+                        Log.d(
+                            "kotlintest",
+                            "PlayingActivity -> WinnerCheckActivity[preFlopNum]:" + preFlopNum.toString()
+                        )
+                        Log.d(
+                            "kotlintest",
+                            "PlayingActivity -> WinnerCheckActivity[bigBlindNum]" + bigBlindNum.toString()
+                        )
+                        Log.d(
+                            "kotlintest",
+                            "PlayingActivity -> WinnerCheckActivity[playingNum]:" + playingNum.toString()
+                        )
+                        Log.d(
+                            "kotlintest",
+                            "PlayingActivity -> WinnerCheckActivity[foldPlayer]:" + foldPlayer.toString()
+                        )
+                        Log.d(
+                            "kotlintest",
+                            "PlayingActivity -> WinnerCheckActivity[sameChipsPlayer]:" + sameChipsPlayer.toString()
+                        )
+                        Log.d(
+                            "kotlintest",
+                            "PlayingActivity -> WinnerCheckActivity[smallBlind]:" + smallBlind.toString()
+                        )
+                        Log.d(
+                            "kotlintest",
+                            "PlayingActivity -> WinnerCheckActivity[bigBlind]:" + bigBlind.toString()
+                        )
+                        Log.d(
+                            "kotlintest",
+                            "PlayingActivity -> WinnerCheckActivity[tableChips]:" + tableChips.toString()
+                        )
+                        Log.d(
+                            "kotlintest",
+                            "PlayingActivity -> WinnerCheckActivity[tableTotalChips]:" + tableTotalChips.toString()
+                        )
+                        Log.d(
+                            "kotlintest",
+                            "PlayingActivity -> WinnerCheckActivity[bigBlind]:" + bigBlind
+                        )
+                        Log.d(
+                            "kotlintest",
+                            "PlayingActivity -> WinnerCheckActivity[smallBlind]:" + smallBlind
+                        )
+                        Log.d(
+                            "kotlintest",
+                            "PlayingActivity -> WinnerCheckActivity[tableChips]:" + tableChips
+                        )
+                        Log.d(
+                            "kotlintest",
+                            "PlayingActivity -> WinnerCheckActivity[tableTotalChips]:" + tableTotalChips
+                        )
 
                         intent.putExtra("memberNum", memberNum)
                         intent.putExtra("game_id", game_id)
@@ -911,81 +938,257 @@ class PlayingActivity : AppCompatActivity() {
                         intent.putExtra("firstRealm", firstRealm)
                         startActivity(intent)
 
-
                     } else {
+                        if (sameChipsPlayer >= memberNum - foldPlayer) {
+                            when (round) {
+                                "preflop" -> round = "flop"
+                                "flop" -> round = "turn"
+                                "turn" -> round = "river"
+                                "river" -> round = "showdown"
+                            }
 
-                        if (roundNum == memberNum) {
-                            round_count++
+                            playingNum = preFlopNum
                             roundNum = 1
+                            round_count = 1
+                            tableChips = 0
+                            sameChipsPlayer = 0
+
+                            // CardActivityへ移動
+
+                            val intent = Intent(this@PlayingActivity, CardActivity::class.java)
+                            Log.d("kotlintest", "通過PA4")
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> CardActivity[count]:" + count.toString()
+                            )
+                            Log.d("kotlintest", "PlayingActivity -> CardActivity[round]:" + round)
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> CardActivity[round_count]:" + round_count.toString()
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> CardActivity[roundNum]:" + roundNum.toString()
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> CardActivity[myRound]:" + myRound.toString()
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> CardActivity[flopNum]:" + flopNum.toString()
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> CardActivity[preFlopNum]:" + preFlopNum.toString()
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> CardActivity[bigBlindNum]" + bigBlindNum.toString()
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> CardActivity[playingNum]:" + playingNum.toString()
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> CardActivity[foldPlayer]:" + foldPlayer.toString()
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> CardActivity[sameChipsPlayer]:" + sameChipsPlayer.toString()
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> CardActivity[smallBlind]:" + smallBlind.toString()
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> CardActivity[bigBlind]:" + bigBlind.toString()
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> CardActivity[tableChips]:" + tableChips.toString()
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> CardActivity[tableTotalChips]:" + tableTotalChips.toString()
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> CardActivity[bigBlind]:" + bigBlind
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> CardActivity[smallBlind]:" + smallBlind
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> CardActivity[tableChips]:" + tableChips
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> CardActivity[tableTotalChips]:" + tableTotalChips
+                            )
+
+                            intent.putExtra("memberNum", memberNum)
+                            intent.putExtra("game_id", game_id)
+                            intent.putExtra("count", count)
+                            intent.putExtra("round", round)
+                            intent.putExtra("round_count", round_count)
+                            intent.putExtra("roundNum", roundNum)
+                            intent.putExtra("myRound", myRound)
+                            intent.putExtra("cardHand1", cardHand1)
+                            intent.putExtra("cardHand2", cardHand2)
+                            intent.putExtra("cardCom1", cardCom1)
+                            intent.putExtra("cardCom2", cardCom2)
+                            intent.putExtra("cardCom3", cardCom3)
+                            intent.putExtra("cardCom4", cardCom4)
+                            intent.putExtra("cardCom5", cardCom5)
+                            intent.putExtra("bigBlind", bigBlind)
+                            intent.putExtra("smallBlind", smallBlind)
+                            intent.putExtra("tableChips", tableChips)
+                            intent.putExtra("tableTotalChips", tableTotalChips)
+                            intent.putExtra("flopNum", flopNum)
+                            intent.putExtra("preFlopNum", preFlopNum)
+                            intent.putExtra("bigBlindNum", bigBlindNum)
+                            intent.putExtra("playingNum", playingNum)
+                            intent.putExtra("foldPlayer", foldPlayer)
+                            intent.putExtra("sameChipsPlayer", sameChipsPlayer)
+                            intent.putExtra("firstRealm", firstRealm)
+                            startActivity(intent)
+
+
                         } else {
-                            roundNum++
+
+                            if (roundNum == memberNum) {
+                                round_count++
+                                roundNum = 1
+                            } else {
+                                roundNum++
+                            }
+
+                            if (playingNum == memberNum) {
+                                playingNum = 1
+                            } else {
+                                playingNum++
+                            }
+
+                            // MemberPlayingActivityに移動
+
+                            val intent =
+                                Intent(this@PlayingActivity, MemberPlayingActivity::class.java)
+                            Log.d("kotlintest", "通過PA5")
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> MemberPlayingActivity[count]:" + count.toString()
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> MemberPlayingActivity[round]:" + round
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> MemberPlayingActivity[round_count]:" + round_count.toString()
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> MemberPlayingActivity[roundNum]:" + roundNum.toString()
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> MemberPlayingActivity[myRound]:" + myRound.toString()
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> MemberPlayingActivity[flopNum]:" + flopNum.toString()
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> MemberPlayingActivity[preFlopNum]:" + preFlopNum.toString()
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> MemberPlayingActivity[bigBlindNum]" + bigBlindNum.toString()
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> MemberPlayingActivity[playingNum]:" + playingNum.toString()
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> MemberPlayingActivity[foldPlayer]:" + foldPlayer.toString()
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> MemberPlayingActivity[sameChipsPlayer]:" + sameChipsPlayer.toString()
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> MemberPlayingActivity[smallBlind]:" + smallBlind.toString()
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> MemberPlayingActivity[bigBlind]:" + bigBlind.toString()
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> MemberPlayingActivity[tableChips]:" + tableChips.toString()
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> MemberPlayingActivity[tableTotalChips]:" + tableTotalChips.toString()
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> MemberPlayingActivity[bigBlind]:" + bigBlind
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> MemberPlayingActivity[smallBlind]:" + smallBlind
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> MemberPlayingActivity[tableChips]:" + tableChips
+                            )
+                            Log.d(
+                                "kotlintest",
+                                "PlayingActivity -> MemberPlayingActivity[tableTotalChips]:" + tableTotalChips
+                            )
+
+
+                            intent.putExtra("memberNum", memberNum)
+                            intent.putExtra("game_id", game_id)
+                            intent.putExtra("count", count)
+                            intent.putExtra("round", round)
+                            intent.putExtra("round_count", round_count)
+                            intent.putExtra("roundNum", roundNum)
+                            intent.putExtra("myRound", myRound)
+                            intent.putExtra("cardHand1", cardHand1)
+                            intent.putExtra("cardHand2", cardHand2)
+                            intent.putExtra("cardCom1", cardCom1)
+                            intent.putExtra("cardCom2", cardCom2)
+                            intent.putExtra("cardCom3", cardCom3)
+                            intent.putExtra("cardCom4", cardCom4)
+                            intent.putExtra("cardCom5", cardCom5)
+                            intent.putExtra("bigBlind", bigBlind)
+                            intent.putExtra("smallBlind", smallBlind)
+                            intent.putExtra("tableChips", tableChips)
+                            intent.putExtra("tableTotalChips", tableTotalChips)
+                            intent.putExtra("flopNum", flopNum)
+                            intent.putExtra("preFlopNum", preFlopNum)
+                            intent.putExtra("bigBlindNum", bigBlindNum)
+                            intent.putExtra("playingNum", playingNum)
+                            intent.putExtra("foldPlayer", foldPlayer)
+                            intent.putExtra("sameChipsPlayer", sameChipsPlayer)
+                            intent.putExtra("firstRealm", firstRealm)
+                            startActivity(intent)
+
                         }
-
-                        if (playingNum == memberNum) {
-                            playingNum = 1
-                        } else {
-                            playingNum++
-                        }
-
-                        // MemberPlayingActivityに移動
-
-                        val intent = Intent(this@PlayingActivity, MemberPlayingActivity::class.java)
-                        Log.d("kotlintest", "通過PA5")
-                        Log.d("kotlintest", "PlayingActivity -> MemberPlayingActivity[count]:" + count.toString())
-                        Log.d("kotlintest", "PlayingActivity -> MemberPlayingActivity[round]:" + round)
-                        Log.d("kotlintest", "PlayingActivity -> MemberPlayingActivity[round_count]:" + round_count.toString())
-                        Log.d("kotlintest", "PlayingActivity -> MemberPlayingActivity[roundNum]:" + roundNum.toString())
-                        Log.d("kotlintest", "PlayingActivity -> MemberPlayingActivity[myRound]:" + myRound.toString())
-                        Log.d("kotlintest", "PlayingActivity -> MemberPlayingActivity[flopNum]:" + flopNum.toString())
-                        Log.d("kotlintest", "PlayingActivity -> MemberPlayingActivity[preFlopNum]:" + preFlopNum.toString())
-                        Log.d("kotlintest", "PlayingActivity -> MemberPlayingActivity[bigBlindNum]" + bigBlindNum.toString())
-                        Log.d("kotlintest", "PlayingActivity -> MemberPlayingActivity[playingNum]:" + playingNum.toString())
-                        Log.d("kotlintest", "PlayingActivity -> MemberPlayingActivity[foldPlayer]:" + foldPlayer.toString())
-                        Log.d("kotlintest", "PlayingActivity -> MemberPlayingActivity[sameChipsPlayer]:" + sameChipsPlayer.toString())
-                        Log.d("kotlintest", "PlayingActivity -> MemberPlayingActivity[smallBlind]:" + smallBlind.toString())
-                        Log.d("kotlintest", "PlayingActivity -> MemberPlayingActivity[bigBlind]:" + bigBlind.toString())
-                        Log.d("kotlintest", "PlayingActivity -> MemberPlayingActivity[tableChips]:" + tableChips.toString())
-                        Log.d("kotlintest", "PlayingActivity -> MemberPlayingActivity[tableTotalChips]:" + tableTotalChips.toString())
-                        Log.d("kotlintest", "PlayingActivity -> MemberPlayingActivity[bigBlind]:" + bigBlind)
-                        Log.d("kotlintest", "PlayingActivity -> MemberPlayingActivity[smallBlind]:" + smallBlind)
-                        Log.d("kotlintest", "PlayingActivity -> MemberPlayingActivity[tableChips]:" + tableChips)
-                        Log.d("kotlintest", "PlayingActivity -> MemberPlayingActivity[tableTotalChips]:" + tableTotalChips)
-
-
-                        intent.putExtra("memberNum", memberNum)
-                        intent.putExtra("game_id", game_id)
-                        intent.putExtra("count", count)
-                        intent.putExtra("round", round)
-                        intent.putExtra("round_count", round_count)
-                        intent.putExtra("roundNum", roundNum)
-                        intent.putExtra("myRound", myRound)
-                        intent.putExtra("cardHand1", cardHand1)
-                        intent.putExtra("cardHand2", cardHand2)
-                        intent.putExtra("cardCom1", cardCom1)
-                        intent.putExtra("cardCom2", cardCom2)
-                        intent.putExtra("cardCom3", cardCom3)
-                        intent.putExtra("cardCom4", cardCom4)
-                        intent.putExtra("cardCom5", cardCom5)
-                        intent.putExtra("bigBlind", bigBlind)
-                        intent.putExtra("smallBlind", smallBlind)
-                        intent.putExtra("tableChips", tableChips)
-                        intent.putExtra("tableTotalChips", tableTotalChips)
-                        intent.putExtra("flopNum", flopNum)
-                        intent.putExtra("preFlopNum", preFlopNum)
-                        intent.putExtra("bigBlindNum", bigBlindNum)
-                        intent.putExtra("playingNum", playingNum)
-                        intent.putExtra("foldPlayer", foldPlayer)
-                        intent.putExtra("sameChipsPlayer", sameChipsPlayer)
-                        intent.putExtra("firstRealm", firstRealm)
-                        startActivity(intent)
-
                     }
-
                 }
-
             }
         }
-
     }
 
     private fun cardSetting1() {
