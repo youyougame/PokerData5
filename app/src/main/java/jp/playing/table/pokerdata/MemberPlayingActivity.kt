@@ -121,11 +121,193 @@ class MemberPlayingActivity : AppCompatActivity() {
         playerName = memberRealmData!!.memberName
         val memberPlayingCheck = memberRealmData!!.playingCheck
         val turnChips = memberRealmData!!.memberChips
+        val totalChipsAllIn = memberRealmData!!.playingCheck
 //        Log.d("kotlintest", "受け取ったID：" + memberPlayerRealmResultsId)
 //        playerName = memberPlayerRealmResults[memberPlayerRealmResultsId]!!.memberName
 //        Log.d("kotlintest", playerName)
 //        val memberPlayingCheck = memberPlayerRealmResults[memberPlayerRealmResultsId]!!.playingCheck
 //        val turnChips = memberPlayerRealmResults[memberPlayerRealmResultsId]!!.memberChips
+
+        if (totalChipsAllIn == "0") {
+            if (sameChipsPlayer == memberNum - foldPlayer) {
+                when (round) {
+                    "preflop" -> round = "flop"
+                    "flop" -> round = "turn"
+                    "turn" -> round = "river"
+                    "turn" -> round = "showdown"
+                }
+
+                //CardActivityへ移動
+                val intent = Intent(this@MemberPlayingActivity, CardActivity::class.java)
+                Log.d("kotlintest", "通過MPA1")
+                Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[count]:" + count.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[round]:" + round)
+                Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[round_count]:" + round_count.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[roundNum]:" + roundNum.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[myRound]:" + myRound.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[flopNum]:" + flopNum.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[preFlopNum]:" + preFlopNum.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[bigBlindNum]" + bigBlindNum.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[playingNum]:" + playingNum.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[foldPlayer]:" + foldPlayer.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[sameChipsPlayer]:" + sameChipsPlayer.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[smallBlind]:" + smallBlind.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[bigBlind]:" + bigBlind.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[tableChips]:" + tableChips.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[tableTotalChips]:" + tableTotalChips.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[bigBlind]:" + bigBlind)
+                Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[smallBlind]:" + smallBlind)
+                Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[tableChips]:" + tableChips)
+                Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[tableTotalChips]:" + tableTotalChips)
+
+                intent.putExtra("memberNum", memberNum)
+                intent.putExtra("game_id", game_id)
+                intent.putExtra("count", count)
+                intent.putExtra("round", round)
+                intent.putExtra("round_count", round_count)
+                intent.putExtra("roundNum", roundNum)
+                intent.putExtra("myRound", myRound)
+                intent.putExtra("cardHand1", cardHand1)
+                intent.putExtra("cardHand2", cardHand2)
+                intent.putExtra("cardCom1", cardCom1)
+                intent.putExtra("cardCom2", cardCom2)
+                intent.putExtra("cardCom3", cardCom3)
+                intent.putExtra("cardCom4", cardCom4)
+                intent.putExtra("cardCom5", cardCom5)
+                intent.putExtra("bigBlind", bigBlind)
+                intent.putExtra("smallBlind", smallBlind)
+                intent.putExtra("tableChips", tableChips)
+                intent.putExtra("tableTotalChips", tableTotalChips)
+                intent.putExtra("flopNum", flopNum)
+                intent.putExtra("preFlopNum", preFlopNum)
+                intent.putExtra("bigBlindNum", bigBlindNum)
+                intent.putExtra("playingNum", playingNum)
+                intent.putExtra("foldPlayer", foldPlayer)
+                intent.putExtra("sameChipsPlayer", sameChipsPlayer)
+                intent.putExtra("firstRealm", firstRealm)
+                startActivity(intent)
+            }
+
+            if (roundNum == memberNum) {
+                round_count++
+                roundNum = 1
+            } else {
+                roundNum++
+            }
+
+            if (playingNum == memberNum) {
+                playingNum = 1
+            } else {
+                playingNum++
+            }
+
+            val memberPlayerNumRealm = mRealm.where(Member::class.java).equalTo("memberRound", playingNum).findAll()
+            val memberPlayerNumRealmId = memberPlayerNumRealm.max("id")!!.toInt()
+            val nextPlayerName = memberPlayerRealmResults[memberPlayerNumRealmId]!!.memberName
+
+            if (nextPlayerName == "自分") {
+                //PlayingActivityに移動
+                val intent = Intent(this@MemberPlayingActivity, PlayingActivity::class.java)
+                Log.d("kotlintest", "通過MPA2")
+                Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[count]:" + count.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[round]:" + round)
+                Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[round_count]:" + round_count.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[roundNum]:" + roundNum.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[myRound]:" + myRound.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[flopNum]:" + flopNum.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[preFlopNum]:" + preFlopNum.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[bigBlindNum]" + bigBlindNum.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[playingNum]:" + playingNum.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[foldPlayer]:" + foldPlayer.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[sameChipsPlayer]:" + sameChipsPlayer.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[smallBlind]:" + smallBlind.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[bigBlind]:" + bigBlind.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[tableChips]:" + tableChips.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[tableTotalChips]:" + tableTotalChips.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[bigBlind]:" + bigBlind)
+                Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[smallBlind]:" + smallBlind)
+                Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[tableChips]:" + tableChips)
+                Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[tableTotalChips]:" + tableTotalChips)
+
+
+                intent.putExtra("memberNum", memberNum)
+                intent.putExtra("game_id", game_id)
+                intent.putExtra("count", count)
+                intent.putExtra("round", round)
+                intent.putExtra("round_count", round_count)
+                intent.putExtra("roundNum", roundNum)
+                intent.putExtra("myRound", myRound)
+                intent.putExtra("cardHand1", cardHand1)
+                intent.putExtra("cardHand2", cardHand2)
+                intent.putExtra("cardCom1", cardCom1)
+                intent.putExtra("cardCom2", cardCom2)
+                intent.putExtra("cardCom3", cardCom3)
+                intent.putExtra("cardCom4", cardCom4)
+                intent.putExtra("cardCom5", cardCom5)
+                intent.putExtra("bigBlind", bigBlind)
+                intent.putExtra("smallBlind", smallBlind)
+                intent.putExtra("tableChips", tableChips)
+                intent.putExtra("tableTotalChips", tableTotalChips)
+                intent.putExtra("flopNum", flopNum)
+                intent.putExtra("preFlopNum", preFlopNum)
+                intent.putExtra("bigBlindNum", bigBlindNum)
+                intent.putExtra("playingNum", playingNum)
+                intent.putExtra("foldPlayer", foldPlayer)
+                intent.putExtra("sameChipsPlayer", sameChipsPlayer)
+                intent.putExtra("firstRealm", firstRealm)
+                startActivity(intent)
+            } else {
+                //MemberPlayingActivityに移動
+                val intent = Intent(this@MemberPlayingActivity, MemberPlayingActivity::class.java)
+                Log.d("kotlintest", "通過MPA3")
+                Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[count]:" + count.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[round]:" + round)
+                Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[round_count]:" + round_count.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[roundNum]:" + roundNum.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[myRound]:" + myRound.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[flopNum]:" + flopNum.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[preFlopNum]:" + preFlopNum.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[bigBlindNum]" + bigBlindNum.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[playingNum]:" + playingNum.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[foldPlayer]:" + foldPlayer.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[sameChipsPlayer]:" + sameChipsPlayer.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[smallBlind]:" + smallBlind.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[bigBlind]:" + bigBlind.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[tableChips]:" + tableChips.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[tableTotalChips]:" + tableTotalChips.toString())
+                Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[bigBlind]:" + bigBlind)
+                Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[smallBlind]:" + smallBlind)
+                Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[tableChips]:" + tableChips)
+                Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[tableTotalChips]:" + tableTotalChips)
+
+                intent.putExtra("memberNum", memberNum)
+                intent.putExtra("game_id", game_id)
+                intent.putExtra("count", count)
+                intent.putExtra("round", round)
+                intent.putExtra("round_count", round_count)
+                intent.putExtra("roundNum", roundNum)
+                intent.putExtra("myRound", myRound)
+                intent.putExtra("cardHand1", cardHand1)
+                intent.putExtra("cardHand2", cardHand2)
+                intent.putExtra("cardCom1", cardCom1)
+                intent.putExtra("cardCom2", cardCom2)
+                intent.putExtra("cardCom3", cardCom3)
+                intent.putExtra("cardCom4", cardCom4)
+                intent.putExtra("cardCom5", cardCom5)
+                intent.putExtra("bigBlind", bigBlind)
+                intent.putExtra("smallBlind", smallBlind)
+                intent.putExtra("tableChips", tableChips)
+                intent.putExtra("tableTotalChips", tableTotalChips)
+                intent.putExtra("flopNum", flopNum)
+                intent.putExtra("preFlopNum", preFlopNum)
+                intent.putExtra("bigBlindNum", bigBlindNum)
+                intent.putExtra("playingNum", playingNum)
+                intent.putExtra("foldPlayer", foldPlayer)
+                intent.putExtra("sameChipsPlayer", sameChipsPlayer)
+                intent.putExtra("firstRealm", firstRealm)
+                startActivity(intent)
+            }
+        }
 
         if (memberPlayingCheck == "fold") {
             if (sameChipsPlayer == memberNum - foldPlayer) {
@@ -331,7 +513,6 @@ class MemberPlayingActivity : AppCompatActivity() {
         Log.d("kotlintest", turnDataChips.toString())
 
         memberChangeChipsText.text = "0"
-        chipsNum1 = "0"
 
 
         //アクションボタンのUI表示設定
@@ -437,6 +618,9 @@ class MemberPlayingActivity : AppCompatActivity() {
         }
 
         memberPlayingNumButton1.setOnClickListener {
+            if (chipsNum1 == "0") {
+                chipsNum1 == ""
+            }
             when {
                 chipsNum1 == "" -> chipsNum1 = "1"
                 chipsNum2 == "" -> chipsNum2 = "1"
@@ -454,6 +638,9 @@ class MemberPlayingActivity : AppCompatActivity() {
         }
 
         memberPlayingNumButton2.setOnClickListener {
+            if (chipsNum1 == "0") {
+                chipsNum1 == ""
+            }
             when {
                 chipsNum1 == "" -> chipsNum1 = "2"
                 chipsNum2 == "" -> chipsNum2 = "2"
@@ -471,6 +658,9 @@ class MemberPlayingActivity : AppCompatActivity() {
         }
 
         memberPlayingNumButton3.setOnClickListener {
+            if (chipsNum1 == "0") {
+                chipsNum1 == ""
+            }
             when {
                 chipsNum1 == "" -> chipsNum1 = "3"
                 chipsNum2 == "" -> chipsNum2 = "3"
@@ -488,6 +678,9 @@ class MemberPlayingActivity : AppCompatActivity() {
         }
 
         memberPlayingNumButton4.setOnClickListener {
+            if (chipsNum1 == "0") {
+                chipsNum1 == ""
+            }
             when {
                 chipsNum1 == "" -> chipsNum1 = "4"
                 chipsNum2 == "" -> chipsNum2 = "4"
@@ -505,6 +698,9 @@ class MemberPlayingActivity : AppCompatActivity() {
         }
 
         memberPlayingNumButton5.setOnClickListener {
+            if (chipsNum1 == "0") {
+                chipsNum1 == ""
+            }
             when {
                 chipsNum1 == "" -> chipsNum1 = "5"
                 chipsNum2 == "" -> chipsNum2 = "5"
@@ -522,6 +718,9 @@ class MemberPlayingActivity : AppCompatActivity() {
         }
 
         memberPlayingNumButton6.setOnClickListener {
+            if (chipsNum1 == "0") {
+                chipsNum1 == ""
+            }
             when {
                 chipsNum1 == "" -> chipsNum1 = "6"
                 chipsNum2 == "" -> chipsNum2 = "6"
@@ -539,6 +738,9 @@ class MemberPlayingActivity : AppCompatActivity() {
         }
 
         memberPlayingNumButton7.setOnClickListener {
+            if (chipsNum1 == "0") {
+                chipsNum1 == ""
+            }
             when {
                 chipsNum1 == "" -> chipsNum1 = "7"
                 chipsNum2 == "" -> chipsNum2 = "7"
@@ -555,6 +757,9 @@ class MemberPlayingActivity : AppCompatActivity() {
         }
 
         memberPlayingNumButton8.setOnClickListener {
+            if (chipsNum1 == "0") {
+                chipsNum1 == ""
+            }
             when {
                 chipsNum1 == "" -> chipsNum1 = "8"
                 chipsNum2 == "" -> chipsNum2 = "8"
@@ -572,6 +777,9 @@ class MemberPlayingActivity : AppCompatActivity() {
         }
 
         memberPlayingNumButton9.setOnClickListener {
+            if (chipsNum1 == "0") {
+                chipsNum1 == ""
+            }
             when {
                 chipsNum1 == "" -> chipsNum1 = "9"
                 chipsNum2 == "" -> chipsNum2 = "9"
@@ -589,6 +797,9 @@ class MemberPlayingActivity : AppCompatActivity() {
         }
 
         memberPlayingNumButton0.setOnClickListener {
+            if (chipsNum1 == "0") {
+                chipsNum1 == ""
+            }
             when {
                 chipsNum2 == "" -> chipsNum2 = "0"
                 chipsNum3 == "" -> chipsNum3 = "0"
@@ -603,111 +814,117 @@ class MemberPlayingActivity : AppCompatActivity() {
         }
 
         memberPlayingNumButton00.setOnClickListener {
-            when {
-                chipsNum2 == "" -> {
-                    chipsNum2 = "0"
-                    chipsNum3 = "0"
+
+                when {
+                    chipsNum2 == "" -> {
+                        chipsNum2 = "0"
+                        chipsNum3 = "0"
+                    }
+                    chipsNum3 == "" -> {
+                        chipsNum3 = "0"
+                        chipsNum4 = "0"
+                    }
+                    chipsNum4 == "" -> {
+                        chipsNum4 = "0"
+                        chipsNum5 = "0"
+                    }
+                    chipsNum5 == "" -> {
+                        chipsNum5 = "0"
+                        chipsNum6 = "0"
+                    }
+                    chipsNum6 == "" -> {
+                        chipsNum6 = "0"
+                        chipsNum7 = "0"
+                    }
+                    chipsNum7 == "" -> {
+                        chipsNum7 = "0"
+                    }
                 }
-                chipsNum3 == "" -> {
-                    chipsNum3 = "0"
-                    chipsNum4 = "0"
-                }
-                chipsNum4 == "" -> {
-                    chipsNum4 = "0"
-                    chipsNum5 = "0"
-                }
-                chipsNum5 == "" -> {
-                    chipsNum5 = "0"
-                    chipsNum6 = "0"
-                }
-                chipsNum6 == "" -> {
-                    chipsNum6 = "0"
-                    chipsNum7 = "0"
-                }
-                chipsNum7 == "" -> {
-                    chipsNum7 = "0"
-                }
-            }
-            memberChangeChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
-            playingCheck = "play"
-            memberPlayingFoldText.text = ""
+                memberChangeChipsText.text =
+                    chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
+                playingCheck = "play"
+                memberPlayingFoldText.text = ""
         }
 
         memberPlayingNumButton000.setOnClickListener {
-            when {
-                chipsNum2 == "" -> {
-                    chipsNum2 = "0"
-                    chipsNum3 = "0"
-                    chipsNum4 = "0"
+
+                when {
+                    chipsNum2 == "" -> {
+                        chipsNum2 = "0"
+                        chipsNum3 = "0"
+                        chipsNum4 = "0"
+                    }
+                    chipsNum3 == "" -> {
+                        chipsNum3 = "0"
+                        chipsNum4 = "0"
+                        chipsNum5 = "0"
+                    }
+                    chipsNum4 == "" -> {
+                        chipsNum4 = "0"
+                        chipsNum5 = "0"
+                        chipsNum6 = "0"
+                    }
+                    chipsNum5 == "" -> {
+                        chipsNum5 = "0"
+                        chipsNum6 = "0"
+                        chipsNum7 = "0"
+                    }
+                    chipsNum6 == "" -> {
+                        chipsNum6 = "0"
+                        chipsNum7 = "0"
+                    }
+                    chipsNum7 == "" -> {
+                        chipsNum7 = "0"
+                    }
                 }
-                chipsNum3 == "" -> {
-                    chipsNum3 = "0"
-                    chipsNum4 = "0"
-                    chipsNum5 = "0"
-                }
-                chipsNum4 == "" -> {
-                    chipsNum4 = "0"
-                    chipsNum5 = "0"
-                    chipsNum6 = "0"
-                }
-                chipsNum5 == "" -> {
-                    chipsNum5 = "0"
-                    chipsNum6 = "0"
-                    chipsNum7 = "0"
-                }
-                chipsNum6 == "" -> {
-                    chipsNum6 = "0"
-                    chipsNum7 = "0"
-                }
-                chipsNum7 == "" -> {
-                    chipsNum7 = "0"
-                }
-            }
-            memberChangeChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
-            playingCheck = "play"
-            memberPlayingFoldText.text = ""
+                memberChangeChipsText.text =
+                    chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
+                playingCheck = "play"
+                memberPlayingFoldText.text = ""
         }
 
         memberPlayingNumButton0000.setOnClickListener {
-            when {
-                chipsNum2 == "" -> {
-                    chipsNum2 = "0"
-                    chipsNum3 = "0"
-                    chipsNum4 = "0"
-                    chipsNum5 = "0"
+
+                when {
+                    chipsNum2 == "" -> {
+                        chipsNum2 = "0"
+                        chipsNum3 = "0"
+                        chipsNum4 = "0"
+                        chipsNum5 = "0"
+                    }
+                    chipsNum3 == "" -> {
+                        chipsNum3 = "0"
+                        chipsNum4 = "0"
+                        chipsNum5 = "0"
+                        chipsNum6 = "0"
+                    }
+                    chipsNum4 == "" -> {
+                        chipsNum4 = "0"
+                        chipsNum5 = "0"
+                        chipsNum6 = "0"
+                        chipsNum7 = "0"
+                    }
+                    chipsNum5 == "" -> {
+                        chipsNum5 = "0"
+                        chipsNum6 = "0"
+                        chipsNum7 = "0"
+                    }
+                    chipsNum6 == "" -> {
+                        chipsNum6 = "0"
+                        chipsNum7 = "0"
+                    }
+                    chipsNum7 == "" -> {
+                        chipsNum7 = "0"
+                    }
                 }
-                chipsNum3 == "" -> {
-                    chipsNum3 = "0"
-                    chipsNum4 = "0"
-                    chipsNum5 = "0"
-                    chipsNum6 = "0"
-                }
-                chipsNum4 == "" -> {
-                    chipsNum4 = "0"
-                    chipsNum5 = "0"
-                    chipsNum6 = "0"
-                    chipsNum7 = "0"
-                }
-                chipsNum5 == "" -> {
-                    chipsNum5 = "0"
-                    chipsNum6 = "0"
-                    chipsNum7 = "0"
-                }
-                chipsNum6 == "" -> {
-                    chipsNum6 = "0"
-                    chipsNum7 = "0"
-                }
-                chipsNum7 == "" -> {
-                    chipsNum7 = "0"
-                }
-            }
-            memberChangeChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
-            playingCheck = "play"
-            memberPlayingFoldText.text = ""
+                memberChangeChipsText.text =
+                    chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
+                playingCheck = "play"
+                memberPlayingFoldText.text = ""
         }
 
         memberPalyingDeleteButton.setOnClickListener {
-            chipsNum1 = "0"
+            chipsNum1 = ""
             chipsNum2 = ""
             chipsNum3 = ""
             chipsNum4 = ""
@@ -716,7 +933,7 @@ class MemberPlayingActivity : AppCompatActivity() {
             chipsNum7 = ""
             playingCheck = "play"
 
-            memberChangeChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
+            memberChangeChipsText.text = "0"
             memberPlayingFoldText.text = ""
         }
 
@@ -775,19 +992,22 @@ class MemberPlayingActivity : AppCompatActivity() {
 
                     mMember = Member()
 
-                    val memberRealmResults = mRealm.where(Member::class.java).findAll()
-                    //player_idを取得
-                    val memberPlayerNumRealmResults =
-                        mRealm.where(Member::class.java).equalTo("memberRound", playingNum)
-                            .findAll()
-                    val playerNumId = memberPlayerNumRealmResults.max("id")!!.toInt()
-                    player_id = memberRealmResults[playerNumId]!!.member_id
-                    val playerTotalChips = memberRealmResults[playerNumId]!!.memberChips
+//                    val memberRealmResults = mRealm.where(Member::class.java).findAll()
+//                    //player_idを取得
+//                    val memberPlayerNumRealmResults =
+//                        mRealm.where(Member::class.java).equalTo("memberRound", playingNum)
+//                            .findAll()
+//                    val playerNumId = memberPlayerNumRealmResults.max("id")!!.toInt()
+                    player_id = memberRealmData!!.member_id
+                    val playerTotalChips = memberRealmData!!.memberChips
+
+//                    player_id = memberRealmResults[playerNumId]!!.member_id
+//                    val playerTotalChips = memberRealmResults[playerNumId]!!.memberChips
 
                     //Memberを更新
-                    var member =
-                        mRealm.where(Member::class.java).equalTo("id", playerNumId).findFirst()
-                    Log.d("kotlintest", "memberId:" + playerNumId.toString())
+//                    var member =
+//                        mRealm.where(Member::class.java).equalTo("id", playerNumId).findFirst()
+//                    Log.d("kotlintest", "memberId:" + playerNumId.toString())
 
                     //Turnを新規登録
                     mTurn!!.game_id = game_id
@@ -802,24 +1022,24 @@ class MemberPlayingActivity : AppCompatActivity() {
                                 Log.d("kotlintest", "登録MPA:SB")
                                 mTurn!!.playChips = smallBlind
                                 mTurn!!.memberChips = playerTotalChips - smallBlind
-                                member!!.playChips = smallBlind
-                                member!!.memberChips = playerTotalChips - smallBlind
+                                memberRealmData!!.playChips = smallBlind
+                                memberRealmData!!.memberChips = playerTotalChips - smallBlind
                                 tableTotalChips += smallBlind
                             }
                             bigBlindNum -> {
                                 Log.d("kotlintest", "登録MPA:BB")
                                 mTurn!!.playChips = bigBlind
                                 mTurn!!.memberChips = playerTotalChips - bigBlind
-                                member!!.playChips = bigBlind
-                                member!!.memberChips = playerTotalChips - bigBlind
+                                memberRealmData!!.playChips = bigBlind
+                                memberRealmData!!.memberChips = playerTotalChips - bigBlind
                                 tableTotalChips += bigBlind
                             }
                             else -> {
                                 Log.d("kotlintest", "登録MPA:else")
                                 mTurn!!.playChips = 0
                                 mTurn!!.memberChips = playerTotalChips
-                                member!!.playChips = 0
-                                member!!.memberChips = playerTotalChips
+                                memberRealmData!!.playChips = 0
+                                memberRealmData!!.memberChips = playerTotalChips
 
                             }
                         }
@@ -828,8 +1048,8 @@ class MemberPlayingActivity : AppCompatActivity() {
                         mTurn!!.playChips = memberChangeChipsText.text.toString().toInt()
                         mTurn!!.memberChips =
                             playerTotalChips - memberChangeChipsText.text.toString().toInt()
-                        member!!.playChips = memberChangeChipsText.text.toString().toInt()
-                        member!!.memberChips =
+                        memberRealmData!!.playChips = memberChangeChipsText.text.toString().toInt()
+                        memberRealmData!!.memberChips =
                             playerTotalChips - memberChangeChipsText.text.toString().toInt()
                     }
                     mTurn!!.tableChips = tableChips
@@ -850,20 +1070,20 @@ class MemberPlayingActivity : AppCompatActivity() {
                     )
 
                     if (playingCheck == "fold") {
-                        member!!.playingCheck = "fold"
+                        memberRealmData!!.playingCheck = "fold"
                         foldPlayer++
                     }
 
 
-                    member!!.tableChips = tableChips
-                    member!!.tableTotalChips = tableTotalChips
+                    memberRealmData!!.tableChips = tableChips
+                    memberRealmData!!.tableTotalChips = tableTotalChips
 
-                    Log.d("kotlintest", "member!!.playChips:" + member!!.playChips.toString())
-                    Log.d("kotlintest", "member!!.memberChips:" + member!!.memberChips.toString())
-                    Log.d("kotlintest", "member!!.tableChips:" + member!!.tableChips.toString())
+                    Log.d("kotlintest", "member!!.playChips:" + memberRealmData!!.playChips.toString())
+                    Log.d("kotlintest", "member!!.memberChips:" + memberRealmData!!.memberChips.toString())
+                    Log.d("kotlintest", "member!!.tableChips:" + memberRealmData!!.tableChips.toString())
                     Log.d(
                         "kotlintest",
-                        "member!!.tableTotalChips:" + member!!.tableTotalChips.toString()
+                        "member!!.tableTotalChips:" + memberRealmData!!.tableTotalChips.toString()
                     )
 
                     mRealm.copyToRealmOrUpdate(mTurn!!)
@@ -1153,8 +1373,8 @@ class MemberPlayingActivity : AppCompatActivity() {
                                 mRealm.where(Member::class.java).equalTo("memberRound", playingNum)
                                     .findAll()
                             val memberPlayerNumRealmId = memberPlayerNumRealm.max("id")!!.toInt()
-                            val nextPlayerName =
-                                memberRealmResults[memberPlayerNumRealmId]!!.memberName
+//                            val nextPlayerName =
+//                                memberRealmResults[memberPlayerNumRealmId]!!.memberName
 
                             if (playingNum == myRound) {
                                 //PlayingActivityに移動

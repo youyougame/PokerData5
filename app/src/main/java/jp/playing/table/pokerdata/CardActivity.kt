@@ -495,7 +495,9 @@ class CardActivity : AppCompatActivity() {
                                 mRealm.where(Hand::class.java).equalTo("game_id", game_id).findAll()
                             val handId = hand.max("id")!!.toInt()
                             Log.d("kotlintest", "保存したハンド：" + hand.max("id")!!.toInt())
-                            val handDB = handRealmResults.get(handId)
+                            val handDB =
+                                mRealm.where(Hand::class.java).equalTo("id", handId)
+                                    .findFirst()
                             mRealm.beginTransaction()
                             mHand = Hand()
                             handDB!!.table4 = cardCom4
@@ -519,7 +521,9 @@ class CardActivity : AppCompatActivity() {
                                 mRealm.where(Hand::class.java).equalTo("game_id", game_id).findAll()
                             val handId = hand.max("id")!!.toInt()
                             Log.d("kotlintest", "保存したハンド：" + hand.max("id")!!.toInt())
-                            val handDB = handRealmResults.get(handId)
+                            val handDB =
+                                mRealm.where(Hand::class.java).equalTo("id", handId)
+                                    .findFirst()
                             mRealm.beginTransaction()
                             mHand = Hand()
                             handDB!!.table5 = cardCom5
@@ -590,7 +594,9 @@ class CardActivity : AppCompatActivity() {
                                     val hand = mRealm.where(Hand::class.java).equalTo("game_id", game_id).findAll()
                                     val handId = hand.max("id")!!.toInt()
                                     Log.d("kotlintest", "保存したハンド：" + hand.max("id")!!.toInt())
-                                    val handDB = handRealmResults.get(handId)
+                                    val handDB =
+                                        mRealm.where(Hand::class.java).equalTo("id", handId)
+                                            .findFirst()
                                     mRealm.beginTransaction()
                                     mHand = Hand()
                                     handDB!!.table1 = cardCom1
@@ -633,7 +639,9 @@ class CardActivity : AppCompatActivity() {
                                     val hand = mRealm.where(Hand::class.java).equalTo("game_id", game_id).findAll()
                                     val handId = hand.max("id")!!.toInt()
                                     Log.d("kotlintest", "保存したハンド：" + hand.max("id")!!.toInt())
-                                    val handDB = handRealmResults.get(handId)
+                                    val handDB =
+                                        mRealm.where(Hand::class.java).equalTo("id", handId)
+                                            .findFirst()
                                     mRealm.beginTransaction()
                                     mHand = Hand()
                                     handDB!!.table4 = cardCom4
@@ -659,7 +667,9 @@ class CardActivity : AppCompatActivity() {
                             val hand = mRealm.where(Hand::class.java).equalTo("game_id", game_id).findAll()
                             val handId = hand.max("id")!!.toInt()
                             Log.d("kotlintest", "保存したハンド：" + hand.max("id")!!.toInt())
-                            val handDB = handRealmResults.get(handId)
+                            val handDB =
+                                mRealm.where(Hand::class.java).equalTo("id", handId)
+                                    .findFirst()
                             mRealm.beginTransaction()
                             mHand = Hand()
                             handDB!!.table5 = cardCom5

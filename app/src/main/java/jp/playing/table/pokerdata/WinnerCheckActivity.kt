@@ -528,33 +528,35 @@ class WinnerCheckActivity : AppCompatActivity() {
             mRealm.copyToRealmOrUpdate(mMember!!)
             mRealm.commitTransaction()
 
-            Log.d("kotlintest", "foldCount:" + foldCount.toString())
-            Log.d("kotlintest", "memberNum - 1:" + {memberNum - 1}.toString())
+            val foldNum = memberNum - 1
 
-            if (foldCount == memberNum - 1) {
+            Log.d("kotlintest", "foldCount:" + foldCount.toString())
+            Log.d("kotlintest", "memberNum - 1:" + foldNum.toString())
+
+            if (foldCount == foldNum) {
                 Log.d("kotlintest", "終了通過")
                 val intent = Intent(this@WinnerCheckActivity, MainActivity::class.java)
                 startActivity(intent)
+            } else {
+                //HandActivityへ移動
+                val intent = Intent(this@WinnerCheckActivity, HandActivity::class.java)
+                Log.d("kotlintest", "WinnerCheckActivity -> CardActivity[count]:" + count.toString())
+                Log.d("kotlintest", "WinnerCheckActivity -> CardActivity[myRound]:" + myRound.toString())
+                Log.d("kotlintest", "WinnerCheckActivity -> CardActivity[flopNum]:" + flopNum.toString())
+                Log.d("kotlintest", "WinnerCheckActivity -> CardActivity[playingNum]:" + playingNum.toString())
+                Log.d("kotlintest", "WinnerCheckActivity -> CardActivity[smallBlind]:" + smallBlind.toString())
+                Log.d("kotlintest", "WinnerCheckActivity -> CardActivity[bigBlind]:" + bigBlind.toString())
+
+                intent.putExtra("memberNum", memberNum)
+                intent.putExtra("flopNum", flopNum)
+                intent.putExtra("playingNum", playingNum)
+                intent.putExtra("count", count)
+                intent.putExtra("bigBlind", bigBlind)
+                intent.putExtra("smallBlind", smallBlind)
+                intent.putExtra("myRound", myRound)
+                intent.putExtra("firstRealm", firstRealm)
+                startActivity(intent)
             }
-
-            //HandActivityへ移動
-            val intent = Intent(this@WinnerCheckActivity, HandActivity::class.java)
-            Log.d("kotlintest", "WinnerCheckActivity -> CardActivity[count]:" + count.toString())
-            Log.d("kotlintest", "WinnerCheckActivity -> CardActivity[myRound]:" + myRound.toString())
-            Log.d("kotlintest", "WinnerCheckActivity -> CardActivity[flopNum]:" + flopNum.toString())
-            Log.d("kotlintest", "WinnerCheckActivity -> CardActivity[playingNum]:" + playingNum.toString())
-            Log.d("kotlintest", "WinnerCheckActivity -> CardActivity[smallBlind]:" + smallBlind.toString())
-            Log.d("kotlintest", "WinnerCheckActivity -> CardActivity[bigBlind]:" + bigBlind.toString())
-
-            intent.putExtra("memberNum", memberNum)
-            intent.putExtra("flopNum", flopNum)
-            intent.putExtra("playingNum", playingNum)
-            intent.putExtra("count", count)
-            intent.putExtra("bigBlind", bigBlind)
-            intent.putExtra("smallBlind", smallBlind)
-            intent.putExtra("myRound", myRound)
-            intent.putExtra("firstRealm", firstRealm)
-            startActivity(intent)
 
         }
     }
@@ -571,20 +573,24 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val playerId1 = playerNum1.max("id")!!.toInt()
                 val playerId2 = playerNum2.max("id")!!.toInt()
 
-                val player1 = memberRealmResults[playerId1]!!.memberName
-                val player2 = memberRealmResults[playerId2]!!.memberName
+                val playerData1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
+                val playerData2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
+
+                val player1 = playerData1!!.memberName
+                val player2 = playerData2!!.memberName
 
                 playerWinnerCheckTextView1.text = player1
                 playerWinnerCheckTextView2.text = player2
 
-                firstHand1 = memberRealmResults[playerId1]!!.hand1
-                firstHand2 = memberRealmResults[playerId2]!!.hand1
+                firstHand1 = playerData1!!.hand1
+                firstHand2 = playerData2!!.hand1
 
-                secondHand1 = memberRealmResults[playerId1]!!.hand2
-                secondHand2 = memberRealmResults[playerId2]!!.hand2
+                secondHand1 = playerData1!!.hand2
+                secondHand2 = playerData2!!.hand2
 
                 handPlayer1()
                 handPlayer2()
+
             }
             3 -> {
                 val playerNum1 = mRealm.where(Member::class.java).equalTo("memberRound", "1".toInt()).findAll()
@@ -595,25 +601,30 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val playerId2 = playerNum2.max("id")!!.toInt()
                 val playerId3 = playerNum3.max("id")!!.toInt()
 
-                val player1 = memberRealmResults[playerId1]!!.memberName
-                val player2 = memberRealmResults[playerId2]!!.memberName
-                val player3 = memberRealmResults[playerId3]!!.memberName
+                val playerData1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
+                val playerData2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
+                val playerData3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
+
+                val player1 = playerData1!!.memberName
+                val player2 = playerData2!!.memberName
+                val player3 = playerData3!!.memberName
 
                 playerWinnerCheckTextView1.text = player1
                 playerWinnerCheckTextView2.text = player2
                 playerWinnerCheckTextView3.text = player3
 
-                firstHand1 = memberRealmResults[playerId1]!!.hand1
-                firstHand2 = memberRealmResults[playerId2]!!.hand1
-                firstHand3 = memberRealmResults[playerId3]!!.hand1
+                firstHand1 = playerData1!!.hand1
+                firstHand2 = playerData2!!.hand1
+                firstHand3 = playerData3!!.hand1
 
-                secondHand1 = memberRealmResults[playerId1]!!.hand2
-                secondHand2 = memberRealmResults[playerId2]!!.hand2
-                secondHand3 = memberRealmResults[playerId3]!!.hand2
+                secondHand1 = playerData1!!.hand2
+                secondHand2 = playerData2!!.hand2
+                secondHand3 = playerData3!!.hand2
 
                 handPlayer1()
                 handPlayer2()
                 handPlayer3()
+
             }
             4 -> {
                 val playerNum1 = mRealm.where(Member::class.java).equalTo("memberRound", "1".toInt()).findAll()
@@ -626,30 +637,36 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val playerId3 = playerNum3.max("id")!!.toInt()
                 val playerId4 = playerNum4.max("id")!!.toInt()
 
-                val player1 = memberRealmResults[playerId1]!!.memberName
-                val player2 = memberRealmResults[playerId2]!!.memberName
-                val player3 = memberRealmResults[playerId3]!!.memberName
-                val player4 = memberRealmResults[playerId4]!!.memberName
+                val playerData1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
+                val playerData2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
+                val playerData3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
+                val playerData4 = mRealm.where(Member::class.java).equalTo("id", playerId4).findFirst()
+
+                val player1 = playerData1!!.memberName
+                val player2 = playerData2!!.memberName
+                val player3 = playerData3!!.memberName
+                val player4 = playerData4!!.memberName
 
                 playerWinnerCheckTextView1.text = player1
                 playerWinnerCheckTextView2.text = player2
                 playerWinnerCheckTextView3.text = player3
                 playerWinnerCheckTextView4.text = player4
 
-                firstHand1 = memberRealmResults[playerId1]!!.hand1
-                firstHand2 = memberRealmResults[playerId2]!!.hand1
-                firstHand3 = memberRealmResults[playerId3]!!.hand1
-                firstHand4 = memberRealmResults[playerId4]!!.hand1
+                firstHand1 = playerData1!!.hand1
+                firstHand2 = playerData2!!.hand1
+                firstHand3 = playerData3!!.hand1
+                firstHand4 = playerData4!!.hand1
 
-                secondHand1 = memberRealmResults[playerId1]!!.hand2
-                secondHand2 = memberRealmResults[playerId2]!!.hand2
-                secondHand3 = memberRealmResults[playerId3]!!.hand2
-                secondHand4 = memberRealmResults[playerId4]!!.hand2
+                secondHand1 = playerData1!!.hand2
+                secondHand2 = playerData2!!.hand2
+                secondHand3 = playerData3!!.hand2
+                secondHand4 = playerData4!!.hand2
 
                 handPlayer1()
                 handPlayer2()
                 handPlayer3()
                 handPlayer4()
+
             }
             5 -> {
                 val playerNum1 = mRealm.where(Member::class.java).equalTo("memberRound", "1".toInt()).findAll()
@@ -664,11 +681,17 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val playerId4 = playerNum4.max("id")!!.toInt()
                 val playerId5 = playerNum5.max("id")!!.toInt()
 
-                val player1 = memberRealmResults[playerId1]!!.memberName
-                val player2 = memberRealmResults[playerId2]!!.memberName
-                val player3 = memberRealmResults[playerId3]!!.memberName
-                val player4 = memberRealmResults[playerId4]!!.memberName
-                val player5 = memberRealmResults[playerId5]!!.memberName
+                val playerData1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
+                val playerData2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
+                val playerData3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
+                val playerData4 = mRealm.where(Member::class.java).equalTo("id", playerId4).findFirst()
+                val playerData5 = mRealm.where(Member::class.java).equalTo("id", playerId5).findFirst()
+
+                val player1 = playerData1!!.memberName
+                val player2 = playerData2!!.memberName
+                val player3 = playerData3!!.memberName
+                val player4 = playerData4!!.memberName
+                val player5 = playerData5!!.memberName
 
                 playerWinnerCheckTextView1.text = player1
                 playerWinnerCheckTextView2.text = player2
@@ -676,24 +699,24 @@ class WinnerCheckActivity : AppCompatActivity() {
                 playerWinnerCheckTextView4.text = player4
                 playerWinnerCheckTextView5.text = player5
 
-                firstHand1 = memberRealmResults[playerId1]!!.hand1
-                firstHand2 = memberRealmResults[playerId2]!!.hand1
-                firstHand3 = memberRealmResults[playerId3]!!.hand1
-                firstHand4 = memberRealmResults[playerId4]!!.hand1
-                firstHand5 = memberRealmResults[playerId5]!!.hand1
+                firstHand1 = playerData1!!.hand1
+                firstHand2 = playerData2!!.hand1
+                firstHand3 = playerData3!!.hand1
+                firstHand4 = playerData4!!.hand1
+                firstHand5 = playerData5!!.hand1
 
-                secondHand1 = memberRealmResults[playerId1]!!.hand2
-                secondHand2 = memberRealmResults[playerId2]!!.hand2
-                secondHand3 = memberRealmResults[playerId3]!!.hand2
-                secondHand4 = memberRealmResults[playerId4]!!.hand2
-                secondHand5 = memberRealmResults[playerId5]!!.hand2
-
+                secondHand1 = playerData1!!.hand2
+                secondHand2 = playerData2!!.hand2
+                secondHand3 = playerData3!!.hand2
+                secondHand4 = playerData4!!.hand2
+                secondHand5 = playerData5!!.hand2
 
                 handPlayer1()
                 handPlayer2()
                 handPlayer3()
                 handPlayer4()
                 handPlayer5()
+
             }
             6 -> {
                 val playerNum1 = mRealm.where(Member::class.java).equalTo("memberRound", "1".toInt()).findAll()
@@ -710,12 +733,19 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val playerId5 = playerNum5.max("id")!!.toInt()
                 val playerId6 = playerNum6.max("id")!!.toInt()
 
-                val player1 = memberRealmResults[playerId1]!!.memberName
-                val player2 = memberRealmResults[playerId2]!!.memberName
-                val player3 = memberRealmResults[playerId3]!!.memberName
-                val player4 = memberRealmResults[playerId4]!!.memberName
-                val player5 = memberRealmResults[playerId5]!!.memberName
-                val player6 = memberRealmResults[playerId6]!!.memberName
+                val playerData1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
+                val playerData2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
+                val playerData3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
+                val playerData4 = mRealm.where(Member::class.java).equalTo("id", playerId4).findFirst()
+                val playerData5 = mRealm.where(Member::class.java).equalTo("id", playerId5).findFirst()
+                val playerData6 = mRealm.where(Member::class.java).equalTo("id", playerId6).findFirst()
+
+                val player1 = playerData1!!.memberName
+                val player2 = playerData2!!.memberName
+                val player3 = playerData3!!.memberName
+                val player4 = playerData4!!.memberName
+                val player5 = playerData5!!.memberName
+                val player6 = playerData6!!.memberName
 
                 playerWinnerCheckTextView1.text = player1
                 playerWinnerCheckTextView2.text = player2
@@ -724,19 +754,19 @@ class WinnerCheckActivity : AppCompatActivity() {
                 playerWinnerCheckTextView5.text = player5
                 playerWinnerCheckTextView6.text = player6
 
-                firstHand1 = memberRealmResults[playerId1]!!.hand1
-                firstHand2 = memberRealmResults[playerId2]!!.hand1
-                firstHand3 = memberRealmResults[playerId3]!!.hand1
-                firstHand4 = memberRealmResults[playerId4]!!.hand1
-                firstHand5 = memberRealmResults[playerId5]!!.hand1
-                firstHand6 = memberRealmResults[playerId6]!!.hand1
+                firstHand1 = playerData1!!.hand1
+                firstHand2 = playerData2!!.hand1
+                firstHand3 = playerData3!!.hand1
+                firstHand4 = playerData4!!.hand1
+                firstHand5 = playerData5!!.hand1
+                firstHand6 = playerData6!!.hand1
 
-                secondHand1 = memberRealmResults[playerId1]!!.hand2
-                secondHand2 = memberRealmResults[playerId2]!!.hand2
-                secondHand3 = memberRealmResults[playerId3]!!.hand2
-                secondHand4 = memberRealmResults[playerId4]!!.hand2
-                secondHand5 = memberRealmResults[playerId5]!!.hand2
-                secondHand6 = memberRealmResults[playerId6]!!.hand2
+                secondHand1 = playerData1!!.hand2
+                secondHand2 = playerData2!!.hand2
+                secondHand3 = playerData3!!.hand2
+                secondHand4 = playerData4!!.hand2
+                secondHand5 = playerData5!!.hand2
+                secondHand6 = playerData6!!.hand2
 
                 handPlayer1()
                 handPlayer2()
@@ -744,6 +774,7 @@ class WinnerCheckActivity : AppCompatActivity() {
                 handPlayer4()
                 handPlayer5()
                 handPlayer6()
+
             }
             7 -> {
                 val playerNum1 = mRealm.where(Member::class.java).equalTo("memberRound", "1".toInt()).findAll()
@@ -762,13 +793,21 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val playerId6 = playerNum6.max("id")!!.toInt()
                 val playerId7 = playerNum7.max("id")!!.toInt()
 
-                val player1 = memberRealmResults[playerId1]!!.memberName
-                val player2 = memberRealmResults[playerId2]!!.memberName
-                val player3 = memberRealmResults[playerId3]!!.memberName
-                val player4 = memberRealmResults[playerId4]!!.memberName
-                val player5 = memberRealmResults[playerId5]!!.memberName
-                val player6 = memberRealmResults[playerId6]!!.memberName
-                val player7 = memberRealmResults[playerId7]!!.memberName
+                val playerData1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
+                val playerData2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
+                val playerData3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
+                val playerData4 = mRealm.where(Member::class.java).equalTo("id", playerId4).findFirst()
+                val playerData5 = mRealm.where(Member::class.java).equalTo("id", playerId5).findFirst()
+                val playerData6 = mRealm.where(Member::class.java).equalTo("id", playerId6).findFirst()
+                val playerData7 = mRealm.where(Member::class.java).equalTo("id", playerId7).findFirst()
+
+                val player1 = playerData1!!.memberName
+                val player2 = playerData2!!.memberName
+                val player3 = playerData3!!.memberName
+                val player4 = playerData4!!.memberName
+                val player5 = playerData5!!.memberName
+                val player6 = playerData6!!.memberName
+                val player7 = playerData7!!.memberName
 
                 playerWinnerCheckTextView1.text = player1
                 playerWinnerCheckTextView2.text = player2
@@ -778,21 +817,21 @@ class WinnerCheckActivity : AppCompatActivity() {
                 playerWinnerCheckTextView6.text = player6
                 playerWinnerCheckTextView7.text = player7
 
-                firstHand1 = memberRealmResults[playerId1]!!.hand1
-                firstHand2 = memberRealmResults[playerId2]!!.hand1
-                firstHand3 = memberRealmResults[playerId3]!!.hand1
-                firstHand4 = memberRealmResults[playerId4]!!.hand1
-                firstHand5 = memberRealmResults[playerId5]!!.hand1
-                firstHand6 = memberRealmResults[playerId6]!!.hand1
-                firstHand7 = memberRealmResults[playerId7]!!.hand1
+                firstHand1 = playerData1!!.hand1
+                firstHand2 = playerData2!!.hand1
+                firstHand3 = playerData3!!.hand1
+                firstHand4 = playerData4!!.hand1
+                firstHand5 = playerData5!!.hand1
+                firstHand6 = playerData6!!.hand1
+                firstHand7 = playerData7!!.hand1
 
-                secondHand1 = memberRealmResults[playerId1]!!.hand2
-                secondHand2 = memberRealmResults[playerId2]!!.hand2
-                secondHand3 = memberRealmResults[playerId3]!!.hand2
-                secondHand4 = memberRealmResults[playerId4]!!.hand2
-                secondHand5 = memberRealmResults[playerId5]!!.hand2
-                secondHand6 = memberRealmResults[playerId6]!!.hand2
-                secondHand7 = memberRealmResults[playerId7]!!.hand2
+                secondHand1 = playerData1!!.hand2
+                secondHand2 = playerData2!!.hand2
+                secondHand3 = playerData3!!.hand2
+                secondHand4 = playerData4!!.hand2
+                secondHand5 = playerData5!!.hand2
+                secondHand6 = playerData6!!.hand2
+                secondHand7 = playerData7!!.hand2
 
                 handPlayer1()
                 handPlayer2()
@@ -801,6 +840,7 @@ class WinnerCheckActivity : AppCompatActivity() {
                 handPlayer5()
                 handPlayer6()
                 handPlayer7()
+
             }
             8 -> {
                 val playerNum1 = mRealm.where(Member::class.java).equalTo("memberRound", "1".toInt()).findAll()
@@ -821,14 +861,23 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val playerId7 = playerNum7.max("id")!!.toInt()
                 val playerId8 = playerNum8.max("id")!!.toInt()
 
-                val player1 = memberRealmResults[playerId1]!!.memberName
-                val player2 = memberRealmResults[playerId2]!!.memberName
-                val player3 = memberRealmResults[playerId3]!!.memberName
-                val player4 = memberRealmResults[playerId4]!!.memberName
-                val player5 = memberRealmResults[playerId5]!!.memberName
-                val player6 = memberRealmResults[playerId6]!!.memberName
-                val player7 = memberRealmResults[playerId7]!!.memberName
-                val player8 = memberRealmResults[playerId8]!!.memberName
+                val playerData1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
+                val playerData2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
+                val playerData3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
+                val playerData4 = mRealm.where(Member::class.java).equalTo("id", playerId4).findFirst()
+                val playerData5 = mRealm.where(Member::class.java).equalTo("id", playerId5).findFirst()
+                val playerData6 = mRealm.where(Member::class.java).equalTo("id", playerId6).findFirst()
+                val playerData7 = mRealm.where(Member::class.java).equalTo("id", playerId7).findFirst()
+                val playerData8 = mRealm.where(Member::class.java).equalTo("id", playerId8).findFirst()
+
+                val player1 = playerData1!!.memberName
+                val player2 = playerData2!!.memberName
+                val player3 = playerData3!!.memberName
+                val player4 = playerData4!!.memberName
+                val player5 = playerData5!!.memberName
+                val player6 = playerData6!!.memberName
+                val player7 = playerData7!!.memberName
+                val player8 = playerData8!!.memberName
 
                 playerWinnerCheckTextView1.text = player1
                 playerWinnerCheckTextView2.text = player2
@@ -839,23 +888,23 @@ class WinnerCheckActivity : AppCompatActivity() {
                 playerWinnerCheckTextView7.text = player7
                 playerWinnerCheckTextView8.text = player8
 
-                firstHand1 = memberRealmResults[playerId1]!!.hand1
-                firstHand2 = memberRealmResults[playerId2]!!.hand1
-                firstHand3 = memberRealmResults[playerId3]!!.hand1
-                firstHand4 = memberRealmResults[playerId4]!!.hand1
-                firstHand5 = memberRealmResults[playerId5]!!.hand1
-                firstHand6 = memberRealmResults[playerId6]!!.hand1
-                firstHand7 = memberRealmResults[playerId7]!!.hand1
-                firstHand8 = memberRealmResults[playerId8]!!.hand1
+                firstHand1 = playerData1!!.hand1
+                firstHand2 = playerData2!!.hand1
+                firstHand3 = playerData3!!.hand1
+                firstHand4 = playerData4!!.hand1
+                firstHand5 = playerData5!!.hand1
+                firstHand6 = playerData6!!.hand1
+                firstHand7 = playerData7!!.hand1
+                firstHand8 = playerData8!!.hand1
 
-                secondHand1 = memberRealmResults[playerId1]!!.hand2
-                secondHand2 = memberRealmResults[playerId2]!!.hand2
-                secondHand3 = memberRealmResults[playerId3]!!.hand2
-                secondHand4 = memberRealmResults[playerId4]!!.hand2
-                secondHand5 = memberRealmResults[playerId5]!!.hand2
-                secondHand6 = memberRealmResults[playerId6]!!.hand2
-                secondHand7 = memberRealmResults[playerId7]!!.hand2
-                secondHand8 = memberRealmResults[playerId8]!!.hand2
+                secondHand1 = playerData1!!.hand2
+                secondHand2 = playerData2!!.hand2
+                secondHand3 = playerData3!!.hand2
+                secondHand4 = playerData4!!.hand2
+                secondHand5 = playerData5!!.hand2
+                secondHand6 = playerData6!!.hand2
+                secondHand7 = playerData7!!.hand2
+                secondHand8 = playerData8!!.hand2
 
                 handPlayer1()
                 handPlayer2()
@@ -865,6 +914,7 @@ class WinnerCheckActivity : AppCompatActivity() {
                 handPlayer6()
                 handPlayer7()
                 handPlayer8()
+
             }
             9 -> {
                 val playerNum1 = mRealm.where(Member::class.java).equalTo("memberRound", "1".toInt()).findAll()
@@ -887,15 +937,25 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val playerId8 = playerNum8.max("id")!!.toInt()
                 val playerId9 = playerNum9.max("id")!!.toInt()
 
-                val player1 = memberRealmResults[playerId1]!!.memberName
-                val player2 = memberRealmResults[playerId2]!!.memberName
-                val player3 = memberRealmResults[playerId3]!!.memberName
-                val player4 = memberRealmResults[playerId4]!!.memberName
-                val player5 = memberRealmResults[playerId5]!!.memberName
-                val player6 = memberRealmResults[playerId6]!!.memberName
-                val player7 = memberRealmResults[playerId7]!!.memberName
-                val player8 = memberRealmResults[playerId8]!!.memberName
-                val player9 = memberRealmResults[playerId9]!!.memberName
+                val playerData1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
+                val playerData2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
+                val playerData3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
+                val playerData4 = mRealm.where(Member::class.java).equalTo("id", playerId4).findFirst()
+                val playerData5 = mRealm.where(Member::class.java).equalTo("id", playerId5).findFirst()
+                val playerData6 = mRealm.where(Member::class.java).equalTo("id", playerId6).findFirst()
+                val playerData7 = mRealm.where(Member::class.java).equalTo("id", playerId7).findFirst()
+                val playerData8 = mRealm.where(Member::class.java).equalTo("id", playerId8).findFirst()
+                val playerData9 = mRealm.where(Member::class.java).equalTo("id", playerId9).findFirst()
+
+                val player1 = playerData1!!.memberName
+                val player2 = playerData2!!.memberName
+                val player3 = playerData3!!.memberName
+                val player4 = playerData4!!.memberName
+                val player5 = playerData5!!.memberName
+                val player6 = playerData6!!.memberName
+                val player7 = playerData7!!.memberName
+                val player8 = playerData8!!.memberName
+                val player9 = playerData9!!.memberName
 
                 playerWinnerCheckTextView1.text = player1
                 playerWinnerCheckTextView2.text = player2
@@ -907,25 +967,25 @@ class WinnerCheckActivity : AppCompatActivity() {
                 playerWinnerCheckTextView8.text = player8
                 playerWinnerCheckTextView9.text = player9
 
-                firstHand1 = memberRealmResults[playerId1]!!.hand1
-                firstHand2 = memberRealmResults[playerId2]!!.hand1
-                firstHand3 = memberRealmResults[playerId3]!!.hand1
-                firstHand4 = memberRealmResults[playerId4]!!.hand1
-                firstHand5 = memberRealmResults[playerId5]!!.hand1
-                firstHand6 = memberRealmResults[playerId6]!!.hand1
-                firstHand7 = memberRealmResults[playerId7]!!.hand1
-                firstHand8 = memberRealmResults[playerId8]!!.hand1
-                firstHand9 = memberRealmResults[playerId9]!!.hand1
+                firstHand1 = playerData1!!.hand1
+                firstHand2 = playerData2!!.hand1
+                firstHand3 = playerData3!!.hand1
+                firstHand4 = playerData4!!.hand1
+                firstHand5 = playerData5!!.hand1
+                firstHand6 = playerData6!!.hand1
+                firstHand7 = playerData7!!.hand1
+                firstHand8 = playerData8!!.hand1
+                firstHand9 = playerData9!!.hand1
 
-                secondHand1 = memberRealmResults[playerId1]!!.hand2
-                secondHand2 = memberRealmResults[playerId2]!!.hand2
-                secondHand3 = memberRealmResults[playerId3]!!.hand2
-                secondHand4 = memberRealmResults[playerId4]!!.hand2
-                secondHand5 = memberRealmResults[playerId5]!!.hand2
-                secondHand6 = memberRealmResults[playerId6]!!.hand2
-                secondHand7 = memberRealmResults[playerId7]!!.hand2
-                secondHand8 = memberRealmResults[playerId8]!!.hand2
-                secondHand9 = memberRealmResults[playerId9]!!.hand2
+                secondHand1 = playerData1!!.hand2
+                secondHand2 = playerData2!!.hand2
+                secondHand3 = playerData3!!.hand2
+                secondHand4 = playerData4!!.hand2
+                secondHand5 = playerData5!!.hand2
+                secondHand6 = playerData6!!.hand2
+                secondHand7 = playerData7!!.hand2
+                secondHand8 = playerData8!!.hand2
+                secondHand9 = playerData9!!.hand2
 
                 handPlayer1()
                 handPlayer2()
@@ -936,6 +996,7 @@ class WinnerCheckActivity : AppCompatActivity() {
                 handPlayer7()
                 handPlayer8()
                 handPlayer9()
+
             }
             10 -> {
                 val playerNum1 = mRealm.where(Member::class.java).equalTo("memberRound", "1".toInt()).findAll()
@@ -960,16 +1021,27 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val playerId9 = playerNum9.max("id")!!.toInt()
                 val playerId10 = playerNum10.max("id")!!.toInt()
 
-                val player1 = memberRealmResults[playerId1]!!.memberName
-                val player2 = memberRealmResults[playerId2]!!.memberName
-                val player3 = memberRealmResults[playerId3]!!.memberName
-                val player4 = memberRealmResults[playerId4]!!.memberName
-                val player5 = memberRealmResults[playerId5]!!.memberName
-                val player6 = memberRealmResults[playerId6]!!.memberName
-                val player7 = memberRealmResults[playerId7]!!.memberName
-                val player8 = memberRealmResults[playerId8]!!.memberName
-                val player9 = memberRealmResults[playerId9]!!.memberName
-                val player10 = memberRealmResults[playerId10]!!.memberName
+                val playerData1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
+                val playerData2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
+                val playerData3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
+                val playerData4 = mRealm.where(Member::class.java).equalTo("id", playerId4).findFirst()
+                val playerData5 = mRealm.where(Member::class.java).equalTo("id", playerId5).findFirst()
+                val playerData6 = mRealm.where(Member::class.java).equalTo("id", playerId6).findFirst()
+                val playerData7 = mRealm.where(Member::class.java).equalTo("id", playerId7).findFirst()
+                val playerData8 = mRealm.where(Member::class.java).equalTo("id", playerId8).findFirst()
+                val playerData9 = mRealm.where(Member::class.java).equalTo("id", playerId9).findFirst()
+                val playerData10 = mRealm.where(Member::class.java).equalTo("id", playerId10).findFirst()
+
+                val player1 = playerData1!!.memberName
+                val player2 = playerData2!!.memberName
+                val player3 = playerData3!!.memberName
+                val player4 = playerData4!!.memberName
+                val player5 = playerData5!!.memberName
+                val player6 = playerData6!!.memberName
+                val player7 = playerData7!!.memberName
+                val player8 = playerData8!!.memberName
+                val player9 = playerData9!!.memberName
+                val player10 = playerData10!!.memberName
 
                 playerWinnerCheckTextView1.text = player1
                 playerWinnerCheckTextView2.text = player2
@@ -982,27 +1054,27 @@ class WinnerCheckActivity : AppCompatActivity() {
                 playerWinnerCheckTextView9.text = player9
                 playerWinnerCheckTextView10.text = player10
 
-                firstHand1 = memberRealmResults[playerId1]!!.hand1
-                firstHand2 = memberRealmResults[playerId2]!!.hand1
-                firstHand3 = memberRealmResults[playerId3]!!.hand1
-                firstHand4 = memberRealmResults[playerId4]!!.hand1
-                firstHand5 = memberRealmResults[playerId5]!!.hand1
-                firstHand6 = memberRealmResults[playerId6]!!.hand1
-                firstHand7 = memberRealmResults[playerId7]!!.hand1
-                firstHand8 = memberRealmResults[playerId8]!!.hand1
-                firstHand9 = memberRealmResults[playerId9]!!.hand1
-                firstHand10 = memberRealmResults[playerId10]!!.hand1
+                firstHand1 = playerData1!!.hand1
+                firstHand2 = playerData2!!.hand1
+                firstHand3 = playerData3!!.hand1
+                firstHand4 = playerData4!!.hand1
+                firstHand5 = playerData5!!.hand1
+                firstHand6 = playerData6!!.hand1
+                firstHand7 = playerData7!!.hand1
+                firstHand8 = playerData8!!.hand1
+                firstHand9 = playerData9!!.hand1
+                firstHand10 = playerData10!!.hand1
 
-                secondHand1 = memberRealmResults[playerId1]!!.hand2
-                secondHand2 = memberRealmResults[playerId2]!!.hand2
-                secondHand3 = memberRealmResults[playerId3]!!.hand2
-                secondHand4 = memberRealmResults[playerId4]!!.hand2
-                secondHand5 = memberRealmResults[playerId5]!!.hand2
-                secondHand6 = memberRealmResults[playerId6]!!.hand2
-                secondHand7 = memberRealmResults[playerId7]!!.hand2
-                secondHand8 = memberRealmResults[playerId8]!!.hand2
-                secondHand9 = memberRealmResults[playerId9]!!.hand2
-                secondHand10 = memberRealmResults[playerId10]!!.hand2
+                secondHand1 = playerData1!!.hand2
+                secondHand2 = playerData2!!.hand2
+                secondHand3 = playerData3!!.hand2
+                secondHand4 = playerData4!!.hand2
+                secondHand5 = playerData5!!.hand2
+                secondHand6 = playerData6!!.hand2
+                secondHand7 = playerData7!!.hand2
+                secondHand8 = playerData8!!.hand2
+                secondHand9 = playerData9!!.hand2
+                secondHand10 = playerData10!!.hand2
 
                 handPlayer1()
                 handPlayer2()
@@ -2856,8 +2928,11 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val playerId1 = playerNum1.max("id")!!.toInt()
                 val playerId2 = playerNum2.max("id")!!.toInt()
 
-                val player1 = memberRealmResults[playerId1]!!.playingCheck
-                val player2 = memberRealmResults[playerId2]!!.playingCheck
+                val playerData1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
+                val playerData2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
+
+                val player1 = playerData1!!.playingCheck
+                val player2 = playerData2!!.playingCheck
 
                 if (player1 == "fold") {
                     playerWinnerCheckSpinner1.visibility = View.INVISIBLE
@@ -2868,7 +2943,6 @@ class WinnerCheckActivity : AppCompatActivity() {
                     playerWinnerCheckSpinner2.visibility = View.INVISIBLE
                     playerWinnerCheckEditText2.visibility = View.INVISIBLE
                 }
-
             }
 
             3 -> {
@@ -2880,9 +2954,13 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val playerId2 = playerNum2.max("id")!!.toInt()
                 val playerId3 = playerNum3.max("id")!!.toInt()
 
-                val player1 = memberRealmResults[playerId1]!!.playingCheck
-                val player2 = memberRealmResults[playerId2]!!.playingCheck
-                val player3 = memberRealmResults[playerId3]!!.playingCheck
+                val playerData1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
+                val playerData2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
+                val playerData3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
+
+                val player1 = playerData1!!.playingCheck
+                val player2 = playerData2!!.playingCheck
+                val player3 = playerData3!!.playingCheck
 
                 if (player1 == "fold") {
                     playerWinnerCheckSpinner1.visibility = View.INVISIBLE
@@ -2898,7 +2976,6 @@ class WinnerCheckActivity : AppCompatActivity() {
                     playerWinnerCheckSpinner3.visibility = View.INVISIBLE
                     playerWinnerCheckEditText3.visibility = View.INVISIBLE
                 }
-
             }
 
             4 -> {
@@ -2912,10 +2989,15 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val playerId3 = playerNum3.max("id")!!.toInt()
                 val playerId4 = playerNum4.max("id")!!.toInt()
 
-                val player1 = memberRealmResults[playerId1]!!.playingCheck
-                val player2 = memberRealmResults[playerId2]!!.playingCheck
-                val player3 = memberRealmResults[playerId3]!!.playingCheck
-                val player4 = memberRealmResults[playerId4]!!.playingCheck
+                val playerData1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
+                val playerData2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
+                val playerData3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
+                val playerData4 = mRealm.where(Member::class.java).equalTo("id", playerId4).findFirst()
+
+                val player1 = playerData1!!.playingCheck
+                val player2 = playerData2!!.playingCheck
+                val player3 = playerData3!!.playingCheck
+                val player4 = playerData4!!.playingCheck
 
                 if (player1 == "fold") {
                     playerWinnerCheckSpinner1.visibility = View.INVISIBLE
@@ -2936,7 +3018,6 @@ class WinnerCheckActivity : AppCompatActivity() {
                     playerWinnerCheckSpinner4.visibility = View.INVISIBLE
                     playerWinnerCheckEditText4.visibility = View.INVISIBLE
                 }
-
             }
 
             5 -> {
@@ -2952,11 +3033,17 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val playerId4 = playerNum4.max("id")!!.toInt()
                 val playerId5 = playerNum5.max("id")!!.toInt()
 
-                val player1 = memberRealmResults[playerId1]!!.playingCheck
-                val player2 = memberRealmResults[playerId2]!!.playingCheck
-                val player3 = memberRealmResults[playerId3]!!.playingCheck
-                val player4 = memberRealmResults[playerId4]!!.playingCheck
-                val player5 = memberRealmResults[playerId5]!!.playingCheck
+                val playerData1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
+                val playerData2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
+                val playerData3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
+                val playerData4 = mRealm.where(Member::class.java).equalTo("id", playerId4).findFirst()
+                val playerData5 = mRealm.where(Member::class.java).equalTo("id", playerId5).findFirst()
+
+                val player1 = playerData1!!.playingCheck
+                val player2 = playerData2!!.playingCheck
+                val player3 = playerData3!!.playingCheck
+                val player4 = playerData4!!.playingCheck
+                val player5 = playerData5!!.playingCheck
 
                 if (player1 == "fold") {
                     playerWinnerCheckSpinner1.visibility = View.INVISIBLE
@@ -2982,7 +3069,6 @@ class WinnerCheckActivity : AppCompatActivity() {
                     playerWinnerCheckSpinner5.visibility = View.INVISIBLE
                     playerWinnerCheckEditText5.visibility = View.INVISIBLE
                 }
-
             }
 
             6 -> {
@@ -3000,12 +3086,19 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val playerId5 = playerNum5.max("id")!!.toInt()
                 val playerId6 = playerNum6.max("id")!!.toInt()
 
-                val player1 = memberRealmResults[playerId1]!!.playingCheck
-                val player2 = memberRealmResults[playerId2]!!.playingCheck
-                val player3 = memberRealmResults[playerId3]!!.playingCheck
-                val player4 = memberRealmResults[playerId4]!!.playingCheck
-                val player5 = memberRealmResults[playerId5]!!.playingCheck
-                val player6 = memberRealmResults[playerId6]!!.playingCheck
+                val playerData1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
+                val playerData2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
+                val playerData3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
+                val playerData4 = mRealm.where(Member::class.java).equalTo("id", playerId4).findFirst()
+                val playerData5 = mRealm.where(Member::class.java).equalTo("id", playerId5).findFirst()
+                val playerData6 = mRealm.where(Member::class.java).equalTo("id", playerId6).findFirst()
+
+                val player1 = playerData1!!.playingCheck
+                val player2 = playerData2!!.playingCheck
+                val player3 = playerData3!!.playingCheck
+                val player4 = playerData4!!.playingCheck
+                val player5 = playerData5!!.playingCheck
+                val player6 = playerData6!!.playingCheck
 
                 if (player1 == "fold") {
                     playerWinnerCheckSpinner1.visibility = View.INVISIBLE
@@ -3036,7 +3129,6 @@ class WinnerCheckActivity : AppCompatActivity() {
                     playerWinnerCheckSpinner6.visibility = View.INVISIBLE
                     playerWinnerCheckEditText6.visibility = View.INVISIBLE
                 }
-
             }
 
             7 -> {
@@ -3056,13 +3148,21 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val playerId6 = playerNum6.max("id")!!.toInt()
                 val playerId7 = playerNum7.max("id")!!.toInt()
 
-                val player1 = memberRealmResults[playerId1]!!.playingCheck
-                val player2 = memberRealmResults[playerId2]!!.playingCheck
-                val player3 = memberRealmResults[playerId3]!!.playingCheck
-                val player4 = memberRealmResults[playerId4]!!.playingCheck
-                val player5 = memberRealmResults[playerId5]!!.playingCheck
-                val player6 = memberRealmResults[playerId6]!!.playingCheck
-                val player7 = memberRealmResults[playerId7]!!.playingCheck
+                val playerData1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
+                val playerData2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
+                val playerData3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
+                val playerData4 = mRealm.where(Member::class.java).equalTo("id", playerId4).findFirst()
+                val playerData5 = mRealm.where(Member::class.java).equalTo("id", playerId5).findFirst()
+                val playerData6 = mRealm.where(Member::class.java).equalTo("id", playerId6).findFirst()
+                val playerData7 = mRealm.where(Member::class.java).equalTo("id", playerId7).findFirst()
+
+                val player1 = playerData1!!.playingCheck
+                val player2 = playerData2!!.playingCheck
+                val player3 = playerData3!!.playingCheck
+                val player4 = playerData4!!.playingCheck
+                val player5 = playerData5!!.playingCheck
+                val player6 = playerData6!!.playingCheck
+                val player7 = playerData7!!.playingCheck
 
                 if (player1 == "fold") {
                     playerWinnerCheckSpinner1.visibility = View.INVISIBLE
@@ -3098,7 +3198,6 @@ class WinnerCheckActivity : AppCompatActivity() {
                     playerWinnerCheckSpinner7.visibility = View.INVISIBLE
                     playerWinnerCheckEditText7.visibility = View.INVISIBLE
                 }
-
             }
 
             8 -> {
@@ -3120,14 +3219,23 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val playerId7 = playerNum7.max("id")!!.toInt()
                 val playerId8 = playerNum8.max("id")!!.toInt()
 
-                val player1 = memberRealmResults[playerId1]!!.playingCheck
-                val player2 = memberRealmResults[playerId2]!!.playingCheck
-                val player3 = memberRealmResults[playerId3]!!.playingCheck
-                val player4 = memberRealmResults[playerId4]!!.playingCheck
-                val player5 = memberRealmResults[playerId5]!!.playingCheck
-                val player6 = memberRealmResults[playerId6]!!.playingCheck
-                val player7 = memberRealmResults[playerId7]!!.playingCheck
-                val player8 = memberRealmResults[playerId8]!!.playingCheck
+                val playerData1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
+                val playerData2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
+                val playerData3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
+                val playerData4 = mRealm.where(Member::class.java).equalTo("id", playerId4).findFirst()
+                val playerData5 = mRealm.where(Member::class.java).equalTo("id", playerId5).findFirst()
+                val playerData6 = mRealm.where(Member::class.java).equalTo("id", playerId6).findFirst()
+                val playerData7 = mRealm.where(Member::class.java).equalTo("id", playerId7).findFirst()
+                val playerData8 = mRealm.where(Member::class.java).equalTo("id", playerId8).findFirst()
+
+                val player1 = playerData1!!.playingCheck
+                val player2 = playerData2!!.playingCheck
+                val player3 = playerData3!!.playingCheck
+                val player4 = playerData4!!.playingCheck
+                val player5 = playerData5!!.playingCheck
+                val player6 = playerData6!!.playingCheck
+                val player7 = playerData7!!.playingCheck
+                val player8 = playerData8!!.playingCheck
 
                 if (player1 == "fold") {
                     playerWinnerCheckSpinner1.visibility = View.INVISIBLE
@@ -3168,7 +3276,6 @@ class WinnerCheckActivity : AppCompatActivity() {
                     playerWinnerCheckSpinner8.visibility = View.INVISIBLE
                     playerWinnerCheckEditText8.visibility = View.INVISIBLE
                 }
-
             }
 
             9 -> {
@@ -3192,15 +3299,25 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val playerId8 = playerNum8.max("id")!!.toInt()
                 val playerId9 = playerNum9.max("id")!!.toInt()
 
-                val player1 = memberRealmResults[playerId1]!!.playingCheck
-                val player2 = memberRealmResults[playerId2]!!.playingCheck
-                val player3 = memberRealmResults[playerId3]!!.playingCheck
-                val player4 = memberRealmResults[playerId4]!!.playingCheck
-                val player5 = memberRealmResults[playerId5]!!.playingCheck
-                val player6 = memberRealmResults[playerId6]!!.playingCheck
-                val player7 = memberRealmResults[playerId7]!!.playingCheck
-                val player8 = memberRealmResults[playerId8]!!.playingCheck
-                val player9 = memberRealmResults[playerId9]!!.playingCheck
+                val playerData1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
+                val playerData2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
+                val playerData3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
+                val playerData4 = mRealm.where(Member::class.java).equalTo("id", playerId4).findFirst()
+                val playerData5 = mRealm.where(Member::class.java).equalTo("id", playerId5).findFirst()
+                val playerData6 = mRealm.where(Member::class.java).equalTo("id", playerId6).findFirst()
+                val playerData7 = mRealm.where(Member::class.java).equalTo("id", playerId7).findFirst()
+                val playerData8 = mRealm.where(Member::class.java).equalTo("id", playerId8).findFirst()
+                val playerData9 = mRealm.where(Member::class.java).equalTo("id", playerId9).findFirst()
+
+                val player1 = playerData1!!.playingCheck
+                val player2 = playerData2!!.playingCheck
+                val player3 = playerData3!!.playingCheck
+                val player4 = playerData4!!.playingCheck
+                val player5 = playerData5!!.playingCheck
+                val player6 = playerData6!!.playingCheck
+                val player7 = playerData7!!.playingCheck
+                val player8 = playerData8!!.playingCheck
+                val player9 = playerData9!!.playingCheck
 
                 if (player1 == "fold") {
                     playerWinnerCheckSpinner1.visibility = View.INVISIBLE
@@ -3246,7 +3363,6 @@ class WinnerCheckActivity : AppCompatActivity() {
                     playerWinnerCheckSpinner9.visibility = View.INVISIBLE
                     playerWinnerCheckEditText9.visibility = View.INVISIBLE
                 }
-
             }
 
             10 -> {
@@ -3270,18 +3386,29 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val playerId7 = playerNum7.max("id")!!.toInt()
                 val playerId8 = playerNum8.max("id")!!.toInt()
                 val playerId9 = playerNum9.max("id")!!.toInt()
-                val palyerId10 = playerNum10.max("id")!!.toInt()
+                val playerId10 = playerNum10.max("id")!!.toInt()
 
-                val player1 = memberRealmResults[playerId1]!!.playingCheck
-                val player2 = memberRealmResults[playerId2]!!.playingCheck
-                val player3 = memberRealmResults[playerId3]!!.playingCheck
-                val player4 = memberRealmResults[playerId4]!!.playingCheck
-                val player5 = memberRealmResults[playerId5]!!.playingCheck
-                val player6 = memberRealmResults[playerId6]!!.playingCheck
-                val player7 = memberRealmResults[playerId7]!!.playingCheck
-                val player8 = memberRealmResults[playerId8]!!.playingCheck
-                val player9 = memberRealmResults[playerId9]!!.playingCheck
-                val player10 = memberRealmResults[palyerId10]!!.playingCheck
+                val playerData1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
+                val playerData2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
+                val playerData3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
+                val playerData4 = mRealm.where(Member::class.java).equalTo("id", playerId4).findFirst()
+                val playerData5 = mRealm.where(Member::class.java).equalTo("id", playerId5).findFirst()
+                val playerData6 = mRealm.where(Member::class.java).equalTo("id", playerId6).findFirst()
+                val playerData7 = mRealm.where(Member::class.java).equalTo("id", playerId7).findFirst()
+                val playerData8 = mRealm.where(Member::class.java).equalTo("id", playerId8).findFirst()
+                val playerData9 = mRealm.where(Member::class.java).equalTo("id", playerId9).findFirst()
+                val playerData10 = mRealm.where(Member::class.java).equalTo("id", playerId10).findFirst()
+
+                val player1 = playerData1!!.playingCheck
+                val player2 = playerData2!!.playingCheck
+                val player3 = playerData3!!.playingCheck
+                val player4 = playerData4!!.playingCheck
+                val player5 = playerData5!!.playingCheck
+                val player6 = playerData6!!.playingCheck
+                val player7 = playerData7!!.playingCheck
+                val player8 = playerData8!!.playingCheck
+                val player9 = playerData9!!.playingCheck
+                val player10 = playerData10!!.playingCheck
 
                 if (player1 == "fold") {
                     playerWinnerCheckSpinner1.visibility = View.INVISIBLE
@@ -3352,17 +3479,17 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val playerId1 = playerNum1.max("id")!!.toInt()
                 val playerId2 = playerNum2.max("id")!!.toInt()
 
-                val playerFold1 = memberRealmResults[playerId1]!!.playingCheck
-                val playerFold2 = memberRealmResults[playerId2]!!.playingCheck
+                val playerData1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
+                val playerData2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
 
-                val playerChips1 = memberRealmResults[playerId1]!!.memberChips
-                val playerChips2 = memberRealmResults[playerId2]!!.memberChips
+                val playerFold1 = playerData1!!.playingCheck
+                val playerFold2 = playerData2!!.playingCheck
 
-                val player1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
-                val player2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
+                val playerChips1 = playerData1!!.memberChips
+                val playerChips2 = playerData2!!.memberChips
 
-                val playerName1 = memberRealmResults[playerId1]!!.memberName
-                val playerName2 = memberRealmResults[playerId2]!!.memberName
+                val playerName1 = playerData1!!.memberName
+                val playerName2 = playerData2!!.memberName
 
                 val turnPlayerNum1 = mRealm.where(Turn::class.java).equalTo("player", playerName1).findAll()
                 val turnPlayerNum2 = mRealm.where(Turn::class.java).equalTo("player", playerName2).findAll()
@@ -3370,36 +3497,35 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val turnPlayerId1 = turnPlayerNum1.max("id")!!.toInt()
                 val turnPlayerId2 = turnPlayerNum2.max("id")!!.toInt()
 
-                val turnPlayerChips1 = turnRealmResults[turnPlayerId1]!!.memberChips
-                val turnPlayerChips2 = turnRealmResults[turnPlayerId2]!!.memberChips
+                val turnRealmData1 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId1).findFirst()
+                val turnRealmData2 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId2).findFirst()
 
-                val turnPlayer1 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId1).findFirst()
-                val turnPlayer2 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId2).findFirst()
+                val turnPlayerChips1 = turnRealmData1!!.memberChips
+                val turnPlayerChips2 = turnRealmData2!!.memberChips
 
                 if (playerFold1 == "fold") {
-                    player1!!.winnerHand = "fold"
-                    turnPlayer1!!.winnerHand = "fold"
+                    playerData1!!.winnerHand = "fold"
+                    turnRealmData1!!.winnerHand = "fold"
                 } else {
-                    player1!!.winnerHand = spinnerSelectItem1
-                    turnPlayer1!!.winnerHand = spinnerSelectItem1
+                    playerData1!!.winnerHand = spinnerSelectItem1
+                    turnRealmData1!!.winnerHand = spinnerSelectItem1
                     if (playerWinnerCheckEditText1.text.toString() != "") {
-                        player1!!.memberChips = playerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
-                        turnPlayer1!!.memberChips = turnPlayerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
+                        playerData1!!.memberChips = playerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
+                        turnRealmData1!!.memberChips = turnPlayerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
                     }
                 }
 
                 if (playerFold2 == "fold") {
-                    player2!!.winnerHand = "fold"
-                    turnPlayer2!!.winnerHand = "fold"
+                    playerData2!!.winnerHand = "fold"
+                    turnRealmData2!!.winnerHand = "fold"
                 } else {
-                    player2!!.winnerHand = spinnerSelectItem2
-                    turnPlayer2!!.winnerHand = spinnerSelectItem2
+                    playerData2!!.winnerHand = spinnerSelectItem2
+                    turnRealmData2!!.winnerHand = spinnerSelectItem2
                     if (playerWinnerCheckEditText2.text.toString() != "") {
-                        player2!!.memberChips = playerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
-                        turnPlayer2!!.memberChips = turnPlayerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
+                        playerData2!!.memberChips = playerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
+                        turnRealmData2!!.memberChips = turnPlayerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
                     }
                 }
-
             }
 
             3 -> {
@@ -3411,21 +3537,21 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val playerId2 = playerNum2.max("id")!!.toInt()
                 val playerId3 = playerNum3.max("id")!!.toInt()
 
-                val playerFold1 = memberRealmResults[playerId1]!!.playingCheck
-                val playerFold2 = memberRealmResults[playerId2]!!.playingCheck
-                val playerFold3 = memberRealmResults[playerId3]!!.playingCheck
+                val playerData1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
+                val playerData2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
+                val playerData3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
 
-                val playerChips1 = memberRealmResults[playerId1]!!.memberChips
-                val playerChips2 = memberRealmResults[playerId2]!!.memberChips
-                val playerChips3 = memberRealmResults[playerId3]!!.memberChips
+                val playerFold1 = playerData1!!.playingCheck
+                val playerFold2 = playerData2!!.playingCheck
+                val playerFold3 = playerData3!!.playingCheck
 
-                val player1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
-                val player2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
-                val player3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
+                val playerChips1 = playerData1!!.memberChips
+                val playerChips2 = playerData2!!.memberChips
+                val playerChips3 = playerData3!!.memberChips
 
-                val playerName1 = memberRealmResults[playerId1]!!.memberName
-                val playerName2 = memberRealmResults[playerId2]!!.memberName
-                val playerName3 = memberRealmResults[playerId3]!!.memberName
+                val playerName1 = playerData1!!.memberName
+                val playerName2 = playerData2!!.memberName
+                val playerName3 = playerData3!!.memberName
 
                 val turnPlayerNum1 = mRealm.where(Turn::class.java).equalTo("player", playerName1).findAll()
                 val turnPlayerNum2 = mRealm.where(Turn::class.java).equalTo("player", playerName2).findAll()
@@ -3435,50 +3561,49 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val turnPlayerId2 = turnPlayerNum2.max("id")!!.toInt()
                 val turnPlayerId3 = turnPlayerNum3.max("id")!!.toInt()
 
-                val turnPlayerChips1 = turnRealmResults[turnPlayerId1]!!.memberChips
-                val turnPlayerChips2 = turnRealmResults[turnPlayerId2]!!.memberChips
-                val turnPlayerChips3 = turnRealmResults[turnPlayerId3]!!.memberChips
+                val turnRealmData1 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId1).findFirst()
+                val turnRealmData2 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId2).findFirst()
+                val turnRealmData3 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId3).findFirst()
 
-                val turnPlayer1 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId1).findFirst()
-                val turnPlayer2 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId2).findFirst()
-                val turnPlayer3 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId3).findFirst()
+                val turnPlayerChips1 = turnRealmData1!!.memberChips
+                val turnPlayerChips2 = turnRealmData2!!.memberChips
+                val turnPlayerChips3 = turnRealmData3!!.memberChips
 
                 if (playerFold1 == "fold") {
-                    player1!!.winnerHand = "fold"
-                    turnPlayer1!!.winnerHand = "fold"
+                    playerData1!!.winnerHand = "fold"
+                    turnRealmData1!!.winnerHand = "fold"
                 } else {
-                    player1!!.winnerHand = spinnerSelectItem1
-                    turnPlayer1!!.winnerHand = spinnerSelectItem1
+                    playerData1!!.winnerHand = spinnerSelectItem1
+                    turnRealmData1!!.winnerHand = spinnerSelectItem1
                     if (playerWinnerCheckEditText1.text.toString() != "") {
-                        player1!!.memberChips = playerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
-                        turnPlayer1!!.memberChips = turnPlayerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
+                        playerData1!!.memberChips = playerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
+                        turnRealmData1!!.memberChips = turnPlayerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
                     }
                 }
 
                 if (playerFold2 == "fold") {
-                    player2!!.winnerHand = "fold"
-                    turnPlayer2!!.winnerHand = "fold"
+                    playerData2!!.winnerHand = "fold"
+                    turnRealmData2!!.winnerHand = "fold"
                 } else {
-                    player2!!.winnerHand = spinnerSelectItem2
-                    turnPlayer2!!.winnerHand = spinnerSelectItem2
+                    playerData2!!.winnerHand = spinnerSelectItem2
+                    turnRealmData2!!.winnerHand = spinnerSelectItem2
                     if (playerWinnerCheckEditText2.text.toString() != "") {
-                        player2!!.memberChips = playerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
-                        turnPlayer2!!.memberChips = turnPlayerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
+                        playerData2!!.memberChips = playerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
+                        turnRealmData2!!.memberChips = turnPlayerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
                     }
                 }
 
                 if (playerFold3 == "fold") {
-                    player3!!.winnerHand = "fold"
-                    turnPlayer3!!.winnerHand = "fold"
+                    playerData3!!.winnerHand = "fold"
+                    turnRealmData3!!.winnerHand = "fold"
                 } else {
-                    player3!!.winnerHand = spinnerSelectItem3
-                    turnPlayer3!!.winnerHand = spinnerSelectItem3
+                    playerData3!!.winnerHand = spinnerSelectItem3
+                    turnRealmData3!!.winnerHand = spinnerSelectItem3
                     if (playerWinnerCheckEditText3.text.toString() != "") {
-                        player3!!.memberChips = playerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
-                        turnPlayer3!!.memberChips = turnPlayerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
+                        playerData3!!.memberChips = playerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
+                        turnRealmData3!!.memberChips = turnPlayerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
                     }
                 }
-
             }
 
             4 -> {
@@ -3492,25 +3617,25 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val playerId3 = playerNum3.max("id")!!.toInt()
                 val playerId4 = playerNum4.max("id")!!.toInt()
 
-                val playerFold1 = memberRealmResults[playerId1]!!.playingCheck
-                val playerFold2 = memberRealmResults[playerId2]!!.playingCheck
-                val playerFold3 = memberRealmResults[playerId3]!!.playingCheck
-                val playerFold4 = memberRealmResults[playerId4]!!.playingCheck
+                val playerData1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
+                val playerData2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
+                val playerData3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
+                val playerData4 = mRealm.where(Member::class.java).equalTo("id", playerId4).findFirst()
 
-                val playerChips1 = memberRealmResults[playerId1]!!.memberChips
-                val playerChips2 = memberRealmResults[playerId2]!!.memberChips
-                val playerChips3 = memberRealmResults[playerId3]!!.memberChips
-                val playerChips4 = memberRealmResults[playerId4]!!.memberChips
+                val playerFold1 = playerData1!!.playingCheck
+                val playerFold2 = playerData2!!.playingCheck
+                val playerFold3 = playerData3!!.playingCheck
+                val playerFold4 = playerData4!!.playingCheck
 
-                val player1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
-                val player2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
-                val player3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
-                val player4 = mRealm.where(Member::class.java).equalTo("id", playerId4).findFirst()
+                val playerChips1 = playerData1!!.memberChips
+                val playerChips2 = playerData2!!.memberChips
+                val playerChips3 = playerData3!!.memberChips
+                val playerChips4 = playerData4!!.memberChips
 
-                val playerName1 = memberRealmResults[playerId1]!!.memberName
-                val playerName2 = memberRealmResults[playerId2]!!.memberName
-                val playerName3 = memberRealmResults[playerId3]!!.memberName
-                val playerName4 = memberRealmResults[playerId4]!!.memberName
+                val playerName1 = playerData1!!.memberName
+                val playerName2 = playerData2!!.memberName
+                val playerName3 = playerData3!!.memberName
+                val playerName4 = playerData4!!.memberName
 
                 val turnPlayerNum1 = mRealm.where(Turn::class.java).equalTo("player", playerName1).findAll()
                 val turnPlayerNum2 = mRealm.where(Turn::class.java).equalTo("player", playerName2).findAll()
@@ -3522,64 +3647,63 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val turnPlayerId3 = turnPlayerNum3.max("id")!!.toInt()
                 val turnPlayerId4 = turnPlayerNum4.max("id")!!.toInt()
 
-                val turnPlayerChips1 = turnRealmResults[turnPlayerId1]!!.memberChips
-                val turnPlayerChips2 = turnRealmResults[turnPlayerId2]!!.memberChips
-                val turnPlayerChips3 = turnRealmResults[turnPlayerId3]!!.memberChips
-                val turnPlayerChips4 = turnRealmResults[turnPlayerId4]!!.memberChips
+                val turnRealmData1 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId1).findFirst()
+                val turnRealmData2 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId2).findFirst()
+                val turnRealmData3 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId3).findFirst()
+                val turnRealmData4 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId4).findFirst()
 
-                val turnPlayer1 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId1).findFirst()
-                val turnPlayer2 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId2).findFirst()
-                val turnPlayer3 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId3).findFirst()
-                val turnPlayer4 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId4).findFirst()
+                val turnPlayerChips1 = turnRealmData1!!.memberChips
+                val turnPlayerChips2 = turnRealmData2!!.memberChips
+                val turnPlayerChips3 = turnRealmData3!!.memberChips
+                val turnPlayerChips4 = turnRealmData4!!.memberChips
 
                 if (playerFold1 == "fold") {
-                    player1!!.winnerHand = "fold"
-                    turnPlayer1!!.winnerHand = "fold"
+                    playerData1!!.winnerHand = "fold"
+                    turnRealmData1!!.winnerHand = "fold"
                 } else {
-                    player1!!.winnerHand = spinnerSelectItem1
-                    turnPlayer1!!.winnerHand = spinnerSelectItem1
+                    playerData1!!.winnerHand = spinnerSelectItem1
+                    turnRealmData1!!.winnerHand = spinnerSelectItem1
                     if (playerWinnerCheckEditText1.text.toString() != "") {
-                        player1!!.memberChips = playerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
-                        turnPlayer1!!.memberChips = turnPlayerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
+                        playerData1!!.memberChips = playerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
+                        turnRealmData1!!.memberChips = turnPlayerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
                     }
                 }
 
                 if (playerFold2 == "fold") {
-                    player2!!.winnerHand = "fold"
-                    turnPlayer2!!.winnerHand = "fold"
+                    playerData2!!.winnerHand = "fold"
+                    turnRealmData2!!.winnerHand = "fold"
                 } else {
-                    player2!!.winnerHand = spinnerSelectItem2
-                    turnPlayer2!!.winnerHand = spinnerSelectItem2
+                    playerData2!!.winnerHand = spinnerSelectItem2
+                    turnRealmData2!!.winnerHand = spinnerSelectItem2
                     if (playerWinnerCheckEditText2.text.toString() != "") {
-                        player2!!.memberChips = playerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
-                        turnPlayer2!!.memberChips = turnPlayerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
+                        playerData2!!.memberChips = playerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
+                        turnRealmData2!!.memberChips = turnPlayerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
                     }
                 }
 
                 if (playerFold3 == "fold") {
-                    player3!!.winnerHand = "fold"
-                    turnPlayer3!!.winnerHand = "fold"
+                    playerData3!!.winnerHand = "fold"
+                    turnRealmData3!!.winnerHand = "fold"
                 } else {
-                    player3!!.winnerHand = spinnerSelectItem3
-                    turnPlayer3!!.winnerHand = spinnerSelectItem3
+                    playerData3!!.winnerHand = spinnerSelectItem3
+                    turnRealmData3!!.winnerHand = spinnerSelectItem3
                     if (playerWinnerCheckEditText3.text.toString() != "") {
-                        player3!!.memberChips = playerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
-                        turnPlayer3!!.memberChips = turnPlayerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
+                        playerData3!!.memberChips = playerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
+                        turnRealmData3!!.memberChips = turnPlayerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
                     }
                 }
 
                 if (playerFold4 == "fold") {
-                    player4!!.winnerHand = "fold"
-                    turnPlayer4!!.winnerHand = "fold"
+                    playerData4!!.winnerHand = "fold"
+                    turnRealmData4!!.winnerHand = "fold"
                 } else {
-                    player4!!.winnerHand = spinnerSelectItem4
-                    turnPlayer4!!.winnerHand = spinnerSelectItem4
+                    playerData4!!.winnerHand = spinnerSelectItem4
+                    turnRealmData4!!.winnerHand = spinnerSelectItem4
                     if (playerWinnerCheckEditText4.text.toString() != "") {
-                        player4!!.memberChips = playerChips4 + playerWinnerCheckEditText4.text.toString().toInt()
-                        turnPlayer4!!.memberChips = turnPlayerChips4 + playerWinnerCheckEditText4.text.toString().toInt()
+                        playerData4!!.memberChips = playerChips4 + playerWinnerCheckEditText4.text.toString().toInt()
+                        turnRealmData4!!.memberChips = turnPlayerChips4 + playerWinnerCheckEditText4.text.toString().toInt()
                     }
                 }
-
             }
 
             5 -> {
@@ -3595,29 +3719,29 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val playerId4 = playerNum4.max("id")!!.toInt()
                 val playerId5 = playerNum5.max("id")!!.toInt()
 
-                val playerFold1 = memberRealmResults[playerId1]!!.playingCheck
-                val playerFold2 = memberRealmResults[playerId2]!!.playingCheck
-                val playerFold3 = memberRealmResults[playerId3]!!.playingCheck
-                val playerFold4 = memberRealmResults[playerId4]!!.playingCheck
-                val playerFold5 = memberRealmResults[playerId5]!!.playingCheck
+                val playerData1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
+                val playerData2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
+                val playerData3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
+                val playerData4 = mRealm.where(Member::class.java).equalTo("id", playerId4).findFirst()
+                val playerData5 = mRealm.where(Member::class.java).equalTo("id", playerId5).findFirst()
 
-                val playerChips1 = memberRealmResults[playerId1]!!.memberChips
-                val playerChips2 = memberRealmResults[playerId2]!!.memberChips
-                val playerChips3 = memberRealmResults[playerId3]!!.memberChips
-                val playerChips4 = memberRealmResults[playerId4]!!.memberChips
-                val playerChips5 = memberRealmResults[playerId5]!!.memberChips
+                val playerFold1 = playerData1!!.playingCheck
+                val playerFold2 = playerData2!!.playingCheck
+                val playerFold3 = playerData3!!.playingCheck
+                val playerFold4 = playerData4!!.playingCheck
+                val playerFold5 = playerData5!!.playingCheck
 
-                val player1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
-                val player2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
-                val player3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
-                val player4 = mRealm.where(Member::class.java).equalTo("id", playerId4).findFirst()
-                val player5 = mRealm.where(Member::class.java).equalTo("id", playerId5).findFirst()
+                val playerChips1 = playerData1!!.memberChips
+                val playerChips2 = playerData2!!.memberChips
+                val playerChips3 = playerData3!!.memberChips
+                val playerChips4 = playerData4!!.memberChips
+                val playerChips5 = playerData5!!.memberChips
 
-                val playerName1 = memberRealmResults[playerId1]!!.memberName
-                val playerName2 = memberRealmResults[playerId2]!!.memberName
-                val playerName3 = memberRealmResults[playerId3]!!.memberName
-                val playerName4 = memberRealmResults[playerId4]!!.memberName
-                val playerName5 = memberRealmResults[playerId5]!!.memberName
+                val playerName1 = playerData1!!.memberName
+                val playerName2 = playerData2!!.memberName
+                val playerName3 = playerData3!!.memberName
+                val playerName4 = playerData4!!.memberName
+                val playerName5 = playerData5!!.memberName
 
                 val turnPlayerNum1 = mRealm.where(Turn::class.java).equalTo("player", playerName1).findAll()
                 val turnPlayerNum2 = mRealm.where(Turn::class.java).equalTo("player", playerName2).findAll()
@@ -3631,78 +3755,77 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val turnPlayerId4 = turnPlayerNum4.max("id")!!.toInt()
                 val turnPlayerId5 = turnPlayerNum5.max("id")!!.toInt()
 
-                val turnPlayerChips1 = turnRealmResults[turnPlayerId1]!!.memberChips
-                val turnPlayerChips2 = turnRealmResults[turnPlayerId2]!!.memberChips
-                val turnPlayerChips3 = turnRealmResults[turnPlayerId3]!!.memberChips
-                val turnPlayerChips4 = turnRealmResults[turnPlayerId4]!!.memberChips
-                val turnPlayerChips5 = turnRealmResults[turnPlayerId5]!!.memberChips
+                val turnRealmData1 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId1).findFirst()
+                val turnRealmData2 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId2).findFirst()
+                val turnRealmData3 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId3).findFirst()
+                val turnRealmData4 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId4).findFirst()
+                val turnRealmData5 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId5).findFirst()
 
-                val turnPlayer1 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId1).findFirst()
-                val turnPlayer2 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId2).findFirst()
-                val turnPlayer3 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId3).findFirst()
-                val turnPlayer4 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId4).findFirst()
-                val turnPlayer5 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId5).findFirst()
+                val turnPlayerChips1 = turnRealmData1!!.memberChips
+                val turnPlayerChips2 = turnRealmData2!!.memberChips
+                val turnPlayerChips3 = turnRealmData3!!.memberChips
+                val turnPlayerChips4 = turnRealmData4!!.memberChips
+                val turnPlayerChips5 = turnRealmData5!!.memberChips
 
                 if (playerFold1 == "fold") {
-                    player1!!.winnerHand = "fold"
-                    turnPlayer1!!.winnerHand = "fold"
+                    playerData1!!.winnerHand = "fold"
+                    turnRealmData1!!.winnerHand = "fold"
                 } else {
-                    player1!!.winnerHand = spinnerSelectItem1
-                    turnPlayer1!!.winnerHand = spinnerSelectItem1
+                    playerData1!!.winnerHand = spinnerSelectItem1
+                    turnRealmData1!!.winnerHand = spinnerSelectItem1
                     if (playerWinnerCheckEditText1.text.toString() != "") {
-                        player1!!.memberChips = playerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
-                        turnPlayer1!!.memberChips = turnPlayerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
+                        playerData1!!.memberChips = playerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
+                        turnRealmData1!!.memberChips = turnPlayerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
                     }
                 }
 
                 if (playerFold2 == "fold") {
-                    player2!!.winnerHand = "fold"
-                    turnPlayer2!!.winnerHand = "fold"
+                    playerData2!!.winnerHand = "fold"
+                    turnRealmData2!!.winnerHand = "fold"
                 } else {
-                    player2!!.winnerHand = spinnerSelectItem2
-                    turnPlayer2!!.winnerHand = spinnerSelectItem2
+                    playerData2!!.winnerHand = spinnerSelectItem2
+                    turnRealmData2!!.winnerHand = spinnerSelectItem2
                     if (playerWinnerCheckEditText2.text.toString() != "") {
-                        player2!!.memberChips = playerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
-                        turnPlayer2!!.memberChips = turnPlayerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
+                        playerData2!!.memberChips = playerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
+                        turnRealmData2!!.memberChips = turnPlayerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
                     }
                 }
 
                 if (playerFold3 == "fold") {
-                    player3!!.winnerHand = "fold"
-                    turnPlayer3!!.winnerHand = "fold"
+                    playerData3!!.winnerHand = "fold"
+                    turnRealmData3!!.winnerHand = "fold"
                 } else {
-                    player3!!.winnerHand = spinnerSelectItem3
-                    turnPlayer3!!.winnerHand = spinnerSelectItem3
+                    playerData3!!.winnerHand = spinnerSelectItem3
+                    turnRealmData3!!.winnerHand = spinnerSelectItem3
                     if (playerWinnerCheckEditText3.text.toString() != "") {
-                        player3!!.memberChips = playerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
-                        turnPlayer3!!.memberChips = turnPlayerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
+                        playerData3!!.memberChips = playerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
+                        turnRealmData3!!.memberChips = turnPlayerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
                     }
                 }
 
                 if (playerFold4 == "fold") {
-                    player4!!.winnerHand = "fold"
-                    turnPlayer4!!.winnerHand = "fold"
+                    playerData4!!.winnerHand = "fold"
+                    turnRealmData4!!.winnerHand = "fold"
                 } else {
-                    player4!!.winnerHand = spinnerSelectItem4
-                    turnPlayer4!!.winnerHand = spinnerSelectItem4
+                    playerData4!!.winnerHand = spinnerSelectItem4
+                    turnRealmData4!!.winnerHand = spinnerSelectItem4
                     if (playerWinnerCheckEditText4.text.toString() != "") {
-                        player4!!.memberChips = playerChips4 + playerWinnerCheckEditText4.text.toString().toInt()
-                        turnPlayer4!!.memberChips = turnPlayerChips4 + playerWinnerCheckEditText4.text.toString().toInt()
+                        playerData4!!.memberChips = playerChips4 + playerWinnerCheckEditText4.text.toString().toInt()
+                        turnRealmData4!!.memberChips = turnPlayerChips4 + playerWinnerCheckEditText4.text.toString().toInt()
                     }
                 }
 
                 if (playerFold5 == "fold") {
-                    player5!!.winnerHand = "fold"
-                    turnPlayer5!!.winnerHand = "fold"
+                    playerData5!!.winnerHand = "fold"
+                    turnRealmData5!!.winnerHand = "fold"
                 } else {
-                    player5!!.winnerHand = spinnerSelectItem5
-                    turnPlayer5!!.winnerHand = spinnerSelectItem5
+                    playerData5!!.winnerHand = spinnerSelectItem5
+                    turnRealmData5!!.winnerHand = spinnerSelectItem5
                     if (playerWinnerCheckEditText5.text.toString() != "") {
-                        player5!!.memberChips = playerChips5 + playerWinnerCheckEditText5.text.toString().toInt()
-                        turnPlayer5!!.memberChips = turnPlayerChips5 + playerWinnerCheckEditText5.text.toString().toInt()
+                        playerData5!!.memberChips = playerChips5 + playerWinnerCheckEditText5.text.toString().toInt()
+                        turnRealmData5!!.memberChips = turnPlayerChips5 + playerWinnerCheckEditText5.text.toString().toInt()
                     }
                 }
-
             }
 
             6 -> {
@@ -3720,33 +3843,33 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val playerId5 = playerNum5.max("id")!!.toInt()
                 val playerId6 = playerNum6.max("id")!!.toInt()
 
-                val playerFold1 = memberRealmResults[playerId1]!!.playingCheck
-                val playerFold2 = memberRealmResults[playerId2]!!.playingCheck
-                val playerFold3 = memberRealmResults[playerId3]!!.playingCheck
-                val playerFold4 = memberRealmResults[playerId4]!!.playingCheck
-                val playerFold5 = memberRealmResults[playerId5]!!.playingCheck
-                val playerFold6 = memberRealmResults[playerId6]!!.playingCheck
+                val playerData1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
+                val playerData2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
+                val playerData3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
+                val playerData4 = mRealm.where(Member::class.java).equalTo("id", playerId4).findFirst()
+                val playerData5 = mRealm.where(Member::class.java).equalTo("id", playerId5).findFirst()
+                val playerData6 = mRealm.where(Member::class.java).equalTo("id", playerId6).findFirst()
 
-                val playerChips1 = memberRealmResults[playerId1]!!.memberChips
-                val playerChips2 = memberRealmResults[playerId2]!!.memberChips
-                val playerChips3 = memberRealmResults[playerId3]!!.memberChips
-                val playerChips4 = memberRealmResults[playerId4]!!.memberChips
-                val playerChips5 = memberRealmResults[playerId5]!!.memberChips
-                val playerChips6 = memberRealmResults[playerId6]!!.memberChips
+                val playerFold1 = playerData1!!.playingCheck
+                val playerFold2 = playerData2!!.playingCheck
+                val playerFold3 = playerData3!!.playingCheck
+                val playerFold4 = playerData4!!.playingCheck
+                val playerFold5 = playerData5!!.playingCheck
+                val playerFold6 = playerData6!!.playingCheck
 
-                val player1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
-                val player2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
-                val player3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
-                val player4 = mRealm.where(Member::class.java).equalTo("id", playerId4).findFirst()
-                val player5 = mRealm.where(Member::class.java).equalTo("id", playerId5).findFirst()
-                val player6 = mRealm.where(Member::class.java).equalTo("id", playerId6).findFirst()
+                val playerChips1 = playerData1!!.memberChips
+                val playerChips2 = playerData2!!.memberChips
+                val playerChips3 = playerData3!!.memberChips
+                val playerChips4 = playerData4!!.memberChips
+                val playerChips5 = playerData5!!.memberChips
+                val playerChips6 = playerData6!!.memberChips
 
-                val playerName1 = memberRealmResults[playerId1]!!.memberName
-                val playerName2 = memberRealmResults[playerId2]!!.memberName
-                val playerName3 = memberRealmResults[playerId3]!!.memberName
-                val playerName4 = memberRealmResults[playerId4]!!.memberName
-                val playerName5 = memberRealmResults[playerId5]!!.memberName
-                val playerName6 = memberRealmResults[playerId6]!!.memberName
+                val playerName1 = playerData1!!.memberName
+                val playerName2 = playerData2!!.memberName
+                val playerName3 = playerData3!!.memberName
+                val playerName4 = playerData4!!.memberName
+                val playerName5 = playerData5!!.memberName
+                val playerName6 = playerData6!!.memberName
 
                 val turnPlayerNum1 = mRealm.where(Turn::class.java).equalTo("player", playerName1).findAll()
                 val turnPlayerNum2 = mRealm.where(Turn::class.java).equalTo("player", playerName2).findAll()
@@ -3762,92 +3885,91 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val turnPlayerId5 = turnPlayerNum5.max("id")!!.toInt()
                 val turnPlayerId6 = turnPlayerNum6.max("id")!!.toInt()
 
-                val turnPlayerChips1 = turnRealmResults[turnPlayerId1]!!.memberChips
-                val turnPlayerChips2 = turnRealmResults[turnPlayerId2]!!.memberChips
-                val turnPlayerChips3 = turnRealmResults[turnPlayerId3]!!.memberChips
-                val turnPlayerChips4 = turnRealmResults[turnPlayerId4]!!.memberChips
-                val turnPlayerChips5 = turnRealmResults[turnPlayerId5]!!.memberChips
-                val turnPlayerChips6 = turnRealmResults[turnPlayerId6]!!.memberChips
+                val turnRealmData1 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId1).findFirst()
+                val turnRealmData2 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId2).findFirst()
+                val turnRealmData3 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId3).findFirst()
+                val turnRealmData4 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId4).findFirst()
+                val turnRealmData5 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId5).findFirst()
+                val turnRealmData6 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId6).findFirst()
 
-                val turnPlayer1 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId1).findFirst()
-                val turnPlayer2 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId2).findFirst()
-                val turnPlayer3 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId3).findFirst()
-                val turnPlayer4 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId4).findFirst()
-                val turnPlayer5 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId5).findFirst()
-                val turnPlayer6 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId6).findFirst()
+                val turnPlayerChips1 = turnRealmData1!!.memberChips
+                val turnPlayerChips2 = turnRealmData2!!.memberChips
+                val turnPlayerChips3 = turnRealmData3!!.memberChips
+                val turnPlayerChips4 = turnRealmData4!!.memberChips
+                val turnPlayerChips5 = turnRealmData5!!.memberChips
+                val turnPlayerChips6 = turnRealmData6!!.memberChips
 
                 if (playerFold1 == "fold") {
-                    player1!!.winnerHand = "fold"
-                    turnPlayer1!!.winnerHand = "fold"
+                    playerData1!!.winnerHand = "fold"
+                    turnRealmData1!!.winnerHand = "fold"
                 } else {
-                    player1!!.winnerHand = spinnerSelectItem1
-                    turnPlayer1!!.winnerHand = spinnerSelectItem1
+                    playerData1!!.winnerHand = spinnerSelectItem1
+                    turnRealmData1!!.winnerHand = spinnerSelectItem1
                     if (playerWinnerCheckEditText1.text.toString() != "") {
-                        player1!!.memberChips = playerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
-                        turnPlayer1!!.memberChips = turnPlayerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
+                        playerData1!!.memberChips = playerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
+                        turnRealmData1!!.memberChips = turnPlayerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
                     }
                 }
 
                 if (playerFold2 == "fold") {
-                    player2!!.winnerHand = "fold"
-                    turnPlayer2!!.winnerHand = "fold"
+                    playerData2!!.winnerHand = "fold"
+                    turnRealmData2!!.winnerHand = "fold"
                 } else {
-                    player2!!.winnerHand = spinnerSelectItem2
-                    turnPlayer2!!.winnerHand = spinnerSelectItem2
+                    playerData2!!.winnerHand = spinnerSelectItem2
+                    turnRealmData2!!.winnerHand = spinnerSelectItem2
                     if (playerWinnerCheckEditText2.text.toString() != "") {
-                        player2!!.memberChips = playerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
-                        turnPlayer2!!.memberChips = turnPlayerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
+                        playerData2!!.memberChips = playerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
+                        turnRealmData2!!.memberChips = turnPlayerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
                     }
                 }
 
                 if (playerFold3 == "fold") {
-                    player3!!.winnerHand = "fold"
-                    turnPlayer3!!.winnerHand = "fold"
+                    playerData3!!.winnerHand = "fold"
+                    turnRealmData3!!.winnerHand = "fold"
                 } else {
-                    player3!!.winnerHand = spinnerSelectItem3
-                    turnPlayer3!!.winnerHand = spinnerSelectItem3
+                    playerData3!!.winnerHand = spinnerSelectItem3
+                    turnRealmData3!!.winnerHand = spinnerSelectItem3
                     if (playerWinnerCheckEditText3.text.toString() != "") {
-                        player3!!.memberChips = playerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
-                        turnPlayer3!!.memberChips = turnPlayerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
+                        playerData3!!.memberChips = playerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
+                        turnRealmData3!!.memberChips = turnPlayerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
                     }
                 }
 
                 if (playerFold4 == "fold") {
-                    player4!!.winnerHand = "fold"
-                    turnPlayer4!!.winnerHand = "fold"
+                    playerData4!!.winnerHand = "fold"
+                    turnRealmData4!!.winnerHand = "fold"
                 } else {
-                    player4!!.winnerHand = spinnerSelectItem4
-                    turnPlayer4!!.winnerHand = spinnerSelectItem4
+                    playerData4!!.winnerHand = spinnerSelectItem4
+                    turnRealmData4!!.winnerHand = spinnerSelectItem4
                     if (playerWinnerCheckEditText4.text.toString() != "") {
-                        player4!!.memberChips = playerChips4 + playerWinnerCheckEditText4.text.toString().toInt()
-                        turnPlayer4!!.memberChips = turnPlayerChips4 + playerWinnerCheckEditText4.text.toString().toInt()
+                        playerData4!!.memberChips = playerChips4 + playerWinnerCheckEditText4.text.toString().toInt()
+                        turnRealmData4!!.memberChips = turnPlayerChips4 + playerWinnerCheckEditText4.text.toString().toInt()
                     }
                 }
 
                 if (playerFold5 == "fold") {
-                    player5!!.winnerHand = "fold"
-                    turnPlayer5!!.winnerHand = "fold"
+                    playerData5!!.winnerHand = "fold"
+                    turnRealmData5!!.winnerHand = "fold"
                 } else {
-                    player5!!.winnerHand = spinnerSelectItem5
-                    turnPlayer5!!.winnerHand = spinnerSelectItem5
+                    playerData5!!.winnerHand = spinnerSelectItem5
+                    turnRealmData5!!.winnerHand = spinnerSelectItem5
                     if (playerWinnerCheckEditText5.text.toString() != "") {
-                        player5!!.memberChips = playerChips5 + playerWinnerCheckEditText5.text.toString().toInt()
-                        turnPlayer5!!.memberChips = turnPlayerChips5 + playerWinnerCheckEditText5.text.toString().toInt()
+                        playerData5!!.memberChips = playerChips5 + playerWinnerCheckEditText5.text.toString().toInt()
+                        turnRealmData5!!.memberChips = turnPlayerChips5 + playerWinnerCheckEditText5.text.toString().toInt()
                     }
                 }
 
                 if (playerFold6 == "fold") {
-                    player6!!.winnerHand = "fold"
-                    turnPlayer6!!.winnerHand = "fold"
+                    playerData6!!.winnerHand = "fold"
+                    turnRealmData6!!.winnerHand = "fold"
                 } else {
-                    player6!!.winnerHand = spinnerSelectItem6
-                    turnPlayer6!!.winnerHand = spinnerSelectItem6
+                    playerData6!!.winnerHand = spinnerSelectItem6
+                    turnRealmData6!!.winnerHand = spinnerSelectItem6
                     if (playerWinnerCheckEditText6.text.toString() != "") {
-                        player6!!.memberChips = playerChips6 + playerWinnerCheckEditText6.text.toString().toInt()
-                        turnPlayer6!!.memberChips = turnPlayerChips6 + playerWinnerCheckEditText6.text.toString().toInt()
+                        playerData6!!.memberChips = playerChips6 + playerWinnerCheckEditText6.text.toString().toInt()
+                        turnRealmData6!!.memberChips = turnPlayerChips6 + playerWinnerCheckEditText6.text.toString().toInt()
                     }
                 }
-
             }
 
             7 -> {
@@ -3867,37 +3989,37 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val playerId6 = playerNum6.max("id")!!.toInt()
                 val playerId7 = playerNum7.max("id")!!.toInt()
 
-                val playerFold1 = memberRealmResults[playerId1]!!.playingCheck
-                val playerFold2 = memberRealmResults[playerId2]!!.playingCheck
-                val playerFold3 = memberRealmResults[playerId3]!!.playingCheck
-                val playerFold4 = memberRealmResults[playerId4]!!.playingCheck
-                val playerFold5 = memberRealmResults[playerId5]!!.playingCheck
-                val playerFold6 = memberRealmResults[playerId6]!!.playingCheck
-                val playerFold7 = memberRealmResults[playerId7]!!.playingCheck
+                val playerData1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
+                val playerData2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
+                val playerData3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
+                val playerData4 = mRealm.where(Member::class.java).equalTo("id", playerId4).findFirst()
+                val playerData5 = mRealm.where(Member::class.java).equalTo("id", playerId5).findFirst()
+                val playerData6 = mRealm.where(Member::class.java).equalTo("id", playerId6).findFirst()
+                val playerData7 = mRealm.where(Member::class.java).equalTo("id", playerId7).findFirst()
 
-                val playerChips1 = memberRealmResults[playerId1]!!.memberChips
-                val playerChips2 = memberRealmResults[playerId2]!!.memberChips
-                val playerChips3 = memberRealmResults[playerId3]!!.memberChips
-                val playerChips4 = memberRealmResults[playerId4]!!.memberChips
-                val playerChips5 = memberRealmResults[playerId5]!!.memberChips
-                val playerChips6 = memberRealmResults[playerId6]!!.memberChips
-                val playerChips7 = memberRealmResults[playerId7]!!.memberChips
+                val playerFold1 = playerData1!!.playingCheck
+                val playerFold2 = playerData2!!.playingCheck
+                val playerFold3 = playerData3!!.playingCheck
+                val playerFold4 = playerData4!!.playingCheck
+                val playerFold5 = playerData5!!.playingCheck
+                val playerFold6 = playerData6!!.playingCheck
+                val playerFold7 = playerData7!!.playingCheck
 
-                val player1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
-                val player2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
-                val player3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
-                val player4 = mRealm.where(Member::class.java).equalTo("id", playerId4).findFirst()
-                val player5 = mRealm.where(Member::class.java).equalTo("id", playerId5).findFirst()
-                val player6 = mRealm.where(Member::class.java).equalTo("id", playerId6).findFirst()
-                val player7 = mRealm.where(Member::class.java).equalTo("id", playerId7).findFirst()
+                val playerChips1 = playerData1!!.memberChips
+                val playerChips2 = playerData2!!.memberChips
+                val playerChips3 = playerData3!!.memberChips
+                val playerChips4 = playerData4!!.memberChips
+                val playerChips5 = playerData5!!.memberChips
+                val playerChips6 = playerData6!!.memberChips
+                val playerChips7 = playerData7!!.memberChips
 
-                val playerName1 = memberRealmResults[playerId1]!!.memberName
-                val playerName2 = memberRealmResults[playerId2]!!.memberName
-                val playerName3 = memberRealmResults[playerId3]!!.memberName
-                val playerName4 = memberRealmResults[playerId4]!!.memberName
-                val playerName5 = memberRealmResults[playerId5]!!.memberName
-                val playerName6 = memberRealmResults[playerId6]!!.memberName
-                val playerName7 = memberRealmResults[playerId7]!!.memberName
+                val playerName1 = playerData1!!.memberName
+                val playerName2 = playerData2!!.memberName
+                val playerName3 = playerData3!!.memberName
+                val playerName4 = playerData4!!.memberName
+                val playerName5 = playerData5!!.memberName
+                val playerName6 = playerData6!!.memberName
+                val playerName7 = playerData7!!.memberName
 
                 val turnPlayerNum1 = mRealm.where(Turn::class.java).equalTo("player", playerName1).findAll()
                 val turnPlayerNum2 = mRealm.where(Turn::class.java).equalTo("player", playerName2).findAll()
@@ -3915,106 +4037,105 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val turnPlayerId6 = turnPlayerNum6.max("id")!!.toInt()
                 val turnPlayerId7 = turnPlayerNum7.max("id")!!.toInt()
 
-                val turnPlayerChips1 = turnRealmResults[turnPlayerId1]!!.memberChips
-                val turnPlayerChips2 = turnRealmResults[turnPlayerId2]!!.memberChips
-                val turnPlayerChips3 = turnRealmResults[turnPlayerId3]!!.memberChips
-                val turnPlayerChips4 = turnRealmResults[turnPlayerId4]!!.memberChips
-                val turnPlayerChips5 = turnRealmResults[turnPlayerId5]!!.memberChips
-                val turnPlayerChips6 = turnRealmResults[turnPlayerId6]!!.memberChips
-                val turnPlayerChips7 = turnRealmResults[turnPlayerId7]!!.memberChips
+                val turnRealmData1 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId1).findFirst()
+                val turnRealmData2 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId2).findFirst()
+                val turnRealmData3 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId3).findFirst()
+                val turnRealmData4 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId4).findFirst()
+                val turnRealmData5 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId5).findFirst()
+                val turnRealmData6 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId6).findFirst()
+                val turnRealmData7 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId7).findFirst()
 
-                val turnPlayer1 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId1).findFirst()
-                val turnPlayer2 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId2).findFirst()
-                val turnPlayer3 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId3).findFirst()
-                val turnPlayer4 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId4).findFirst()
-                val turnPlayer5 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId5).findFirst()
-                val turnPlayer6 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId6).findFirst()
-                val turnPlayer7 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId7).findFirst()
+                val turnPlayerChips1 = turnRealmData1!!.memberChips
+                val turnPlayerChips2 = turnRealmData2!!.memberChips
+                val turnPlayerChips3 = turnRealmData3!!.memberChips
+                val turnPlayerChips4 = turnRealmData4!!.memberChips
+                val turnPlayerChips5 = turnRealmData5!!.memberChips
+                val turnPlayerChips6 = turnRealmData6!!.memberChips
+                val turnPlayerChips7 = turnRealmData7!!.memberChips
 
                 if (playerFold1 == "fold") {
-                    player1!!.winnerHand = "fold"
-                    turnPlayer1!!.winnerHand = "fold"
+                    playerData1!!.winnerHand = "fold"
+                    turnRealmData1!!.winnerHand = "fold"
                 } else {
-                    player1!!.winnerHand = spinnerSelectItem1
-                    turnPlayer1!!.winnerHand = spinnerSelectItem1
+                    playerData1!!.winnerHand = spinnerSelectItem1
+                    turnRealmData1!!.winnerHand = spinnerSelectItem1
                     if (playerWinnerCheckEditText1.text.toString() != "") {
-                        player1!!.memberChips = playerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
-                        turnPlayer1!!.memberChips = turnPlayerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
+                        playerData1!!.memberChips = playerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
+                        turnRealmData1!!.memberChips = turnPlayerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
                     }
                 }
 
                 if (playerFold2 == "fold") {
-                    player2!!.winnerHand = "fold"
-                    turnPlayer2!!.winnerHand = "fold"
+                    playerData2!!.winnerHand = "fold"
+                    turnRealmData2!!.winnerHand = "fold"
                 } else {
-                    player2!!.winnerHand = spinnerSelectItem2
-                    turnPlayer2!!.winnerHand = spinnerSelectItem2
+                    playerData2!!.winnerHand = spinnerSelectItem2
+                    turnRealmData2!!.winnerHand = spinnerSelectItem2
                     if (playerWinnerCheckEditText2.text.toString() != "") {
-                        player2!!.memberChips = playerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
-                        turnPlayer2!!.memberChips = turnPlayerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
+                        playerData2!!.memberChips = playerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
+                        turnRealmData2!!.memberChips = turnPlayerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
                     }
                 }
 
                 if (playerFold3 == "fold") {
-                    player3!!.winnerHand = "fold"
-                    turnPlayer3!!.winnerHand = "fold"
+                    playerData3!!.winnerHand = "fold"
+                    turnRealmData3!!.winnerHand = "fold"
                 } else {
-                    player3!!.winnerHand = spinnerSelectItem3
-                    turnPlayer3!!.winnerHand = spinnerSelectItem3
+                    playerData3!!.winnerHand = spinnerSelectItem3
+                    turnRealmData3!!.winnerHand = spinnerSelectItem3
                     if (playerWinnerCheckEditText3.text.toString() != "") {
-                        player3!!.memberChips = playerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
-                        turnPlayer3!!.memberChips = turnPlayerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
+                        playerData3!!.memberChips = playerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
+                        turnRealmData3!!.memberChips = turnPlayerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
                     }
                 }
 
                 if (playerFold4 == "fold") {
-                    player4!!.winnerHand = "fold"
-                    turnPlayer4!!.winnerHand = "fold"
+                    playerData4!!.winnerHand = "fold"
+                    turnRealmData4!!.winnerHand = "fold"
                 } else {
-                    player4!!.winnerHand = spinnerSelectItem4
-                    turnPlayer4!!.winnerHand = spinnerSelectItem4
+                    playerData4!!.winnerHand = spinnerSelectItem4
+                    turnRealmData4!!.winnerHand = spinnerSelectItem4
                     if (playerWinnerCheckEditText4.text.toString() != "") {
-                        player4!!.memberChips = playerChips4 + playerWinnerCheckEditText4.text.toString().toInt()
-                        turnPlayer4!!.memberChips = turnPlayerChips4 + playerWinnerCheckEditText4.text.toString().toInt()
+                        playerData4!!.memberChips = playerChips4 + playerWinnerCheckEditText4.text.toString().toInt()
+                        turnRealmData4!!.memberChips = turnPlayerChips4 + playerWinnerCheckEditText4.text.toString().toInt()
                     }
                 }
 
                 if (playerFold5 == "fold") {
-                    player5!!.winnerHand = "fold"
-                    turnPlayer5!!.winnerHand = "fold"
+                    playerData5!!.winnerHand = "fold"
+                    turnRealmData5!!.winnerHand = "fold"
                 } else {
-                    player5!!.winnerHand = spinnerSelectItem5
-                    turnPlayer5!!.winnerHand = spinnerSelectItem5
+                    playerData5!!.winnerHand = spinnerSelectItem5
+                    turnRealmData5!!.winnerHand = spinnerSelectItem5
                     if (playerWinnerCheckEditText5.text.toString() != "") {
-                        player5!!.memberChips = playerChips5 + playerWinnerCheckEditText5.text.toString().toInt()
-                        turnPlayer5!!.memberChips = turnPlayerChips5 + playerWinnerCheckEditText5.text.toString().toInt()
+                        playerData5!!.memberChips = playerChips5 + playerWinnerCheckEditText5.text.toString().toInt()
+                        turnRealmData5!!.memberChips = turnPlayerChips5 + playerWinnerCheckEditText5.text.toString().toInt()
                     }
                 }
 
                 if (playerFold6 == "fold") {
-                    player6!!.winnerHand = "fold"
-                    turnPlayer6!!.winnerHand = "fold"
+                    playerData6!!.winnerHand = "fold"
+                    turnRealmData6!!.winnerHand = "fold"
                 } else {
-                    player6!!.winnerHand = spinnerSelectItem6
-                    turnPlayer6!!.winnerHand = spinnerSelectItem6
+                    playerData6!!.winnerHand = spinnerSelectItem6
+                    turnRealmData6!!.winnerHand = spinnerSelectItem6
                     if (playerWinnerCheckEditText6.text.toString() != "") {
-                        player6!!.memberChips = playerChips6 + playerWinnerCheckEditText6.text.toString().toInt()
-                        turnPlayer6!!.memberChips = turnPlayerChips6 + playerWinnerCheckEditText6.text.toString().toInt()
+                        playerData6!!.memberChips = playerChips6 + playerWinnerCheckEditText6.text.toString().toInt()
+                        turnRealmData6!!.memberChips = turnPlayerChips6 + playerWinnerCheckEditText6.text.toString().toInt()
                     }
                 }
 
                 if (playerFold7 == "fold") {
-                    player7!!.winnerHand = "fold"
-                    turnPlayer7!!.winnerHand = "fold"
+                    playerData7!!.winnerHand = "fold"
+                    turnRealmData7!!.winnerHand = "fold"
                 } else {
-                    player7!!.winnerHand = spinnerSelectItem7
-                    turnPlayer7!!.winnerHand = spinnerSelectItem7
+                    playerData7!!.winnerHand = spinnerSelectItem7
+                    turnRealmData7!!.winnerHand = spinnerSelectItem7
                     if (playerWinnerCheckEditText7.text.toString() != "") {
-                        player7!!.memberChips = playerChips7 + playerWinnerCheckEditText7.text.toString().toInt()
-                        turnPlayer7!!.memberChips = turnPlayerChips7 + playerWinnerCheckEditText7.text.toString().toInt()
+                        playerData7!!.memberChips = playerChips7 + playerWinnerCheckEditText7.text.toString().toInt()
+                        turnRealmData7!!.memberChips = turnPlayerChips7 + playerWinnerCheckEditText7.text.toString().toInt()
                     }
                 }
-
             }
 
             8 -> {
@@ -4036,41 +4157,41 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val playerId7 = playerNum7.max("id")!!.toInt()
                 val playerId8 = playerNum8.max("id")!!.toInt()
 
-                val playerFold1 = memberRealmResults[playerId1]!!.playingCheck
-                val playerFold2 = memberRealmResults[playerId2]!!.playingCheck
-                val playerFold3 = memberRealmResults[playerId3]!!.playingCheck
-                val playerFold4 = memberRealmResults[playerId4]!!.playingCheck
-                val playerFold5 = memberRealmResults[playerId5]!!.playingCheck
-                val playerFold6 = memberRealmResults[playerId6]!!.playingCheck
-                val playerFold7 = memberRealmResults[playerId7]!!.playingCheck
-                val playerFold8 = memberRealmResults[playerId8]!!.playingCheck
+                val playerData1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
+                val playerData2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
+                val playerData3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
+                val playerData4 = mRealm.where(Member::class.java).equalTo("id", playerId4).findFirst()
+                val playerData5 = mRealm.where(Member::class.java).equalTo("id", playerId5).findFirst()
+                val playerData6 = mRealm.where(Member::class.java).equalTo("id", playerId6).findFirst()
+                val playerData7 = mRealm.where(Member::class.java).equalTo("id", playerId7).findFirst()
+                val playerData8 = mRealm.where(Member::class.java).equalTo("id", playerId8).findFirst()
 
-                val playerChips1 = memberRealmResults[playerId1]!!.memberChips
-                val playerChips2 = memberRealmResults[playerId2]!!.memberChips
-                val playerChips3 = memberRealmResults[playerId3]!!.memberChips
-                val playerChips4 = memberRealmResults[playerId4]!!.memberChips
-                val playerChips5 = memberRealmResults[playerId5]!!.memberChips
-                val playerChips6 = memberRealmResults[playerId6]!!.memberChips
-                val playerChips7 = memberRealmResults[playerId7]!!.memberChips
-                val playerChips8 = memberRealmResults[playerId8]!!.memberChips
+                val playerFold1 = playerData1!!.playingCheck
+                val playerFold2 = playerData2!!.playingCheck
+                val playerFold3 = playerData3!!.playingCheck
+                val playerFold4 = playerData4!!.playingCheck
+                val playerFold5 = playerData5!!.playingCheck
+                val playerFold6 = playerData6!!.playingCheck
+                val playerFold7 = playerData7!!.playingCheck
+                val playerFold8 = playerData8!!.playingCheck
 
-                val player1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
-                val player2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
-                val player3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
-                val player4 = mRealm.where(Member::class.java).equalTo("id", playerId4).findFirst()
-                val player5 = mRealm.where(Member::class.java).equalTo("id", playerId5).findFirst()
-                val player6 = mRealm.where(Member::class.java).equalTo("id", playerId6).findFirst()
-                val player7 = mRealm.where(Member::class.java).equalTo("id", playerId7).findFirst()
-                val player8 = mRealm.where(Member::class.java).equalTo("id", playerId8).findFirst()
+                val playerChips1 = playerData1!!.memberChips
+                val playerChips2 = playerData2!!.memberChips
+                val playerChips3 = playerData3!!.memberChips
+                val playerChips4 = playerData4!!.memberChips
+                val playerChips5 = playerData5!!.memberChips
+                val playerChips6 = playerData6!!.memberChips
+                val playerChips7 = playerData7!!.memberChips
+                val playerChips8 = playerData8!!.memberChips
 
-                val playerName1 = memberRealmResults[playerId1]!!.memberName
-                val playerName2 = memberRealmResults[playerId2]!!.memberName
-                val playerName3 = memberRealmResults[playerId3]!!.memberName
-                val playerName4 = memberRealmResults[playerId4]!!.memberName
-                val playerName5 = memberRealmResults[playerId5]!!.memberName
-                val playerName6 = memberRealmResults[playerId6]!!.memberName
-                val playerName7 = memberRealmResults[playerId7]!!.memberName
-                val playerName8 = memberRealmResults[playerId8]!!.memberName
+                val playerName1 = playerData1!!.memberName
+                val playerName2 = playerData2!!.memberName
+                val playerName3 = playerData3!!.memberName
+                val playerName4 = playerData4!!.memberName
+                val playerName5 = playerData5!!.memberName
+                val playerName6 = playerData6!!.memberName
+                val playerName7 = playerData7!!.memberName
+                val playerName8 = playerData8!!.memberName
 
                 val turnPlayerNum1 = mRealm.where(Turn::class.java).equalTo("player", playerName1).findAll()
                 val turnPlayerNum2 = mRealm.where(Turn::class.java).equalTo("player", playerName2).findAll()
@@ -4090,120 +4211,119 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val turnPlayerId7 = turnPlayerNum7.max("id")!!.toInt()
                 val turnPlayerId8 = turnPlayerNum8.max("id")!!.toInt()
 
-                val turnPlayerChips1 = turnRealmResults[turnPlayerId1]!!.memberChips
-                val turnPlayerChips2 = turnRealmResults[turnPlayerId2]!!.memberChips
-                val turnPlayerChips3 = turnRealmResults[turnPlayerId3]!!.memberChips
-                val turnPlayerChips4 = turnRealmResults[turnPlayerId4]!!.memberChips
-                val turnPlayerChips5 = turnRealmResults[turnPlayerId5]!!.memberChips
-                val turnPlayerChips6 = turnRealmResults[turnPlayerId6]!!.memberChips
-                val turnPlayerChips7 = turnRealmResults[turnPlayerId7]!!.memberChips
-                val turnPlayerChips8 = turnRealmResults[turnPlayerId8]!!.memberChips
+                val turnRealmData1 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId1).findFirst()
+                val turnRealmData2 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId2).findFirst()
+                val turnRealmData3 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId3).findFirst()
+                val turnRealmData4 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId4).findFirst()
+                val turnRealmData5 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId5).findFirst()
+                val turnRealmData6 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId6).findFirst()
+                val turnRealmData7 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId7).findFirst()
+                val turnRealmData8 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId8).findFirst()
 
-                val turnPlayer1 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId1).findFirst()
-                val turnPlayer2 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId2).findFirst()
-                val turnPlayer3 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId3).findFirst()
-                val turnPlayer4 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId4).findFirst()
-                val turnPlayer5 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId5).findFirst()
-                val turnPlayer6 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId6).findFirst()
-                val turnPlayer7 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId7).findFirst()
-                val turnPlayer8 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId8).findFirst()
+                val turnPlayerChips1 = turnRealmData1!!.memberChips
+                val turnPlayerChips2 = turnRealmData2!!.memberChips
+                val turnPlayerChips3 = turnRealmData3!!.memberChips
+                val turnPlayerChips4 = turnRealmData4!!.memberChips
+                val turnPlayerChips5 = turnRealmData5!!.memberChips
+                val turnPlayerChips6 = turnRealmData6!!.memberChips
+                val turnPlayerChips7 = turnRealmData7!!.memberChips
+                val turnPlayerChips8 = turnRealmData8!!.memberChips
 
                 if (playerFold1 == "fold") {
-                    player1!!.winnerHand = "fold"
-                    turnPlayer1!!.winnerHand = "fold"
+                    playerData1!!.winnerHand = "fold"
+                    turnRealmData1!!.winnerHand = "fold"
                 } else {
-                    player1!!.winnerHand = spinnerSelectItem1
-                    turnPlayer1!!.winnerHand = spinnerSelectItem1
+                    playerData1!!.winnerHand = spinnerSelectItem1
+                    turnRealmData1!!.winnerHand = spinnerSelectItem1
                     if (playerWinnerCheckEditText1.text.toString() != "") {
-                        player1!!.memberChips = playerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
-                        turnPlayer1!!.memberChips = turnPlayerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
+                        playerData1!!.memberChips = playerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
+                        turnRealmData1!!.memberChips = turnPlayerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
                     }
                 }
 
                 if (playerFold2 == "fold") {
-                    player2!!.winnerHand = "fold"
-                    turnPlayer2!!.winnerHand = "fold"
+                    playerData2!!.winnerHand = "fold"
+                    turnRealmData2!!.winnerHand = "fold"
                 } else {
-                    player2!!.winnerHand = spinnerSelectItem2
-                    turnPlayer2!!.winnerHand = spinnerSelectItem2
+                    playerData2!!.winnerHand = spinnerSelectItem2
+                    turnRealmData2!!.winnerHand = spinnerSelectItem2
                     if (playerWinnerCheckEditText2.text.toString() != "") {
-                        player2!!.memberChips = playerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
-                        turnPlayer2!!.memberChips = turnPlayerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
+                        playerData2!!.memberChips = playerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
+                        turnRealmData2!!.memberChips = turnPlayerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
                     }
                 }
 
                 if (playerFold3 == "fold") {
-                    player3!!.winnerHand = "fold"
-                    turnPlayer3!!.winnerHand = "fold"
+                    playerData3!!.winnerHand = "fold"
+                    turnRealmData3!!.winnerHand = "fold"
                 } else {
-                    player3!!.winnerHand = spinnerSelectItem3
-                    turnPlayer3!!.winnerHand = spinnerSelectItem3
+                    playerData3!!.winnerHand = spinnerSelectItem3
+                    turnRealmData3!!.winnerHand = spinnerSelectItem3
                     if (playerWinnerCheckEditText3.text.toString() != "") {
-                        player3!!.memberChips = playerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
-                        turnPlayer3!!.memberChips = turnPlayerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
+                        playerData3!!.memberChips = playerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
+                        turnRealmData3!!.memberChips = turnPlayerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
                     }
                 }
 
                 if (playerFold4 == "fold") {
-                    player4!!.winnerHand = "fold"
-                    turnPlayer4!!.winnerHand = "fold"
+                    playerData4!!.winnerHand = "fold"
+                    turnRealmData4!!.winnerHand = "fold"
                 } else {
-                    player4!!.winnerHand = spinnerSelectItem4
-                    turnPlayer4!!.winnerHand = spinnerSelectItem4
+                    playerData4!!.winnerHand = spinnerSelectItem4
+                    turnRealmData4!!.winnerHand = spinnerSelectItem4
                     if (playerWinnerCheckEditText4.text.toString() != "") {
-                        player4!!.memberChips = playerChips4 + playerWinnerCheckEditText4.text.toString().toInt()
-                        turnPlayer4!!.memberChips = turnPlayerChips4 + playerWinnerCheckEditText4.text.toString().toInt()
+                        playerData4!!.memberChips = playerChips4 + playerWinnerCheckEditText4.text.toString().toInt()
+                        turnRealmData4!!.memberChips = turnPlayerChips4 + playerWinnerCheckEditText4.text.toString().toInt()
                     }
                 }
 
                 if (playerFold5 == "fold") {
-                    player5!!.winnerHand = "fold"
-                    turnPlayer5!!.winnerHand = "fold"
+                    playerData5!!.winnerHand = "fold"
+                    turnRealmData5!!.winnerHand = "fold"
                 } else {
-                    player5!!.winnerHand = spinnerSelectItem5
-                    turnPlayer5!!.winnerHand = spinnerSelectItem5
+                    playerData5!!.winnerHand = spinnerSelectItem5
+                    turnRealmData5!!.winnerHand = spinnerSelectItem5
                     if (playerWinnerCheckEditText5.text.toString() != "") {
-                        player5!!.memberChips = playerChips5 + playerWinnerCheckEditText5.text.toString().toInt()
-                        turnPlayer5!!.memberChips = turnPlayerChips5 + playerWinnerCheckEditText5.text.toString().toInt()
+                        playerData5!!.memberChips = playerChips5 + playerWinnerCheckEditText5.text.toString().toInt()
+                        turnRealmData5!!.memberChips = turnPlayerChips5 + playerWinnerCheckEditText5.text.toString().toInt()
                     }
                 }
 
                 if (playerFold6 == "fold") {
-                    player6!!.winnerHand = "fold"
-                    turnPlayer6!!.winnerHand = "fold"
+                    playerData6!!.winnerHand = "fold"
+                    turnRealmData6!!.winnerHand = "fold"
                 } else {
-                    player6!!.winnerHand = spinnerSelectItem6
-                    turnPlayer6!!.winnerHand = spinnerSelectItem6
+                    playerData6!!.winnerHand = spinnerSelectItem6
+                    turnRealmData6!!.winnerHand = spinnerSelectItem6
                     if (playerWinnerCheckEditText6.text.toString() != "") {
-                        player6!!.memberChips = playerChips6 + playerWinnerCheckEditText6.text.toString().toInt()
-                        turnPlayer6!!.memberChips = turnPlayerChips6 + playerWinnerCheckEditText6.text.toString().toInt()
+                        playerData6!!.memberChips = playerChips6 + playerWinnerCheckEditText6.text.toString().toInt()
+                        turnRealmData6!!.memberChips = turnPlayerChips6 + playerWinnerCheckEditText6.text.toString().toInt()
                     }
                 }
 
                 if (playerFold7 == "fold") {
-                    player7!!.winnerHand = "fold"
-                    turnPlayer7!!.winnerHand = "fold"
+                    playerData7!!.winnerHand = "fold"
+                    turnRealmData7!!.winnerHand = "fold"
                 } else {
-                    player7!!.winnerHand = spinnerSelectItem7
-                    turnPlayer7!!.winnerHand = spinnerSelectItem7
+                    playerData7!!.winnerHand = spinnerSelectItem7
+                    turnRealmData7!!.winnerHand = spinnerSelectItem7
                     if (playerWinnerCheckEditText7.text.toString() != "") {
-                        player7!!.memberChips = playerChips7 + playerWinnerCheckEditText7.text.toString().toInt()
-                        turnPlayer7!!.memberChips = turnPlayerChips7 + playerWinnerCheckEditText7.text.toString().toInt()
+                        playerData7!!.memberChips = playerChips7 + playerWinnerCheckEditText7.text.toString().toInt()
+                        turnRealmData7!!.memberChips = turnPlayerChips7 + playerWinnerCheckEditText7.text.toString().toInt()
                     }
                 }
 
                 if (playerFold8 == "fold") {
-                    player8!!.winnerHand = "fold"
-                    turnPlayer8!!.winnerHand = "fold"
+                    playerData8!!.winnerHand = "fold"
+                    turnRealmData8!!.winnerHand = "fold"
                 } else {
-                    player8!!.winnerHand = spinnerSelectItem8
-                    turnPlayer8!!.winnerHand = spinnerSelectItem8
+                    playerData8!!.winnerHand = spinnerSelectItem8
+                    turnRealmData8!!.winnerHand = spinnerSelectItem8
                     if (playerWinnerCheckEditText8.text.toString() != "") {
-                        player8!!.memberChips = playerChips8 + playerWinnerCheckEditText8.text.toString().toInt()
-                        turnPlayer8!!.memberChips = turnPlayerChips8 + playerWinnerCheckEditText8.text.toString().toInt()
+                        playerData8!!.memberChips = playerChips8 + playerWinnerCheckEditText8.text.toString().toInt()
+                        turnRealmData8!!.memberChips = turnPlayerChips8 + playerWinnerCheckEditText8.text.toString().toInt()
                     }
                 }
-
             }
 
             9 -> {
@@ -4227,45 +4347,45 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val playerId8 = playerNum8.max("id")!!.toInt()
                 val playerId9 = playerNum9.max("id")!!.toInt()
 
-                val playerFold1 = memberRealmResults[playerId1]!!.playingCheck
-                val playerFold2 = memberRealmResults[playerId2]!!.playingCheck
-                val playerFold3 = memberRealmResults[playerId3]!!.playingCheck
-                val playerFold4 = memberRealmResults[playerId4]!!.playingCheck
-                val playerFold5 = memberRealmResults[playerId5]!!.playingCheck
-                val playerFold6 = memberRealmResults[playerId6]!!.playingCheck
-                val playerFold7 = memberRealmResults[playerId7]!!.playingCheck
-                val playerFold8 = memberRealmResults[playerId8]!!.playingCheck
-                val playerFold9 = memberRealmResults[playerId9]!!.playingCheck
+                val playerData1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
+                val playerData2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
+                val playerData3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
+                val playerData4 = mRealm.where(Member::class.java).equalTo("id", playerId4).findFirst()
+                val playerData5 = mRealm.where(Member::class.java).equalTo("id", playerId5).findFirst()
+                val playerData6 = mRealm.where(Member::class.java).equalTo("id", playerId6).findFirst()
+                val playerData7 = mRealm.where(Member::class.java).equalTo("id", playerId7).findFirst()
+                val playerData8 = mRealm.where(Member::class.java).equalTo("id", playerId8).findFirst()
+                val playerData9 = mRealm.where(Member::class.java).equalTo("id", playerId9).findFirst()
 
-                val playerChips1 = memberRealmResults[playerId1]!!.memberChips
-                val playerChips2 = memberRealmResults[playerId2]!!.memberChips
-                val playerChips3 = memberRealmResults[playerId3]!!.memberChips
-                val playerChips4 = memberRealmResults[playerId4]!!.memberChips
-                val playerChips5 = memberRealmResults[playerId5]!!.memberChips
-                val playerChips6 = memberRealmResults[playerId6]!!.memberChips
-                val playerChips7 = memberRealmResults[playerId7]!!.memberChips
-                val playerChips8 = memberRealmResults[playerId8]!!.memberChips
-                val playerChips9 = memberRealmResults[playerId9]!!.memberChips
+                val playerFold1 = playerData1!!.playingCheck
+                val playerFold2 = playerData2!!.playingCheck
+                val playerFold3 = playerData3!!.playingCheck
+                val playerFold4 = playerData4!!.playingCheck
+                val playerFold5 = playerData5!!.playingCheck
+                val playerFold6 = playerData6!!.playingCheck
+                val playerFold7 = playerData7!!.playingCheck
+                val playerFold8 = playerData8!!.playingCheck
+                val playerFold9 = playerData9!!.playingCheck
 
-                val player1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
-                val player2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
-                val player3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
-                val player4 = mRealm.where(Member::class.java).equalTo("id", playerId4).findFirst()
-                val player5 = mRealm.where(Member::class.java).equalTo("id", playerId5).findFirst()
-                val player6 = mRealm.where(Member::class.java).equalTo("id", playerId6).findFirst()
-                val player7 = mRealm.where(Member::class.java).equalTo("id", playerId7).findFirst()
-                val player8 = mRealm.where(Member::class.java).equalTo("id", playerId8).findFirst()
-                val player9 = mRealm.where(Member::class.java).equalTo("id", playerId9).findFirst()
+                val playerChips1 = playerData1!!.memberChips
+                val playerChips2 = playerData2!!.memberChips
+                val playerChips3 = playerData3!!.memberChips
+                val playerChips4 = playerData4!!.memberChips
+                val playerChips5 = playerData5!!.memberChips
+                val playerChips6 = playerData6!!.memberChips
+                val playerChips7 = playerData7!!.memberChips
+                val playerChips8 = playerData8!!.memberChips
+                val playerChips9 = playerData9!!.memberChips
 
-                val playerName1 = memberRealmResults[playerId1]!!.memberName
-                val playerName2 = memberRealmResults[playerId2]!!.memberName
-                val playerName3 = memberRealmResults[playerId3]!!.memberName
-                val playerName4 = memberRealmResults[playerId4]!!.memberName
-                val playerName5 = memberRealmResults[playerId5]!!.memberName
-                val playerName6 = memberRealmResults[playerId6]!!.memberName
-                val playerName7 = memberRealmResults[playerId7]!!.memberName
-                val playerName8 = memberRealmResults[playerId8]!!.memberName
-                val playerName9 = memberRealmResults[playerId9]!!.memberName
+                val playerName1 = playerData1!!.memberName
+                val playerName2 = playerData2!!.memberName
+                val playerName3 = playerData3!!.memberName
+                val playerName4 = playerData4!!.memberName
+                val playerName5 = playerData5!!.memberName
+                val playerName6 = playerData6!!.memberName
+                val playerName7 = playerData7!!.memberName
+                val playerName8 = playerData8!!.memberName
+                val playerName9 = playerData9!!.memberName
 
                 val turnPlayerNum1 = mRealm.where(Turn::class.java).equalTo("player", playerName1).findAll()
                 val turnPlayerNum2 = mRealm.where(Turn::class.java).equalTo("player", playerName2).findAll()
@@ -4287,134 +4407,133 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val turnPlayerId8 = turnPlayerNum8.max("id")!!.toInt()
                 val turnPlayerId9 = turnPlayerNum9.max("id")!!.toInt()
 
-                val turnPlayerChips1 = turnRealmResults[turnPlayerId1]!!.memberChips
-                val turnPlayerChips2 = turnRealmResults[turnPlayerId2]!!.memberChips
-                val turnPlayerChips3 = turnRealmResults[turnPlayerId3]!!.memberChips
-                val turnPlayerChips4 = turnRealmResults[turnPlayerId4]!!.memberChips
-                val turnPlayerChips5 = turnRealmResults[turnPlayerId5]!!.memberChips
-                val turnPlayerChips6 = turnRealmResults[turnPlayerId6]!!.memberChips
-                val turnPlayerChips7 = turnRealmResults[turnPlayerId7]!!.memberChips
-                val turnPlayerChips8 = turnRealmResults[turnPlayerId8]!!.memberChips
-                val turnPlayerChips9 = turnRealmResults[turnPlayerId9]!!.memberChips
+                val turnRealmData1 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId1).findFirst()
+                val turnRealmData2 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId2).findFirst()
+                val turnRealmData3 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId3).findFirst()
+                val turnRealmData4 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId4).findFirst()
+                val turnRealmData5 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId5).findFirst()
+                val turnRealmData6 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId6).findFirst()
+                val turnRealmData7 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId7).findFirst()
+                val turnRealmData8 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId8).findFirst()
+                val turnRealmData9 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId9).findFirst()
 
-                val turnPlayer1 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId1).findFirst()
-                val turnPlayer2 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId2).findFirst()
-                val turnPlayer3 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId3).findFirst()
-                val turnPlayer4 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId4).findFirst()
-                val turnPlayer5 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId5).findFirst()
-                val turnPlayer6 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId6).findFirst()
-                val turnPlayer7 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId7).findFirst()
-                val turnPlayer8 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId8).findFirst()
-                val turnPlayer9 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId9).findFirst()
+                val turnPlayerChips1 = turnRealmData1!!.memberChips
+                val turnPlayerChips2 = turnRealmData2!!.memberChips
+                val turnPlayerChips3 = turnRealmData3!!.memberChips
+                val turnPlayerChips4 = turnRealmData4!!.memberChips
+                val turnPlayerChips5 = turnRealmData5!!.memberChips
+                val turnPlayerChips6 = turnRealmData6!!.memberChips
+                val turnPlayerChips7 = turnRealmData7!!.memberChips
+                val turnPlayerChips8 = turnRealmData8!!.memberChips
+                val turnPlayerChips9 = turnRealmData9!!.memberChips
 
                 if (playerFold1 == "fold") {
-                    player1!!.winnerHand = "fold"
-                    turnPlayer1!!.winnerHand = "fold"
+                    playerData1!!.winnerHand = "fold"
+                    turnRealmData1!!.winnerHand = "fold"
                 } else {
-                    player1!!.winnerHand = spinnerSelectItem1
-                    turnPlayer1!!.winnerHand = spinnerSelectItem1
+                    playerData1!!.winnerHand = spinnerSelectItem1
+                    turnRealmData1!!.winnerHand = spinnerSelectItem1
                     if (playerWinnerCheckEditText1.text.toString() != "") {
-                        player1!!.memberChips = playerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
-                        turnPlayer1!!.memberChips = turnPlayerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
+                        playerData1!!.memberChips = playerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
+                        turnRealmData1!!.memberChips = turnPlayerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
                     }
                 }
 
                 if (playerFold2 == "fold") {
-                    player2!!.winnerHand = "fold"
-                    turnPlayer2!!.winnerHand = "fold"
+                    playerData2!!.winnerHand = "fold"
+                    turnRealmData2!!.winnerHand = "fold"
                 } else {
-                    player2!!.winnerHand = spinnerSelectItem2
-                    turnPlayer2!!.winnerHand = spinnerSelectItem2
+                    playerData2!!.winnerHand = spinnerSelectItem2
+                    turnRealmData2!!.winnerHand = spinnerSelectItem2
                     if (playerWinnerCheckEditText2.text.toString() != "") {
-                        player2!!.memberChips = playerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
-                        turnPlayer2!!.memberChips = turnPlayerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
+                        playerData2!!.memberChips = playerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
+                        turnRealmData2!!.memberChips = turnPlayerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
                     }
                 }
 
                 if (playerFold3 == "fold") {
-                    player3!!.winnerHand = "fold"
-                    turnPlayer3!!.winnerHand = "fold"
+                    playerData3!!.winnerHand = "fold"
+                    turnRealmData3!!.winnerHand = "fold"
                 } else {
-                    player3!!.winnerHand = spinnerSelectItem3
-                    turnPlayer3!!.winnerHand = spinnerSelectItem3
+                    playerData3!!.winnerHand = spinnerSelectItem3
+                    turnRealmData3!!.winnerHand = spinnerSelectItem3
                     if (playerWinnerCheckEditText3.text.toString() != "") {
-                        player3!!.memberChips = playerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
-                        turnPlayer3!!.memberChips = turnPlayerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
+                        playerData3!!.memberChips = playerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
+                        turnRealmData3!!.memberChips = turnPlayerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
                     }
                 }
 
                 if (playerFold4 == "fold") {
-                    player4!!.winnerHand = "fold"
-                    turnPlayer4!!.winnerHand = "fold"
+                    playerData4!!.winnerHand = "fold"
+                    turnRealmData4!!.winnerHand = "fold"
                 } else {
-                    player4!!.winnerHand = spinnerSelectItem4
-                    turnPlayer4!!.winnerHand = spinnerSelectItem4
+                    playerData4!!.winnerHand = spinnerSelectItem4
+                    turnRealmData4!!.winnerHand = spinnerSelectItem4
                     if (playerWinnerCheckEditText4.text.toString() != "") {
-                        player4!!.memberChips = playerChips4 + playerWinnerCheckEditText4.text.toString().toInt()
-                        turnPlayer4!!.memberChips = turnPlayerChips4 + playerWinnerCheckEditText4.text.toString().toInt()
+                        playerData4!!.memberChips = playerChips4 + playerWinnerCheckEditText4.text.toString().toInt()
+                        turnRealmData4!!.memberChips = turnPlayerChips4 + playerWinnerCheckEditText4.text.toString().toInt()
                     }
                 }
 
                 if (playerFold5 == "fold") {
-                    player5!!.winnerHand = "fold"
-                    turnPlayer5!!.winnerHand = "fold"
+                    playerData5!!.winnerHand = "fold"
+                    turnRealmData5!!.winnerHand = "fold"
                 } else {
-                    player5!!.winnerHand = spinnerSelectItem5
-                    turnPlayer5!!.winnerHand = spinnerSelectItem5
+                    playerData5!!.winnerHand = spinnerSelectItem5
+                    turnRealmData5!!.winnerHand = spinnerSelectItem5
                     if (playerWinnerCheckEditText5.text.toString() != "") {
-                        player5!!.memberChips = playerChips5 + playerWinnerCheckEditText5.text.toString().toInt()
-                        turnPlayer5!!.memberChips = turnPlayerChips5 + playerWinnerCheckEditText5.text.toString().toInt()
+                        playerData5!!.memberChips = playerChips5 + playerWinnerCheckEditText5.text.toString().toInt()
+                        turnRealmData5!!.memberChips = turnPlayerChips5 + playerWinnerCheckEditText5.text.toString().toInt()
                     }
                 }
 
                 if (playerFold6 == "fold") {
-                    player6!!.winnerHand = "fold"
-                    turnPlayer6!!.winnerHand = "fold"
+                    playerData6!!.winnerHand = "fold"
+                    turnRealmData6!!.winnerHand = "fold"
                 } else {
-                    player6!!.winnerHand = spinnerSelectItem6
-                    turnPlayer6!!.winnerHand = spinnerSelectItem6
+                    playerData6!!.winnerHand = spinnerSelectItem6
+                    turnRealmData6!!.winnerHand = spinnerSelectItem6
                     if (playerWinnerCheckEditText6.text.toString() != "") {
-                        player6!!.memberChips = playerChips6 + playerWinnerCheckEditText6.text.toString().toInt()
-                        turnPlayer6!!.memberChips = turnPlayerChips6 + playerWinnerCheckEditText6.text.toString().toInt()
+                        playerData6!!.memberChips = playerChips6 + playerWinnerCheckEditText6.text.toString().toInt()
+                        turnRealmData6!!.memberChips = turnPlayerChips6 + playerWinnerCheckEditText6.text.toString().toInt()
                     }
                 }
 
                 if (playerFold7 == "fold") {
-                    player7!!.winnerHand = "fold"
-                    turnPlayer7!!.winnerHand = "fold"
+                    playerData7!!.winnerHand = "fold"
+                    turnRealmData7!!.winnerHand = "fold"
                 } else {
-                    player7!!.winnerHand = spinnerSelectItem7
-                    turnPlayer7!!.winnerHand = spinnerSelectItem7
+                    playerData7!!.winnerHand = spinnerSelectItem7
+                    turnRealmData7!!.winnerHand = spinnerSelectItem7
                     if (playerWinnerCheckEditText7.text.toString() != "") {
-                        player7!!.memberChips = playerChips7 + playerWinnerCheckEditText7.text.toString().toInt()
-                        turnPlayer7!!.memberChips = turnPlayerChips7 + playerWinnerCheckEditText7.text.toString().toInt()
+                        playerData7!!.memberChips = playerChips7 + playerWinnerCheckEditText7.text.toString().toInt()
+                        turnRealmData7!!.memberChips = turnPlayerChips7 + playerWinnerCheckEditText7.text.toString().toInt()
                     }
                 }
 
                 if (playerFold8 == "fold") {
-                    player8!!.winnerHand = "fold"
-                    turnPlayer8!!.winnerHand = "fold"
+                    playerData8!!.winnerHand = "fold"
+                    turnRealmData8!!.winnerHand = "fold"
                 } else {
-                    player8!!.winnerHand = spinnerSelectItem8
-                    turnPlayer8!!.winnerHand = spinnerSelectItem8
+                    playerData8!!.winnerHand = spinnerSelectItem8
+                    turnRealmData8!!.winnerHand = spinnerSelectItem8
                     if (playerWinnerCheckEditText8.text.toString() != "") {
-                        player8!!.memberChips = playerChips8 + playerWinnerCheckEditText8.text.toString().toInt()
-                        turnPlayer8!!.memberChips = turnPlayerChips8 + playerWinnerCheckEditText8.text.toString().toInt()
+                        playerData8!!.memberChips = playerChips8 + playerWinnerCheckEditText8.text.toString().toInt()
+                        turnRealmData8!!.memberChips = turnPlayerChips8 + playerWinnerCheckEditText8.text.toString().toInt()
                     }
                 }
 
                 if (playerFold9 == "fold") {
-                    player9!!.winnerHand = "fold"
-                    turnPlayer9!!.winnerHand = "fold"
+                    playerData9!!.winnerHand = "fold"
+                    turnRealmData9!!.winnerHand = "fold"
                 } else {
-                    player9!!.winnerHand = spinnerSelectItem9
-                    turnPlayer9!!.winnerHand = spinnerSelectItem9
+                    playerData9!!.winnerHand = spinnerSelectItem9
+                    turnRealmData9!!.winnerHand = spinnerSelectItem9
                     if (playerWinnerCheckEditText9.text.toString() != "") {
-                        player9!!.memberChips = playerChips9 + playerWinnerCheckEditText9.text.toString().toInt()
-                        turnPlayer9!!.memberChips = turnPlayerChips9 + playerWinnerCheckEditText9.text.toString().toInt()
+                        playerData9!!.memberChips = playerChips9 + playerWinnerCheckEditText9.text.toString().toInt()
+                        turnRealmData9!!.memberChips = turnPlayerChips9 + playerWinnerCheckEditText9.text.toString().toInt()
                     }
                 }
-
             }
 
             10 -> {
@@ -4440,49 +4559,49 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val playerId9 = playerNum9.max("id")!!.toInt()
                 val playerId10 = playerNum10.max("id")!!.toInt()
 
-                val playerFold1 = memberRealmResults[playerId1]!!.playingCheck
-                val playerFold2 = memberRealmResults[playerId2]!!.playingCheck
-                val playerFold3 = memberRealmResults[playerId3]!!.playingCheck
-                val playerFold4 = memberRealmResults[playerId4]!!.playingCheck
-                val playerFold5 = memberRealmResults[playerId5]!!.playingCheck
-                val playerFold6 = memberRealmResults[playerId6]!!.playingCheck
-                val playerFold7 = memberRealmResults[playerId7]!!.playingCheck
-                val playerFold8 = memberRealmResults[playerId8]!!.playingCheck
-                val playerFold9 = memberRealmResults[playerId9]!!.playingCheck
-                val playerFold10 = memberRealmResults[playerId10]!!.playingCheck
+                val playerData1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
+                val playerData2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
+                val playerData3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
+                val playerData4 = mRealm.where(Member::class.java).equalTo("id", playerId4).findFirst()
+                val playerData5 = mRealm.where(Member::class.java).equalTo("id", playerId5).findFirst()
+                val playerData6 = mRealm.where(Member::class.java).equalTo("id", playerId6).findFirst()
+                val playerData7 = mRealm.where(Member::class.java).equalTo("id", playerId7).findFirst()
+                val playerData8 = mRealm.where(Member::class.java).equalTo("id", playerId8).findFirst()
+                val playerData9 = mRealm.where(Member::class.java).equalTo("id", playerId9).findFirst()
+                val playerData10 = mRealm.where(Member::class.java).equalTo("id", playerId10).findFirst()
 
-                val playerChips1 = memberRealmResults[playerId1]!!.memberChips
-                val playerChips2 = memberRealmResults[playerId2]!!.memberChips
-                val playerChips3 = memberRealmResults[playerId3]!!.memberChips
-                val playerChips4 = memberRealmResults[playerId4]!!.memberChips
-                val playerChips5 = memberRealmResults[playerId5]!!.memberChips
-                val playerChips6 = memberRealmResults[playerId6]!!.memberChips
-                val playerChips7 = memberRealmResults[playerId7]!!.memberChips
-                val playerChips8 = memberRealmResults[playerId8]!!.memberChips
-                val playerChips9 = memberRealmResults[playerId9]!!.memberChips
-                val playerChips10 = memberRealmResults[playerId10]!!.memberChips
+                val playerFold1 = playerData1!!.playingCheck
+                val playerFold2 = playerData2!!.playingCheck
+                val playerFold3 = playerData3!!.playingCheck
+                val playerFold4 = playerData4!!.playingCheck
+                val playerFold5 = playerData5!!.playingCheck
+                val playerFold6 = playerData6!!.playingCheck
+                val playerFold7 = playerData7!!.playingCheck
+                val playerFold8 = playerData8!!.playingCheck
+                val playerFold9 = playerData9!!.playingCheck
+                val playerFold10 = playerData10!!.playingCheck
 
-                val player1 = mRealm.where(Member::class.java).equalTo("id", playerId1).findFirst()
-                val player2 = mRealm.where(Member::class.java).equalTo("id", playerId2).findFirst()
-                val player3 = mRealm.where(Member::class.java).equalTo("id", playerId3).findFirst()
-                val player4 = mRealm.where(Member::class.java).equalTo("id", playerId4).findFirst()
-                val player5 = mRealm.where(Member::class.java).equalTo("id", playerId5).findFirst()
-                val player6 = mRealm.where(Member::class.java).equalTo("id", playerId6).findFirst()
-                val player7 = mRealm.where(Member::class.java).equalTo("id", playerId7).findFirst()
-                val player8 = mRealm.where(Member::class.java).equalTo("id", playerId8).findFirst()
-                val player9 = mRealm.where(Member::class.java).equalTo("id", playerId9).findFirst()
-                val player10 = mRealm.where(Member::class.java).equalTo("id", playerId10).findFirst()
+                val playerChips1 = playerData1!!.memberChips
+                val playerChips2 = playerData2!!.memberChips
+                val playerChips3 = playerData3!!.memberChips
+                val playerChips4 = playerData4!!.memberChips
+                val playerChips5 = playerData5!!.memberChips
+                val playerChips6 = playerData6!!.memberChips
+                val playerChips7 = playerData7!!.memberChips
+                val playerChips8 = playerData8!!.memberChips
+                val playerChips9 = playerData9!!.memberChips
+                val playerChips10 = playerData10!!.memberChips
 
-                val playerName1 = memberRealmResults[playerId1]!!.memberName
-                val playerName2 = memberRealmResults[playerId2]!!.memberName
-                val playerName3 = memberRealmResults[playerId3]!!.memberName
-                val playerName4 = memberRealmResults[playerId4]!!.memberName
-                val playerName5 = memberRealmResults[playerId5]!!.memberName
-                val playerName6 = memberRealmResults[playerId6]!!.memberName
-                val playerName7 = memberRealmResults[playerId7]!!.memberName
-                val playerName8 = memberRealmResults[playerId8]!!.memberName
-                val playerName9 = memberRealmResults[playerId9]!!.memberName
-                val playerName10 = memberRealmResults[playerId10]!!.memberName
+                val playerName1 = playerData1!!.memberName
+                val playerName2 = playerData2!!.memberName
+                val playerName3 = playerData3!!.memberName
+                val playerName4 = playerData4!!.memberName
+                val playerName5 = playerData5!!.memberName
+                val playerName6 = playerData6!!.memberName
+                val playerName7 = playerData7!!.memberName
+                val playerName8 = playerData8!!.memberName
+                val playerName9 = playerData9!!.memberName
+                val playerName10 = playerData10!!.memberName
 
                 val turnPlayerNum1 = mRealm.where(Turn::class.java).equalTo("player", playerName1).findAll()
                 val turnPlayerNum2 = mRealm.where(Turn::class.java).equalTo("player", playerName2).findAll()
@@ -4506,145 +4625,145 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val turnPlayerId9 = turnPlayerNum9.max("id")!!.toInt()
                 val turnPlayerId10 = turnPlayerNum10.max("id")!!.toInt()
 
-                val turnPlayerChips1 = turnRealmResults[turnPlayerId1]!!.memberChips
-                val turnPlayerChips2 = turnRealmResults[turnPlayerId2]!!.memberChips
-                val turnPlayerChips3 = turnRealmResults[turnPlayerId3]!!.memberChips
-                val turnPlayerChips4 = turnRealmResults[turnPlayerId4]!!.memberChips
-                val turnPlayerChips5 = turnRealmResults[turnPlayerId5]!!.memberChips
-                val turnPlayerChips6 = turnRealmResults[turnPlayerId6]!!.memberChips
-                val turnPlayerChips7 = turnRealmResults[turnPlayerId7]!!.memberChips
-                val turnPlayerChips8 = turnRealmResults[turnPlayerId8]!!.memberChips
-                val turnPlayerChips9 = turnRealmResults[turnPlayerId9]!!.memberChips
-                val turnPlayerChips10 = turnRealmResults[turnPlayerId10]!!.memberChips
+                val turnRealmData1 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId1).findFirst()
+                val turnRealmData2 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId2).findFirst()
+                val turnRealmData3 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId3).findFirst()
+                val turnRealmData4 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId4).findFirst()
+                val turnRealmData5 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId5).findFirst()
+                val turnRealmData6 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId6).findFirst()
+                val turnRealmData7 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId7).findFirst()
+                val turnRealmData8 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId8).findFirst()
+                val turnRealmData9 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId9).findFirst()
+                val turnRealmData10 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId10).findFirst()
 
-                val turnPlayer1 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId1).findFirst()
-                val turnPlayer2 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId2).findFirst()
-                val turnPlayer3 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId3).findFirst()
-                val turnPlayer4 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId4).findFirst()
-                val turnPlayer5 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId5).findFirst()
-                val turnPlayer6 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId6).findFirst()
-                val turnPlayer7 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId7).findFirst()
-                val turnPlayer8 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId8).findFirst()
-                val turnPlayer9 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId9).findFirst()
-                val turnPlayer10 = mRealm.where(Turn::class.java).equalTo("id", turnPlayerId10).findFirst()
+                val turnPlayerChips1 = turnRealmData1!!.memberChips
+                val turnPlayerChips2 = turnRealmData2!!.memberChips
+                val turnPlayerChips3 = turnRealmData3!!.memberChips
+                val turnPlayerChips4 = turnRealmData4!!.memberChips
+                val turnPlayerChips5 = turnRealmData5!!.memberChips
+                val turnPlayerChips6 = turnRealmData6!!.memberChips
+                val turnPlayerChips7 = turnRealmData7!!.memberChips
+                val turnPlayerChips8 = turnRealmData8!!.memberChips
+                val turnPlayerChips9 = turnRealmData9!!.memberChips
+                val turnPlayerChips10 = turnRealmData10!!.memberChips
 
                 if (playerFold1 == "fold") {
-                    player1!!.winnerHand = "fold"
-                    turnPlayer1!!.winnerHand = "fold"
+                    playerData1!!.winnerHand = "fold"
+                    turnRealmData1!!.winnerHand = "fold"
                 } else {
-                    player1!!.winnerHand = spinnerSelectItem1
-                    turnPlayer1!!.winnerHand = spinnerSelectItem1
+                    playerData1!!.winnerHand = spinnerSelectItem1
+                    turnRealmData1!!.winnerHand = spinnerSelectItem1
                     if (playerWinnerCheckEditText1.text.toString() != "") {
-                        player1!!.memberChips = playerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
-                        turnPlayer1!!.memberChips = turnPlayerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
+                        playerData1!!.memberChips = playerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
+                        turnRealmData1!!.memberChips = turnPlayerChips1 + playerWinnerCheckEditText1.text.toString().toInt()
                     }
                 }
 
                 if (playerFold2 == "fold") {
-                    player2!!.winnerHand = "fold"
-                    turnPlayer2!!.winnerHand = "fold"
+                    playerData2!!.winnerHand = "fold"
+                    turnRealmData2!!.winnerHand = "fold"
                 } else {
-                    player2!!.winnerHand = spinnerSelectItem2
-                    turnPlayer2!!.winnerHand = spinnerSelectItem2
+                    playerData2!!.winnerHand = spinnerSelectItem2
+                    turnRealmData2!!.winnerHand = spinnerSelectItem2
                     if (playerWinnerCheckEditText2.text.toString() != "") {
-                        player2!!.memberChips = playerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
-                        turnPlayer2!!.memberChips = turnPlayerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
+                        playerData2!!.memberChips = playerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
+                        turnRealmData2!!.memberChips = turnPlayerChips2 + playerWinnerCheckEditText2.text.toString().toInt()
                     }
                 }
 
                 if (playerFold3 == "fold") {
-                    player3!!.winnerHand = "fold"
-                    turnPlayer3!!.winnerHand = "fold"
+                    playerData3!!.winnerHand = "fold"
+                    turnRealmData3!!.winnerHand = "fold"
                 } else {
-                    player3!!.winnerHand = spinnerSelectItem3
-                    turnPlayer3!!.winnerHand = spinnerSelectItem3
+                    playerData3!!.winnerHand = spinnerSelectItem3
+                    turnRealmData3!!.winnerHand = spinnerSelectItem3
                     if (playerWinnerCheckEditText3.text.toString() != "") {
-                        player3!!.memberChips = playerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
-                        turnPlayer3!!.memberChips = turnPlayerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
+                        playerData3!!.memberChips = playerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
+                        turnRealmData3!!.memberChips = turnPlayerChips3 + playerWinnerCheckEditText3.text.toString().toInt()
                     }
                 }
 
                 if (playerFold4 == "fold") {
-                    player4!!.winnerHand = "fold"
-                    turnPlayer4!!.winnerHand = "fold"
+                    playerData4!!.winnerHand = "fold"
+                    turnRealmData4!!.winnerHand = "fold"
                 } else {
-                    player4!!.winnerHand = spinnerSelectItem4
-                    turnPlayer4!!.winnerHand = spinnerSelectItem4
+                    playerData4!!.winnerHand = spinnerSelectItem4
+                    turnRealmData4!!.winnerHand = spinnerSelectItem4
                     if (playerWinnerCheckEditText4.text.toString() != "") {
-                        player4!!.memberChips = playerChips4 + playerWinnerCheckEditText4.text.toString().toInt()
-                        turnPlayer4!!.memberChips = turnPlayerChips4 + playerWinnerCheckEditText4.text.toString().toInt()
+                        playerData4!!.memberChips = playerChips4 + playerWinnerCheckEditText4.text.toString().toInt()
+                        turnRealmData4!!.memberChips = turnPlayerChips4 + playerWinnerCheckEditText4.text.toString().toInt()
                     }
                 }
 
                 if (playerFold5 == "fold") {
-                    player5!!.winnerHand = "fold"
-                    turnPlayer5!!.winnerHand = "fold"
+                    playerData5!!.winnerHand = "fold"
+                    turnRealmData5!!.winnerHand = "fold"
                 } else {
-                    player5!!.winnerHand = spinnerSelectItem5
-                    turnPlayer5!!.winnerHand = spinnerSelectItem5
+                    playerData5!!.winnerHand = spinnerSelectItem5
+                    turnRealmData5!!.winnerHand = spinnerSelectItem5
                     if (playerWinnerCheckEditText5.text.toString() != "") {
-                        player5!!.memberChips = playerChips5 + playerWinnerCheckEditText5.text.toString().toInt()
-                        turnPlayer5!!.memberChips = turnPlayerChips5 + playerWinnerCheckEditText5.text.toString().toInt()
+                        playerData5!!.memberChips = playerChips5 + playerWinnerCheckEditText5.text.toString().toInt()
+                        turnRealmData5!!.memberChips = turnPlayerChips5 + playerWinnerCheckEditText5.text.toString().toInt()
                     }
                 }
 
                 if (playerFold6 == "fold") {
-                    player6!!.winnerHand = "fold"
-                    turnPlayer6!!.winnerHand = "fold"
+                    playerData6!!.winnerHand = "fold"
+                    turnRealmData6!!.winnerHand = "fold"
                 } else {
-                    player6!!.winnerHand = spinnerSelectItem6
-                    turnPlayer6!!.winnerHand = spinnerSelectItem6
+                    playerData6!!.winnerHand = spinnerSelectItem6
+                    turnRealmData6!!.winnerHand = spinnerSelectItem6
                     if (playerWinnerCheckEditText6.text.toString() != "") {
-                        player6!!.memberChips = playerChips6 + playerWinnerCheckEditText6.text.toString().toInt()
-                        turnPlayer6!!.memberChips = turnPlayerChips6 + playerWinnerCheckEditText6.text.toString().toInt()
+                        playerData6!!.memberChips = playerChips6 + playerWinnerCheckEditText6.text.toString().toInt()
+                        turnRealmData6!!.memberChips = turnPlayerChips6 + playerWinnerCheckEditText6.text.toString().toInt()
                     }
                 }
 
                 if (playerFold7 == "fold") {
-                    player7!!.winnerHand = "fold"
-                    turnPlayer7!!.winnerHand = "fold"
+                    playerData7!!.winnerHand = "fold"
+                    turnRealmData7!!.winnerHand = "fold"
                 } else {
-                    player7!!.winnerHand = spinnerSelectItem7
-                    turnPlayer7!!.winnerHand = spinnerSelectItem7
+                    playerData7!!.winnerHand = spinnerSelectItem7
+                    turnRealmData7!!.winnerHand = spinnerSelectItem7
                     if (playerWinnerCheckEditText7.text.toString() != "") {
-                        player7!!.memberChips = playerChips7 + playerWinnerCheckEditText7.text.toString().toInt()
-                        turnPlayer7!!.memberChips = turnPlayerChips7 + playerWinnerCheckEditText7.text.toString().toInt()
+                        playerData7!!.memberChips = playerChips7 + playerWinnerCheckEditText7.text.toString().toInt()
+                        turnRealmData7!!.memberChips = turnPlayerChips7 + playerWinnerCheckEditText7.text.toString().toInt()
                     }
                 }
 
                 if (playerFold8 == "fold") {
-                    player8!!.winnerHand = "fold"
-                    turnPlayer8!!.winnerHand = "fold"
+                    playerData8!!.winnerHand = "fold"
+                    turnRealmData8!!.winnerHand = "fold"
                 } else {
-                    player8!!.winnerHand = spinnerSelectItem8
-                    turnPlayer8!!.winnerHand = spinnerSelectItem8
+                    playerData8!!.winnerHand = spinnerSelectItem8
+                    turnRealmData8!!.winnerHand = spinnerSelectItem8
                     if (playerWinnerCheckEditText8.text.toString() != "") {
-                        player8!!.memberChips = playerChips8 + playerWinnerCheckEditText8.text.toString().toInt()
-                        turnPlayer8!!.memberChips = turnPlayerChips8 + playerWinnerCheckEditText8.text.toString().toInt()
+                        playerData8!!.memberChips = playerChips8 + playerWinnerCheckEditText8.text.toString().toInt()
+                        turnRealmData8!!.memberChips = turnPlayerChips8 + playerWinnerCheckEditText8.text.toString().toInt()
                     }
                 }
 
                 if (playerFold9 == "fold") {
-                    player9!!.winnerHand = "fold"
-                    turnPlayer9!!.winnerHand = "fold"
+                    playerData9!!.winnerHand = "fold"
+                    turnRealmData9!!.winnerHand = "fold"
                 } else {
-                    player9!!.winnerHand = spinnerSelectItem9
-                    turnPlayer9!!.winnerHand = spinnerSelectItem9
+                    playerData9!!.winnerHand = spinnerSelectItem9
+                    turnRealmData9!!.winnerHand = spinnerSelectItem9
                     if (playerWinnerCheckEditText9.text.toString() != "") {
-                        player9!!.memberChips = playerChips9 + playerWinnerCheckEditText9.text.toString().toInt()
-                        turnPlayer9!!.memberChips = turnPlayerChips9 + playerWinnerCheckEditText9.text.toString().toInt()
+                        playerData9!!.memberChips = playerChips9 + playerWinnerCheckEditText9.text.toString().toInt()
+                        turnRealmData9!!.memberChips = turnPlayerChips9 + playerWinnerCheckEditText9.text.toString().toInt()
                     }
                 }
 
                 if (playerFold10 == "fold") {
-                    player10!!.winnerHand = "fold"
-                    turnPlayer10!!.winnerHand = "fold"
+                    playerData10!!.winnerHand = "fold"
+                    turnRealmData10!!.winnerHand = "fold"
                 } else {
-                    player10!!.winnerHand = spinnerSelectItem10
-                    turnPlayer10!!.winnerHand = spinnerSelectItem10
+                    playerData10!!.winnerHand = spinnerSelectItem10
+                    turnRealmData10!!.winnerHand = spinnerSelectItem10
                     if (playerWinnerCheckEditText10.text.toString() != "") {
-                        player10!!.memberChips = playerChips10 + playerWinnerCheckEditText10.text.toString().toInt()
-                        turnPlayer10!!.memberChips = turnPlayerChips10 + playerWinnerCheckEditText10.text.toString().toInt()
+                        playerData10!!.memberChips = playerChips10 + playerWinnerCheckEditText10.text.toString().toInt()
+                        turnRealmData10!!.memberChips = turnPlayerChips10 + playerWinnerCheckEditText10.text.toString().toInt()
                     }
                 }
             }
