@@ -71,8 +71,6 @@ class PlayingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_playing)
 
-        supportActionBar?.title = "あなたの順番です"
-
         //Realmの設定
         mRealm = Realm.getDefaultInstance()
 
@@ -109,6 +107,8 @@ class PlayingActivity : AppCompatActivity() {
         sameChipsPlayer = intent.getIntExtra("sameChipsPlayer", 0)
         firstRealm = intent.getStringExtra("firstRealm")
 
+        supportActionBar?.title = "あなたの順番です" + "：" + round
+
         if (round == "flop") {
             startNum = flopNum
         } else {
@@ -120,15 +120,19 @@ class PlayingActivity : AppCompatActivity() {
         Log.d("kotlintest", memberPlayerNumRealmResults.toString())
         val playerNumId = memberPlayerNumRealmResults.max("id")!!.toInt()
         val memberRealmData = mRealm.where(Member::class.java).equalTo("id", playerNumId).findFirst()
-        val memberPlayingCheck = memberRealmData!!.playingCheck
+        var memberPlayingCheck = "play"
+        if (memberRealmData!!.hand_count == count && memberRealmData!!.game_id == game_id) {
+            memberPlayingCheck = memberRealmData!!.playingCheck
+        }
         val turnChips = memberRealmData!!.memberChips
-        val totalChipsAllIn = memberRealmData!!.playingCheck
+        val totalChipsAllIn = memberRealmData!!.memberChips
 //        Log.d("kotlintest", "受け取ったID：" + playerNumId)
 //        Log.d("kotlintest", memberRealmResults[playerNumId]!!.memberName)
 //        val memberPlayingCheck = memberRealmResults[playerNumId]!!.playingCheck
 //        val turnChips = memberRealmResults[playerNumId]!!.memberChips
 
-        if (totalChipsAllIn == "0") {
+        if (totalChipsAllIn == 0) {
+            Log.d("kotlintest", "PA:AllLost")
             if (sameChipsPlayer == memberNum - foldPlayer) {
                 when (round) {
                     "preflop" -> round = "flop"
@@ -254,6 +258,7 @@ class PlayingActivity : AppCompatActivity() {
         }
 
         if (memberPlayingCheck == "fold") {
+            Log.d("kotlintest", "PA:Fold")
             if (sameChipsPlayer == memberNum - foldPlayer) {
                 when (round) {
                     "preflop" -> round = "flop"
@@ -671,24 +676,24 @@ class PlayingActivity : AppCompatActivity() {
         }
 
         playingNum0.setOnClickListener {
-            if (chipsNum1 == "0") {
-                chipsNum1 == ""
+            if (playingChipsText.text != "0") {
+                when {
+                    chipsNum2 == "" -> chipsNum2 = "0"
+                    chipsNum3 == "" -> chipsNum3 = "0"
+                    chipsNum4 == "" -> chipsNum4 = "0"
+                    chipsNum5 == "" -> chipsNum5 = "0"
+                    chipsNum6 == "" -> chipsNum6 = "0"
+                    chipsNum7 == "" -> chipsNum7 = "0"
+                }
+                playingChipsText.text =
+                    chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
+                playingCheck = "play"
+                playingFoldText.text = ""
             }
-            when {
-                chipsNum2 == "" -> chipsNum2 = "0"
-                chipsNum3 == "" -> chipsNum3 = "0"
-                chipsNum4 == "" -> chipsNum4 = "0"
-                chipsNum5 == "" -> chipsNum5 = "0"
-                chipsNum6 == "" -> chipsNum6 = "0"
-                chipsNum7 == "" -> chipsNum7 = "0"
-            }
-            playingChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
-            playingCheck = "play"
-            playingFoldText.text = ""
         }
 
         playingNum00.setOnClickListener {
-
+            if (playingChipsText.text != "0") {
                 when {
                     chipsNum2 == "" -> {
                         chipsNum2 = "0"
@@ -718,10 +723,11 @@ class PlayingActivity : AppCompatActivity() {
                     chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
                 playingCheck = "play"
                 playingFoldText.text = ""
+            }
         }
 
         playingNum000.setOnClickListener {
-
+            if (playingChipsText.text != "0") {
                 when {
                     chipsNum2 == "" -> {
                         chipsNum2 = "0"
@@ -755,10 +761,11 @@ class PlayingActivity : AppCompatActivity() {
                     chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
                 playingCheck = "play"
                 playingFoldText.text = ""
+            }
         }
 
         playingNum0000.setOnClickListener {
-
+            if (playingChipsText.text != "0") {
                 when {
                     chipsNum2 == "" -> {
                         chipsNum2 = "0"
@@ -795,6 +802,7 @@ class PlayingActivity : AppCompatActivity() {
                     chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
                 playingCheck = "play"
                 playingFoldText.text = ""
+            }
         }
 
         playingDaleteButton.setOnClickListener {
@@ -985,7 +993,7 @@ class PlayingActivity : AppCompatActivity() {
 
                     Log.d("kotlintest", "playerAllIn:" + playerAllIn.toString() + " == memberNum - 1:" + memberNum.toString())
 
-                    if (foldPlayer == memberNum - 1 || playerAllIn == memberNum - 1) {
+                    if (foldPlayer == memberNum - 1) {
 //                        count++
 //                        if (flopNum == memberNum) {
 //                            flopNum = 1
@@ -1108,6 +1116,11 @@ class PlayingActivity : AppCompatActivity() {
                                 "flop" -> round = "turn"
                                 "turn" -> round = "river"
                                 "river" -> round = "showdown"
+                            }
+
+                            when {
+                                playerAllIn == memberNum - 1 -> round = "showdown"
+                                memberNum - foldPlayer == 2 && playerAllIn == 1 -> round = "showdown"
                             }
 
                             playingNum = preFlopNum

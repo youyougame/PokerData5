@@ -118,7 +118,7 @@ class CardActivity : AppCompatActivity() {
             startNum = preFlopNum
         }
 
-
+        supportActionBar?.title = round
 
         cardSetting1()
         cardSetting2()
@@ -554,7 +554,7 @@ class CardActivity : AppCompatActivity() {
                                 if (cardComSet2 == "set") {
                                     cardSelect = "com3"
                                     cardDoneButton.text = "3枚目決定"
-                                    cardCom1 = cardSuit + cardNumber1 + cardNumber2
+                                    cardCom2 = cardSuit + cardNumber1 + cardNumber2
 
                                     cardSuit = ""
                                     cardNumber1 = ""
@@ -566,7 +566,7 @@ class CardActivity : AppCompatActivity() {
                                 if (cardComSet3 == "set") {
                                     cardSelect = "com4"
                                     cardDoneButton.text = "4枚目決定"
-                                    cardCom1 = cardSuit + cardNumber1 + cardNumber2
+                                    cardCom3 = cardSuit + cardNumber1 + cardNumber2
 
                                     cardSuit = ""
                                     cardNumber1 = ""
@@ -578,7 +578,7 @@ class CardActivity : AppCompatActivity() {
                                 if (cardComSet4 == "set") {
                                     cardSelect = "com5"
                                     cardDoneButton.text = "5枚目決定"
-                                    cardCom1 = cardSuit + cardNumber1 + cardNumber2
+                                    cardCom4 = cardSuit + cardNumber1 + cardNumber2
 
                                     cardSuit = ""
                                     cardNumber1 = ""
@@ -619,7 +619,7 @@ class CardActivity : AppCompatActivity() {
                                 if (cardComSet4 == "set") {
                                     cardSelect = "com5"
                                     cardDoneButton.text = "5枚目決定"
-                                    cardCom1 = cardSuit + cardNumber1 + cardNumber2
+                                    cardCom4 = cardSuit + cardNumber1 + cardNumber2
 
                                     cardSuit = ""
                                     cardNumber1 = ""

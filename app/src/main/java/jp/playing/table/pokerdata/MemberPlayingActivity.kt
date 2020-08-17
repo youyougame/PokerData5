@@ -119,16 +119,21 @@ class MemberPlayingActivity : AppCompatActivity() {
         val memberPlayerRealmResultsId = memberPlayerRoundRealmResults.max("id")!!.toInt()
         val memberRealmData = mRealm.where(Member::class.java).equalTo("id", memberPlayerRealmResultsId).findFirst()
         playerName = memberRealmData!!.memberName
-        val memberPlayingCheck = memberRealmData!!.playingCheck
+        var memberPlayingCheck = "play"
+        if (memberRealmData!!.hand_count == count && memberRealmData!!.game_id == game_id) {
+            memberPlayingCheck = memberRealmData!!.playingCheck
+        }
         val turnChips = memberRealmData!!.memberChips
-        val totalChipsAllIn = memberRealmData!!.playingCheck
+        val totalChipsAllIn = memberRealmData!!.memberChips
 //        Log.d("kotlintest", "受け取ったID：" + memberPlayerRealmResultsId)
 //        playerName = memberPlayerRealmResults[memberPlayerRealmResultsId]!!.memberName
 //        Log.d("kotlintest", playerName)
 //        val memberPlayingCheck = memberPlayerRealmResults[memberPlayerRealmResultsId]!!.playingCheck
 //        val turnChips = memberPlayerRealmResults[memberPlayerRealmResultsId]!!.memberChips
 
-        if (totalChipsAllIn == "0") {
+        if (totalChipsAllIn == 0) {
+            Log.d("kotlintest", "MPA:AllLost")
+            foldPlayer++
             if (sameChipsPlayer == memberNum - foldPlayer) {
                 when (round) {
                     "preflop" -> round = "flop"
@@ -203,7 +208,8 @@ class MemberPlayingActivity : AppCompatActivity() {
 
             val memberPlayerNumRealm = mRealm.where(Member::class.java).equalTo("memberRound", playingNum).findAll()
             val memberPlayerNumRealmId = memberPlayerNumRealm.max("id")!!.toInt()
-            val nextPlayerName = memberPlayerRealmResults[memberPlayerNumRealmId]!!.memberName
+            val memberPlayerData = mRealm.where(Member::class.java).equalTo("id", memberPlayerNumRealmId).findFirst()
+            val nextPlayerName = memberPlayerData!!.memberName
 
             if (nextPlayerName == "自分") {
                 //PlayingActivityに移動
@@ -310,6 +316,7 @@ class MemberPlayingActivity : AppCompatActivity() {
         }
 
         if (memberPlayingCheck == "fold") {
+            Log.d("kotlintest", "MPA:Fold")
             if (sameChipsPlayer == memberNum - foldPlayer) {
                 when (round) {
                     "preflop" -> round = "flop"
@@ -384,7 +391,8 @@ class MemberPlayingActivity : AppCompatActivity() {
 
             val memberPlayerNumRealm = mRealm.where(Member::class.java).equalTo("memberRound", playingNum).findAll()
             val memberPlayerNumRealmId = memberPlayerNumRealm.max("id")!!.toInt()
-            val nextPlayerName = memberPlayerRealmResults[memberPlayerNumRealmId]!!.memberName
+            val memberPlayerData = mRealm.where(Member::class.java).equalTo("id", memberPlayerNumRealmId).findFirst()
+            val nextPlayerName = memberPlayerData!!.memberName
 
             if (nextPlayerName == "自分") {
                 //PlayingActivityに移動
@@ -506,7 +514,7 @@ class MemberPlayingActivity : AppCompatActivity() {
             }
         }
 
-        supportActionBar?.title = playerName
+        supportActionBar?.title = playerName + "：" + round
 
         memberPlayingNameText.text = "ミニマムベット：" + tableChips + " " + "ポット：" + tableTotalChips
 
@@ -797,24 +805,24 @@ class MemberPlayingActivity : AppCompatActivity() {
         }
 
         memberPlayingNumButton0.setOnClickListener {
-            if (chipsNum1 == "0") {
-                chipsNum1 == ""
+            if (memberChangeChipsText.text != "0") {
+                when {
+                    chipsNum2 == "" -> chipsNum2 = "0"
+                    chipsNum3 == "" -> chipsNum3 = "0"
+                    chipsNum4 == "" -> chipsNum4 = "0"
+                    chipsNum5 == "" -> chipsNum5 = "0"
+                    chipsNum6 == "" -> chipsNum6 = "0"
+                    chipsNum7 == "" -> chipsNum7 = "0"
+                }
+                memberChangeChipsText.text =
+                    chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
+                playingCheck = "play"
+                memberPlayingFoldText.text = ""
             }
-            when {
-                chipsNum2 == "" -> chipsNum2 = "0"
-                chipsNum3 == "" -> chipsNum3 = "0"
-                chipsNum4 == "" -> chipsNum4 = "0"
-                chipsNum5 == "" -> chipsNum5 = "0"
-                chipsNum6 == "" -> chipsNum6 = "0"
-                chipsNum7 == "" -> chipsNum7 = "0"
-            }
-            memberChangeChipsText.text = chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
-            playingCheck = "play"
-            memberPlayingFoldText.text = ""
         }
 
         memberPlayingNumButton00.setOnClickListener {
-
+            if (memberChangeChipsText.text != "0") {
                 when {
                     chipsNum2 == "" -> {
                         chipsNum2 = "0"
@@ -844,10 +852,11 @@ class MemberPlayingActivity : AppCompatActivity() {
                     chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
                 playingCheck = "play"
                 memberPlayingFoldText.text = ""
+            }
         }
 
         memberPlayingNumButton000.setOnClickListener {
-
+            if (memberChangeChipsText.text != "0") {
                 when {
                     chipsNum2 == "" -> {
                         chipsNum2 = "0"
@@ -881,10 +890,11 @@ class MemberPlayingActivity : AppCompatActivity() {
                     chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
                 playingCheck = "play"
                 memberPlayingFoldText.text = ""
+            }
         }
 
         memberPlayingNumButton0000.setOnClickListener {
-
+            if (memberChangeChipsText.text != "0") {
                 when {
                     chipsNum2 == "" -> {
                         chipsNum2 = "0"
@@ -921,6 +931,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                     chipsNum1 + chipsNum2 + chipsNum3 + chipsNum4 + chipsNum5 + chipsNum6 + chipsNum7
                 playingCheck = "play"
                 memberPlayingFoldText.text = ""
+            }
         }
 
         memberPalyingDeleteButton.setOnClickListener {
@@ -1111,7 +1122,7 @@ class MemberPlayingActivity : AppCompatActivity() {
 
                     Log.d("kotlintest", "playerAllIn:" + playerAllIn.toString() + " == memberNum - 1:" + memberNum.toString())
 
-                    if (foldPlayer == memberNum - 1 || playerAllIn == memberNum - 1) {
+                    if (foldPlayer == memberNum - 1) {
 //                        count++
 //                        if (flopNum == memberNum) {
 //                            flopNum = 1
@@ -1237,6 +1248,11 @@ class MemberPlayingActivity : AppCompatActivity() {
                                 "flop" -> round = "turn"
                                 "turn" -> round = "river"
                                 "river" -> round = "showdown"
+                            }
+
+                            when {
+                                playerAllIn == memberNum - 1 -> round = "showdown"
+                                memberNum - foldPlayer == 2 && playerAllIn == 1 -> round = "showdown"
                             }
 
                             playingNum = preFlopNum

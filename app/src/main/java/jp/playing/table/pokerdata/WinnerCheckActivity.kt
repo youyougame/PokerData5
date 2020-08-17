@@ -4770,6 +4770,7 @@ class WinnerCheckActivity : AppCompatActivity() {
         }
 
         mRealm.copyToRealmOrUpdate(mMember)
+        mRealm.copyToRealmOrUpdate(mTurn)
         mRealm.commitTransaction()
     }
 
