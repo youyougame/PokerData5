@@ -124,6 +124,7 @@ class PlayingActivity : AppCompatActivity() {
         if (memberRealmData!!.hand_count == count && memberRealmData!!.game_id == game_id) {
             memberPlayingCheck = memberRealmData!!.playingCheck
         }
+        Log.d("kotlintest", "memberRealmData!!.hand_count:" + memberRealmData!!.hand_count.toString() + " count:" + count.toString() + " memberRealmData!!.game_id:" + memberRealmData!!.game_id.toString() + " game_id:" + game_id.toString() + " memberRealmData!!.playingCheck:" + memberRealmData!!.playingCheck)
         val turnChips = memberRealmData!!.memberChips
         val totalChipsAllIn = memberRealmData!!.memberChips
 //        Log.d("kotlintest", "受け取ったID：" + playerNumId)
@@ -131,15 +132,64 @@ class PlayingActivity : AppCompatActivity() {
 //        val memberPlayingCheck = memberRealmResults[playerNumId]!!.playingCheck
 //        val turnChips = memberRealmResults[playerNumId]!!.memberChips
 
+        var allInNum = 0
+        for (i in 1..memberNum) {
+            val playerNumRealmResults =
+                mRealm.where(Member::class.java).equalTo("memberRound", i).findAll()
+            val playerNumId = playerNumRealmResults.max("id")!!.toInt()
+            val playerData =
+                mRealm.where(Member::class.java).equalTo("id", playerNumId)
+                    .findFirst()
+            val playerChips = playerData!!.memberChips
+            if (playerChips == 0) {
+                allInNum++
+            }
+//            if (playingNum != i) {
+//                if (playerChips == 0) {
+//                    sameChipsPlayer++
+//                }
+//            }
+            Log.d("kotlintest", "allInNum == memberNum - foldPlayer:" + allInNum.toString() + " == " + memberNum.toString() + " - " + foldPlayer.toString())
+        }
+
         if (totalChipsAllIn == 0) {
             Log.d("kotlintest", "PA:AllLost")
-            if (sameChipsPlayer == memberNum - foldPlayer) {
+            var playerAllIn = 0
+            for (i in 1..memberNum) {
+                val playerRealmResults = mRealm.where(Member::class.java).findAll()
+                val playerNumRealmResults =
+                    mRealm.where(Member::class.java).equalTo("memberRound", i).findAll()
+                val playerNumId = playerNumRealmResults.max("id")!!.toInt()
+                val playerData =
+                    mRealm.where(Member::class.java).equalTo("id", playerNumId)
+                        .findFirst()
+                val playerChips = playerData!!.memberChips
+                val playerFoldCheck = playerData!!.playingCheck
+                if (playingNum != i) {
+                    if (playerChips == 0) {
+                        playerAllIn++
+                    }
+                }
+                Log.d("kotlintest", "player:" + playerData!!.memberName + " playerChips:" + playerChips.toString() + " playerFoldCheck:" + playerFoldCheck)
+            }
+
+            Log.d("kotlintest", "playerAllIn:" + playerAllIn.toString() + " == memberNum - 1:" + memberNum.toString())
+
+            if (sameChipsPlayer >= memberNum - foldPlayer) {
                 when (round) {
                     "preflop" -> round = "flop"
                     "flop" -> round = "turn"
                     "turn" -> round = "river"
                     "turn" -> round = "showdown"
                 }
+
+                when {
+                    playerAllIn == memberNum - 1 -> round = "showdown"
+                    memberNum - foldPlayer == 2 && playerAllIn == 1 -> round = "showdown"
+                    allInNum == sameChipsPlayer -> round = "showdown"
+                }
+
+                Log.d("kotlintest", "allInNum == sameChipsPlayer:" + allInNum.toString() + " == " + sameChipsPlayer.toString())
 
                 // CardActivityへ移動
                 val intent = Intent(this@PlayingActivity, CardActivity::class.java)
@@ -972,6 +1022,26 @@ class PlayingActivity : AppCompatActivity() {
                     mRealm.copyToRealmOrUpdate(mMember!!)
                     mRealm.commitTransaction()
 
+                    allInNum = 0
+                    for (i in 1..memberNum) {
+                        val playerNumRealmResults =
+                            mRealm.where(Member::class.java).equalTo("memberRound", i).findAll()
+                        val playerNumId = playerNumRealmResults.max("id")!!.toInt()
+                        val playerData =
+                            mRealm.where(Member::class.java).equalTo("id", playerNumId)
+                                .findFirst()
+                        val playerChips = playerData!!.memberChips
+                        if (playerChips == 0) {
+                            allInNum++
+                        }
+//                        if (playingNum != i) {
+//                            if (playerChips == 0) {
+//                                sameChipsPlayer++
+//                            }
+//                        }
+                        Log.d("kotlintest", "allInNum == memberNum - foldPlayer:" + allInNum.toString() + " == " + memberNum.toString() + " - " + foldPlayer.toString())
+                    }
+
                     var playerAllIn = 0
                     for (i in 1..memberNum) {
                         val playerRealmResults = mRealm.where(Member::class.java).findAll()
@@ -984,7 +1054,7 @@ class PlayingActivity : AppCompatActivity() {
                         val playerChips = playerData!!.memberChips
                         val playerFoldCheck = playerData!!.playingCheck
                         if (playingNum != i) {
-                            if (playerFoldCheck == "fold" || playerChips == 0) {
+                            if (playerChips == 0) {
                                 playerAllIn++
                             }
                         }
@@ -992,6 +1062,10 @@ class PlayingActivity : AppCompatActivity() {
                     }
 
                     Log.d("kotlintest", "playerAllIn:" + playerAllIn.toString() + " == memberNum - 1:" + memberNum.toString())
+
+                    if (allInNum == memberNum - foldPlayer) {
+                        sameChipsPlayer = allInNum
+                    }
 
                     if (foldPlayer == memberNum - 1) {
 //                        count++
@@ -1121,7 +1195,10 @@ class PlayingActivity : AppCompatActivity() {
                             when {
                                 playerAllIn == memberNum - 1 -> round = "showdown"
                                 memberNum - foldPlayer == 2 && playerAllIn == 1 -> round = "showdown"
+                                allInNum == sameChipsPlayer -> round = "showdown"
                             }
+
+                            Log.d("kotlintest", "allInNum == sameChipsPlayer:" + allInNum.toString() + " == " + sameChipsPlayer.toString())
 
                             playingNum = preFlopNum
                             roundNum = 1
