@@ -68,6 +68,12 @@ class TurnActivity : AppCompatActivity() {
 
     private var startNum = 0
 
+    private var btn = 0
+
+    private var sb = 0
+
+    private var bb = 0
+
     private var playingNum = 0
 
     private var myRound = 0
@@ -350,10 +356,17 @@ class TurnActivity : AppCompatActivity() {
                                         startNum = 2
                                         playingNum = 2
                                         myRound = 2
+                                        sb = 2
+                                        btn = 1
+                                        bb = 2
+
                                     } else {
                                         roundPlayer = "other"
                                         startNum = 2
                                         playingNum = 2
+                                        sb = 2
+                                        btn = 1
+                                        bb = 2
                                     }
                                 }
 
@@ -363,10 +376,16 @@ class TurnActivity : AppCompatActivity() {
                                         startNum = 1
                                         playingNum = 1
                                         myRound = 1
+                                        btn = 1
+                                        sb = 2
+                                        bb = 3
                                     } else {
                                         roundPlayer = "other"
                                         startNum = 1
                                         playingNum = 1
+                                        btn = 1
+                                        sb = 2
+                                        bb = 3
                                         when ("自分") {
                                             spinnerText2 -> myRound = 2
                                             spinnerText3 -> myRound = 3
@@ -380,10 +399,16 @@ class TurnActivity : AppCompatActivity() {
                                         startNum = 4
                                         playingNum = 4
                                         myRound = 4
+                                        btn = 1
+                                        sb = 2
+                                        bb = 3
                                     } else {
                                         roundPlayer = "other"
                                         startNum = 4
                                         playingNum = 4
+                                        btn = 1
+                                        sb = 2
+                                        bb = 3
                                         when ("自分") {
                                             spinnerText1 -> myRound = 1
                                             spinnerText2 -> myRound = 2
@@ -398,10 +423,16 @@ class TurnActivity : AppCompatActivity() {
                                         startNum = 4
                                         playingNum = 4
                                         myRound = 4
+                                        btn = 1
+                                        sb = 2
+                                        bb = 3
                                     } else {
                                         roundPlayer = "other"
                                         startNum = 4
                                         playingNum = 4
+                                        btn = 1
+                                        sb = 2
+                                        bb = 3
                                         when ("自分") {
                                             spinnerText1 -> myRound = 1
                                             spinnerText2 -> myRound = 2
@@ -417,10 +448,16 @@ class TurnActivity : AppCompatActivity() {
                                         startNum = 4
                                         playingNum = 4
                                         myRound = 4
+                                        btn = 1
+                                        sb = 2
+                                        bb = 3
                                     } else {
                                         roundPlayer = "other"
                                         startNum = 4
                                         playingNum = 4
+                                        btn = 1
+                                        sb = 2
+                                        bb = 3
                                         when ("自分") {
                                             spinnerText1 -> myRound = 1
                                             spinnerText2 -> myRound = 2
@@ -437,10 +474,16 @@ class TurnActivity : AppCompatActivity() {
                                         startNum = 4
                                         playingNum = 4
                                         myRound = 4
+                                        btn = 1
+                                        sb = 2
+                                        bb = 3
                                     } else {
                                         roundPlayer = "other"
                                         startNum = 4
                                         playingNum = 4
+                                        btn = 1
+                                        sb = 2
+                                        bb = 3
                                         when ("自分") {
                                             spinnerText1 -> myRound = 1
                                             spinnerText2 -> myRound = 2
@@ -458,10 +501,16 @@ class TurnActivity : AppCompatActivity() {
                                         startNum = 4
                                         playingNum = 4
                                         myRound = 4
+                                        btn = 1
+                                        sb = 2
+                                        bb = 3
                                     } else {
                                         roundPlayer = "other"
                                         startNum = 4
                                         playingNum = 4
+                                        btn = 1
+                                        sb = 2
+                                        bb = 3
                                         when ("自分") {
                                             spinnerText1 -> myRound = 1
                                             spinnerText2 -> myRound = 2
@@ -480,10 +529,16 @@ class TurnActivity : AppCompatActivity() {
                                         startNum = 4
                                         playingNum = 4
                                         myRound = 4
+                                        btn = 1
+                                        sb = 2
+                                        bb = 3
                                     } else {
                                         roundPlayer = "other"
                                         startNum = 4
                                         playingNum = 4
+                                        btn = 1
+                                        sb = 2
+                                        bb = 3
                                         when ("自分") {
                                             spinnerText1 -> myRound = 1
                                             spinnerText2 -> myRound = 2
@@ -503,10 +558,16 @@ class TurnActivity : AppCompatActivity() {
                                         startNum = 4
                                         playingNum = 4
                                         myRound = 4
+                                        btn = 1
+                                        sb = 2
+                                        bb = 3
                                     } else {
                                         roundPlayer = "other"
                                         startNum = 4
                                         playingNum = 4
+                                        btn = 1
+                                        sb = 2
+                                        bb = 3
                                         when ("自分") {
                                             spinnerText1 -> myRound = 1
                                             spinnerText2 -> myRound = 2
@@ -523,6 +584,7 @@ class TurnActivity : AppCompatActivity() {
                             }
                             addPlayer()
 
+
                             val realmrealm = mRealm.where(Member::class.java).findAll()
                             Log.d("kotlintest", realmrealm.toString())
                             val intent = Intent(this@TurnActivity, HandActivity::class.java)
@@ -536,8 +598,10 @@ class TurnActivity : AppCompatActivity() {
                             intent.putExtra("smallBlind", 0)
                             intent.putExtra("myRound", myRound)
                             intent.putExtra("firstRealm", firstRealm)
-
-
+                            intent.putExtra("BTN", btn)
+                            intent.putExtra("SB", sb)
+                            intent.putExtra("BB", bb)
+                            intent.putExtra("foldPlayer", 0)
                             startActivity(intent)
                         }
                     }

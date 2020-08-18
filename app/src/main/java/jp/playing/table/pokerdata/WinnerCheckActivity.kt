@@ -82,6 +82,8 @@ class WinnerCheckActivity : AppCompatActivity() {
 
     private var firstRealm = ""
 
+    private var btn = 0
+
     private val spinnerItems = arrayOf(
         "High Card",
         "One Pair",
@@ -123,6 +125,7 @@ class WinnerCheckActivity : AppCompatActivity() {
         flopNum = intent.getIntExtra("flopNum", 0)
         preFlopNum = intent.getIntExtra("preFlopNum", 0)
         bigBlindNum = intent.getIntExtra("bigBlindNum", 0)
+        btn = intent.getIntExtra("BTN", 0)
         playingNum = intent.getIntExtra("playingNum", 0)
         foldPlayer = intent.getIntExtra("foldPlayer", 0)
         sameChipsPlayer = intent.getIntExtra("sameChipsPlayer", 0)
@@ -521,7 +524,7 @@ class WinnerCheckActivity : AppCompatActivity() {
                     foldCount++
                 }
                 member!!.hand_count++
-                Log.d("kotlintest", "名前：" + member!!.memberName + "　チップ数：" + member!!.memberChips.toString() + "　結果：" + member!!.playingCheck + "　fold数：" + foldCount.toString())
+                Log.d("kotlintest", "playerNumId：" + playerNumId.toString() + "　名前：" + member!!.memberName + "　チップ数：" + member!!.memberChips.toString() + "　結果：" + member!!.playingCheck + "　fold数：" + foldCount.toString())
             }
 
 
@@ -538,6 +541,73 @@ class WinnerCheckActivity : AppCompatActivity() {
                 val intent = Intent(this@WinnerCheckActivity, MainActivity::class.java)
                 startActivity(intent)
             } else {
+                Log.d("kotlintest", "継続通過1")
+
+                do {
+                    Log.d("kotlintest", "継続通過1-1")
+                    if (btn == memberNum) {
+                        btn = 1
+                        Log.d("kotlintest", "継続通過1-2")
+                    } else {
+                        btn++
+                        Log.d("kotlintest", "継続通過1-3")
+                    }
+                    Log.d("kotlintest", "継続通過1-4")
+                    val numberRealmResluts = mRealm.where(Member::class.java).equalTo("memberRound", btn).findAll()
+                    val numberId = numberRealmResluts.max("id")!!.toInt()
+                    val number = mRealm.where(Member::class.java).equalTo("id", numberId).findFirst()
+                    Log.d("kotlintest", "継続通過1-5")
+                    Log.d("kotlintest", "memberChips:" + number!!.memberChips.toString())
+                } while (number!!.memberChips == 0)
+
+                preFlopNum = btn
+
+                Log.d("kotlintest", "継続通過2")
+
+                do {
+                    if (preFlopNum == memberNum) {
+                        preFlopNum = 1
+                    } else {
+                        preFlopNum++
+                    }
+                    val numberRealmResluts = mRealm.where(Member::class.java).equalTo("memberRound", preFlopNum).findAll()
+                    val numberId = numberRealmResluts.max("id")!!.toInt()
+                    val number = mRealm.where(Member::class.java).equalTo("id", numberId).findFirst()
+                } while (number!!.memberChips == 0)
+
+                bigBlindNum = preFlopNum
+
+                Log.d("kotlintest", "継続通過3")
+
+                do {
+                    if (bigBlindNum == memberNum) {
+                        bigBlindNum = 1
+                    } else {
+                        bigBlindNum++
+                    }
+                    val numberRealmResluts = mRealm.where(Member::class.java).equalTo("memberRound", bigBlindNum).findAll()
+                    val numberId = numberRealmResluts.max("id")!!.toInt()
+                    val number = mRealm.where(Member::class.java).equalTo("id", numberId).findFirst()
+                } while (number!!.memberChips == 0)
+
+                flopNum = bigBlindNum
+
+                Log.d("kotlintest", "継続通過4")
+
+                do {
+                    if (flopNum == memberNum) {
+                        flopNum = 1
+                    } else {
+                        flopNum++
+                    }
+                    val numberRealmResluts = mRealm.where(Member::class.java).equalTo("memberRound", flopNum).findAll()
+                    val numberId = numberRealmResluts.max("id")!!.toInt()
+                    val number = mRealm.where(Member::class.java).equalTo("id", numberId).findFirst()
+                } while (number!!.memberChips == 0)
+
+                foldPlayer = foldCount
+
+                Log.d("kotlintest", "btn:" + btn.toString() + " preFlopNum:" + preFlopNum.toString() + " bigBlindNum:" + bigBlindNum.toString() + " flopNum:" + flopNum.toString())
                 //HandActivityへ移動
                 val intent = Intent(this@WinnerCheckActivity, HandActivity::class.java)
                 Log.d("kotlintest", "WinnerCheckActivity -> CardActivity[count]:" + count.toString())
@@ -555,6 +625,10 @@ class WinnerCheckActivity : AppCompatActivity() {
                 intent.putExtra("smallBlind", smallBlind)
                 intent.putExtra("myRound", myRound)
                 intent.putExtra("firstRealm", firstRealm)
+                intent.putExtra("BTN", btn)
+                intent.putExtra("SB", preFlopNum)
+                intent.putExtra("BB", bigBlindNum)
+                intent.putExtra("foldPlayer", foldPlayer)
                 startActivity(intent)
             }
 

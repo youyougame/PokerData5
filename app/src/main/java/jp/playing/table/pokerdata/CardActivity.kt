@@ -65,6 +65,8 @@ class CardActivity : AppCompatActivity() {
 
     private var firstRealm = ""
 
+    private var btn = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_card)
@@ -94,6 +96,7 @@ class CardActivity : AppCompatActivity() {
         flopNum = intent.getIntExtra("flopNum", 0)
         preFlopNum = intent.getIntExtra("preFlopNum", 0)
         bigBlindNum = intent.getIntExtra("bigBlindNum", 0)
+        btn = intent.getIntExtra("BTN", 0)
         playingNum = intent.getIntExtra("playingNum", 0)
         foldPlayer = intent.getIntExtra("foldPlayer", 0)
         sameChipsPlayer = intent.getIntExtra("sameChipsPlayer", 0)
@@ -1421,6 +1424,8 @@ class CardActivity : AppCompatActivity() {
             roundPlayer = "other"
         }
 
+        playingNum = preFlopNum
+
         when (roundPlayer) {
             "you" -> {
 
@@ -1467,6 +1472,7 @@ class CardActivity : AppCompatActivity() {
                 intent.putExtra("flopNum", flopNum)
                 intent.putExtra("preFlopNum", preFlopNum)
                 intent.putExtra("bigBlindNum", bigBlindNum)
+                intent.putExtra("BTN", btn)
                 intent.putExtra("playingNum", playingNum)
                 intent.putExtra("foldPlayer", foldPlayer)
                 intent.putExtra("sameChipsPlayer", sameChipsPlayer)
@@ -1520,6 +1526,7 @@ class CardActivity : AppCompatActivity() {
                 intent.putExtra("flopNum", flopNum)
                 intent.putExtra("preFlopNum", preFlopNum)
                 intent.putExtra("bigBlindNum", bigBlindNum)
+                intent.putExtra("BTN", btn)
                 intent.putExtra("playingNum", playingNum)
                 intent.putExtra("foldPlayer", foldPlayer)
                 intent.putExtra("sameChipsPlayer", sameChipsPlayer)
@@ -1574,6 +1581,7 @@ class CardActivity : AppCompatActivity() {
         intent.putExtra("flopNum", flopNum)
         intent.putExtra("preFlopNum", preFlopNum)
         intent.putExtra("bigBlindNum", bigBlindNum)
+        intent.putExtra("BTN", btn)
         intent.putExtra("playingNum", playingNum)
         intent.putExtra("foldPlayer", foldPlayer)
         intent.putExtra("sameChipsPlayer", sameChipsPlayer)

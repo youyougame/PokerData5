@@ -73,6 +73,8 @@ class ShowDownActivity : AppCompatActivity() {
 
     private var firstRealm = ""
 
+    private var btn = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_down)
@@ -103,6 +105,7 @@ class ShowDownActivity : AppCompatActivity() {
         flopNum = intent.getIntExtra("flopNum", 0)
         preFlopNum = intent.getIntExtra("preFlopNum", 0)
         bigBlindNum = intent.getIntExtra("bigBlindNum", 0)
+        btn = intent.getIntExtra("BTN", 0)
         playingNum = intent.getIntExtra("playingNum", 0)
         foldPlayer = intent.getIntExtra("foldPlayer", 0)
         sameChipsPlayer = intent.getIntExtra("sameChipsPlayer", 0)
@@ -135,6 +138,14 @@ class ShowDownActivity : AppCompatActivity() {
         } else {
             //次のプレイヤーに画面遷移
             //全員終わった時点でHandActivityへ
+            if (myRound != memberRound) {
+                mRealm.beginTransaction()
+                mMember = Member()
+                memberData!!.hand1 = ""
+                memberData!!.hand2 = ""
+                mRealm.copyToRealmOrUpdate(mMember!!)
+                mRealm.commitTransaction()
+            }
             memberRound++
             if (memberRound > memberNum) {
                 val intent = Intent(this@ShowDownActivity, WinnerCheckActivity::class.java)
@@ -179,6 +190,7 @@ class ShowDownActivity : AppCompatActivity() {
                 intent.putExtra("flopNum", flopNum)
                 intent.putExtra("preFlopNum", preFlopNum)
                 intent.putExtra("bigBlindNum", bigBlindNum)
+                intent.putExtra("BTN", btn)
                 intent.putExtra("playingNum", playingNum)
                 intent.putExtra("foldPlayer", foldPlayer)
                 intent.putExtra("sameChipsPlayer", sameChipsPlayer)
@@ -228,6 +240,7 @@ class ShowDownActivity : AppCompatActivity() {
                 intent.putExtra("flopNum", flopNum)
                 intent.putExtra("preFlopNum", preFlopNum)
                 intent.putExtra("bigBlindNum", bigBlindNum)
+                intent.putExtra("BTN", btn)
                 intent.putExtra("playingNum", playingNum)
                 intent.putExtra("foldPlayer", foldPlayer)
                 intent.putExtra("sameChipsPlayer", sameChipsPlayer)
@@ -548,6 +561,7 @@ class ShowDownActivity : AppCompatActivity() {
                         intent.putExtra("flopNum", flopNum)
                         intent.putExtra("preFlopNum", preFlopNum)
                         intent.putExtra("bigBlindNum", bigBlindNum)
+                        intent.putExtra("BTN", btn)
                         intent.putExtra("playingNum", playingNum)
                         intent.putExtra("foldPlayer", foldPlayer)
                         intent.putExtra("sameChipsPlayer", sameChipsPlayer)
@@ -600,6 +614,7 @@ class ShowDownActivity : AppCompatActivity() {
                         intent.putExtra("flopNum", flopNum)
                         intent.putExtra("preFlopNum", preFlopNum)
                         intent.putExtra("bigBlindNum", bigBlindNum)
+                        intent.putExtra("BTN", btn)
                         intent.putExtra("playingNum", playingNum)
                         intent.putExtra("foldPlayer", foldPlayer)
                         intent.putExtra("sameChipsPlayer", sameChipsPlayer)

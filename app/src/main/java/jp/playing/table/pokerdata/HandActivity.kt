@@ -73,6 +73,14 @@ class HandActivity : AppCompatActivity() {
 
     private var firstRealm = ""
 
+    private var btn = 0
+
+    private var sb = 0
+
+    private var bb = 0
+
+    private var foldPlayer = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hand)
@@ -93,6 +101,10 @@ class HandActivity : AppCompatActivity() {
         smallBlind = intent.getIntExtra("smallBlind", 0)
         myRound = intent.getIntExtra("myRound", myRound)
         firstRealm = intent.getStringExtra("firstRealm")
+        btn = intent.getIntExtra("BTN", 0)
+        sb = intent.getIntExtra("SB", 0)
+        bb = intent.getIntExtra("BB", 0)
+        foldPlayer = intent.getIntExtra("foldPlayer", 0)
 
         //チップ数の表示
 //        if (secondNum == "") {
@@ -581,20 +593,22 @@ class HandActivity : AppCompatActivity() {
                             roundPlayer = "other"
                         }
 
-                        when (flopNum) {
-                            1 -> {
-                                preFlopNum = memberNum - 1
-                                bigBlindNum = memberNum
-                            }
-                            2 -> {
-                                preFlopNum = memberNum
-                                bigBlindNum = 1
-                            }
-                            else -> {
-                                preFlopNum = flopNum - 2
-                                bigBlindNum = flopNum - 1
-                            }
-                        }
+                        playingNum = flopNum
+
+//                        when (flopNum) {
+//                            1 -> {
+//                                preFlopNum = memberNum - 1
+//                                bigBlindNum = memberNum
+//                            }
+//                            2 -> {
+//                                preFlopNum = memberNum
+//                                bigBlindNum = 1
+//                            }
+//                            else -> {
+//                                preFlopNum = flopNum - 2
+//                                bigBlindNum = flopNum - 1
+//                            }
+//                        }
 
 
                         when (roundPlayer) {
@@ -609,7 +623,7 @@ class HandActivity : AppCompatActivity() {
                                 Log.d("kotlintest", "HandActivity -> PlayingActivity[preFlopNum]:" + preFlopNum.toString())
                                 Log.d("kotlintest", "HandActivity -> PlayingActivity[bigBlindNum]" + bigBlindNum.toString())
                                 Log.d("kotlintest", "HandActivity -> PlayingActivity[playingNum]:" + playingNum.toString())
-                                Log.d("kotlintest", "HandActivity -> PlayingActivity[foldPlayer]:" + "0")
+                                Log.d("kotlintest", "HandActivity -> PlayingActivity[foldPlayer]:" + foldPlayer.toString())
                                 Log.d("kotlintest", "HandActivity -> PlayingActivity[sameChipsPlayer]:" + "0")
                                 Log.d("kotlintest", "HandActivity -> PlayingActivity[smallBlind]:" + smallChipsText.text.toString())
                                 Log.d("kotlintest", "HandActivity -> PlayingActivity[bigBlind]:" + handChipsText.text.toString())
@@ -640,10 +654,11 @@ class HandActivity : AppCompatActivity() {
                                 intent.putExtra("tableChips", handChipsText.text.toString().toInt())
                                 intent.putExtra("tableTotalChips", 0)
                                 intent.putExtra("flopNum", flopNum)
-                                intent.putExtra("preFlopNum", preFlopNum)
-                                intent.putExtra("bigBlindNum", bigBlindNum)
+                                intent.putExtra("preFlopNum", sb)
+                                intent.putExtra("bigBlindNum", bb)
+                                intent.putExtra("BTN", btn)
                                 intent.putExtra("playingNum", playingNum)
-                                intent.putExtra("foldPlayer", 0)
+                                intent.putExtra("foldPlayer", foldPlayer)
                                 intent.putExtra("sameChipsPlayer", 0)
                                 intent.putExtra("firstRealm", firstRealm)
                                 startActivity(intent)
@@ -661,7 +676,7 @@ class HandActivity : AppCompatActivity() {
                                 Log.d("kotlintest", "HandActivity -> MemberPlayingActivity[preFlopNum]:" + preFlopNum.toString())
                                 Log.d("kotlintest", "HandActivity -> MemberPlayingActivity[bigBlindNum]" + bigBlindNum.toString())
                                 Log.d("kotlintest", "HandActivity -> MemberPlayingActivity[playingNum]:" + playingNum.toString())
-                                Log.d("kotlintest", "HandActivity -> MemberPlayingActivity[foldPlayer]:" + "0")
+                                Log.d("kotlintest", "HandActivity -> MemberPlayingActivity[foldPlayer]:" + foldPlayer.toString())
                                 Log.d("kotlintest", "HandActivity -> MemberPlayingActivity[sameChipsPlayer]:" + "0")
                                 Log.d("kotlintest", "HandActivity -> MemberPlayingActivity[smallBlind]:" + smallChipsText.text.toString())
                                 Log.d("kotlintest", "HandActivity -> MemberPlayingActivity[bigBlind]:" + handChipsText.text.toString())
@@ -691,10 +706,11 @@ class HandActivity : AppCompatActivity() {
                                 intent.putExtra("tableChips", handChipsText.text.toString().toInt())
                                 intent.putExtra("tableTotalChips", 0)
                                 intent.putExtra("flopNum", flopNum)
-                                intent.putExtra("preFlopNum", preFlopNum)
-                                intent.putExtra("bigBlindNum", bigBlindNum)
+                                intent.putExtra("preFlopNum", sb)
+                                intent.putExtra("bigBlindNum", bb)
+                                intent.putExtra("BTN", btn)
                                 intent.putExtra("playingNum", playingNum)
-                                intent.putExtra("foldPlayer", 0)
+                                intent.putExtra("foldPlayer", foldPlayer)
                                 intent.putExtra("sameChipsPlayer", 0)
                                 intent.putExtra("firstRealm", firstRealm)
                                 startActivity(intent)
