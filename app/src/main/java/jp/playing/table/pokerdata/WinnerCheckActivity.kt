@@ -512,6 +512,7 @@ class WinnerCheckActivity : AppCompatActivity() {
 
             val memberRealmResults = mRealm.where(Member::class.java).findAll()
             var foldCount = 0
+            var meFold = "play"
             for (i in 1..memberNum) {
                 val memberPlayerNumRealmResults = mRealm.where(Member::class.java).equalTo("memberRound", i).findAll()
                 val playerNumId = memberPlayerNumRealmResults.max("id")!!.toInt()
@@ -522,6 +523,9 @@ class WinnerCheckActivity : AppCompatActivity() {
                 } else {
                     member!!.playingCheck = "fold"
                     foldCount++
+                    if (myRound == i) {
+                        meFold = "fold"
+                    }
                 }
                 member!!.hand_count++
                 Log.d("kotlintest", "playerNumId：" + playerNumId.toString() + "　名前：" + member!!.memberName + "　チップ数：" + member!!.memberChips.toString() + "　結果：" + member!!.playingCheck + "　fold数：" + foldCount.toString())
@@ -536,7 +540,7 @@ class WinnerCheckActivity : AppCompatActivity() {
             Log.d("kotlintest", "foldCount:" + foldCount.toString())
             Log.d("kotlintest", "memberNum - 1:" + foldNum.toString())
 
-            if (foldCount == foldNum) {
+            if (foldCount == foldNum || meFold == "fold") {
                 Log.d("kotlintest", "終了通過")
                 val intent = Intent(this@WinnerCheckActivity, MainActivity::class.java)
                 startActivity(intent)

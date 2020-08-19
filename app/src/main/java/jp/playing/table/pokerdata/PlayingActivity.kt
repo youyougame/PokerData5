@@ -300,7 +300,7 @@ class PlayingActivity : AppCompatActivity() {
                 val playerChips = playerData!!.memberChips
                 val playerFoldCheck = playerData!!.playingCheck
                 if (playingNum != i) {
-                    if (playerChips == 0) {
+                    if (playerChips == 0 && playerFoldCheck == "play") {
                         playerAllIn++
                     }
                 }
@@ -1066,7 +1066,7 @@ class PlayingActivity : AppCompatActivity() {
                         val playerChips = playerData!!.memberChips
                         val playerFoldCheck = playerData!!.playingCheck
                         if (playingNum != i) {
-                            if (playerChips == 0) {
+                            if (playerChips == 0 && playerFoldCheck == "play") {
                                 playerAllIn++
                             }
                         }
