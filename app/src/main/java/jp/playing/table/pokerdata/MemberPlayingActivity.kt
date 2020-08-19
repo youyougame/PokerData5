@@ -189,6 +189,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                 Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[smallBlind]:" + smallBlind)
                 Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[tableChips]:" + tableChips)
                 Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[tableTotalChips]:" + tableTotalChips)
+                Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[btn]:" + btn.toString())
 
                 intent.putExtra("memberNum", memberNum)
                 intent.putExtra("game_id", game_id)
@@ -260,6 +261,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                 Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[smallBlind]:" + smallBlind)
                 Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[tableChips]:" + tableChips)
                 Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[tableTotalChips]:" + tableTotalChips)
+                Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[btn]:" + btn.toString())
 
 
                 intent.putExtra("memberNum", memberNum)
@@ -312,6 +314,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                 Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[smallBlind]:" + smallBlind)
                 Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[tableChips]:" + tableChips)
                 Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[tableTotalChips]:" + tableTotalChips)
+                Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[btn]:" + btn.toString())
 
                 intent.putExtra("memberNum", memberNum)
                 intent.putExtra("game_id", game_id)
@@ -402,6 +405,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                 Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[smallBlind]:" + smallBlind)
                 Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[tableChips]:" + tableChips)
                 Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[tableTotalChips]:" + tableTotalChips)
+                Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[btn]:" + btn.toString())
 
                 intent.putExtra("memberNum", memberNum)
                 intent.putExtra("game_id", game_id)
@@ -473,6 +477,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                 Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[smallBlind]:" + smallBlind)
                 Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[tableChips]:" + tableChips)
                 Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[tableTotalChips]:" + tableTotalChips)
+                Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[btn]:" + btn.toString())
 
 
                 intent.putExtra("memberNum", memberNum)
@@ -525,6 +530,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                 Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[smallBlind]:" + smallBlind)
                 Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[tableChips]:" + tableChips)
                 Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[tableTotalChips]:" + tableTotalChips)
+                Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[btn]:" + btn.toString())
 
                 intent.putExtra("memberNum", memberNum)
                 intent.putExtra("game_id", game_id)
@@ -1294,6 +1300,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                             "kotlintest",
                             "MemberPlayingActivity -> WinnerCheckActivity[tableTotalChips]:" + tableTotalChips
                         )
+                        Log.d("kotlintest", "MemberPlayingActivity -> WinnerCheckActivity[btn]:" + btn.toString())
 
                         intent.putExtra("memberNum", memberNum)
                         intent.putExtra("game_id", game_id)
@@ -1428,6 +1435,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                                 "kotlintest",
                                 "MemberPlayingActivity -> CardActivity[tableTotalChips]:" + tableTotalChips
                             )
+                            Log.d("kotlintest", "MemberPlayingActivity -> CardActivity[btn]:" + btn.toString())
 
                             intent.putExtra("memberNum", memberNum)
                             intent.putExtra("game_id", game_id)
@@ -1560,6 +1568,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                                     "kotlintest",
                                     "MemberPlayingActivity -> PlayingActivity[tableTotalChips]:" + tableTotalChips
                                 )
+                                Log.d("kotlintest", "MemberPlayingActivity -> PlayingActivity[btn]:" + btn.toString())
 
                                 intent.putExtra("memberNum", memberNum)
                                 intent.putExtra("game_id", game_id)
@@ -1672,6 +1681,7 @@ class MemberPlayingActivity : AppCompatActivity() {
                                     "kotlintest",
                                     "MemberPlayingActivity -> MemberPlayingActivity[tableTotalChips]:" + tableTotalChips
                                 )
+                                Log.d("kotlintest", "MemberPlayingActivity -> MemberPlayingActivity[btn]:" + btn.toString())
 
 
                                 intent.putExtra("memberNum", memberNum)

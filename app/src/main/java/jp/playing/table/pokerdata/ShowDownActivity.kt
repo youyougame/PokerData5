@@ -168,6 +168,7 @@ class ShowDownActivity : AppCompatActivity() {
                 Log.d("kotlintest", "ShowDownActivity -> WinnerCheckActivity[smallBlind]:" + smallBlind)
                 Log.d("kotlintest", "ShowDownActivity -> WinnerCheckActivity[tableChips]:" + tableChips)
                 Log.d("kotlintest", "ShowDownActivity -> WinnerCheckActivity[tableTotalChips]:" + tableTotalChips)
+                Log.d("kotlintest", "ShowDownActivity -> WinnerCheckActivity[btn]:" + btn.toString())
 
                 intent.putExtra("memberNum", memberNum)
                 intent.putExtra("game_id", game_id)
@@ -218,6 +219,7 @@ class ShowDownActivity : AppCompatActivity() {
                 Log.d("kotlintest", "ShowDownActivity -> ShowDownActivity[smallBlind]:" + smallBlind)
                 Log.d("kotlintest", "ShowDownActivity -> ShowDownActivity[tableChips]:" + tableChips)
                 Log.d("kotlintest", "ShowDownActivity -> ShowDownActivity[tableTotalChips]:" + tableTotalChips)
+                Log.d("kotlintest", "ShowDownActivity -> ShowDownActivity[btn]:" + btn.toString())
 
                 intent.putExtra("memberNum", memberNum)
                 intent.putExtra("game_id", game_id)
@@ -539,6 +541,7 @@ class ShowDownActivity : AppCompatActivity() {
                         Log.d("kotlintest", "ShowDownActivity -> ShowDownActivity[smallBlind]:" + smallBlind)
                         Log.d("kotlintest", "ShowDownActivity -> ShowDownActivity[tableChips]:" + tableChips)
                         Log.d("kotlintest", "ShowDownActivity -> ShowDownActivity[tableTotalChips]:" + tableTotalChips)
+                        Log.d("kotlintest", "ShowDownActivity -> ShowDownActivity[btn]:" + btn.toString())
 
                         intent.putExtra("memberNum", memberNum)
                         intent.putExtra("game_id", game_id)
@@ -592,6 +595,7 @@ class ShowDownActivity : AppCompatActivity() {
                         Log.d("kotlintest", "ShowDownActivity -> WinnerCheckActivity[smallBlind]:" + smallBlind)
                         Log.d("kotlintest", "ShowDownActivity -> WinnerCheckActivity[tableChips]:" + tableChips)
                         Log.d("kotlintest", "ShowDownActivity -> WinnerCheckActivity[tableTotalChips]:" + tableTotalChips)
+                        Log.d("kotlintest", "ShowDownActivity -> WinnerCheckActivity[btn]:" + btn.toString())
 
                         intent.putExtra("memberNum", memberNum)
                         intent.putExtra("game_id", game_id)

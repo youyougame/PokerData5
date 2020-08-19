@@ -545,6 +545,8 @@ class WinnerCheckActivity : AppCompatActivity() {
 
                 do {
                     Log.d("kotlintest", "継続通過1-1")
+                    Log.d("kotlintest", "btn:" + btn.toString())
+                    Log.d("kotlintest", "memberNum:" + memberNum)
                     if (btn == memberNum) {
                         btn = 1
                         Log.d("kotlintest", "継続通過1-2")
@@ -616,6 +618,7 @@ class WinnerCheckActivity : AppCompatActivity() {
                 Log.d("kotlintest", "WinnerCheckActivity -> CardActivity[playingNum]:" + playingNum.toString())
                 Log.d("kotlintest", "WinnerCheckActivity -> CardActivity[smallBlind]:" + smallBlind.toString())
                 Log.d("kotlintest", "WinnerCheckActivity -> CardActivity[bigBlind]:" + bigBlind.toString())
+                Log.d("kotlintest", "WinnerCheckActivity -> CardActivity[btn]:" + btn.toString())
 
                 intent.putExtra("memberNum", memberNum)
                 intent.putExtra("flopNum", flopNum)

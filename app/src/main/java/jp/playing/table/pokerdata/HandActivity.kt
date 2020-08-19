@@ -633,6 +633,7 @@ class HandActivity : AppCompatActivity() {
                                 Log.d("kotlintest", "HandActivity -> PlayingActivity[smallBlind]:" + smallChipsText.text.toString().toInt())
                                 Log.d("kotlintest", "HandActivity -> PlayingActivity[tableChips]:" + handChipsText.text.toString().toInt())
                                 Log.d("kotlintest", "HandActivity -> PlayingActivity[tableTotalChips]:" + 0)
+                                Log.d("kotlintest", "HandActivity -> PlayingActivity[btn]:" + btn.toString())
 
 
                                 intent.putExtra("memberNum", memberNum.toInt())
@@ -686,6 +687,7 @@ class HandActivity : AppCompatActivity() {
                                 Log.d("kotlintest", "HandActivity -> MemnerPlsyingActivity[smallBlind]:" + smallChipsText.text.toString().toInt())
                                 Log.d("kotlintest", "HandActivity -> MemnerPlsyingActivity[tableChips]:" + handChipsText.text.toString().toInt())
                                 Log.d("kotlintest", "HandActivity -> MemnerPlsyingActivity[tableTotalChips]:" + 0)
+                                Log.d("kotlintest", "HandActivity -> MemnerPlsyingActivity[btn]:" + btn.toString())
 
                                 intent.putExtra("memberNum", memberNum.toInt())
                                 intent.putExtra("game_id", game_id.toInt())
