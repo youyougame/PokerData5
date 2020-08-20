@@ -27,13 +27,6 @@
                 android:text="終了"
                 android:layout_weight="1"/>
             
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/handMemberChangeButton"
-                android:text="メンバー数変更"
-                android:layout_weight="1"/>
-            
         </LinearLayout>
         
         <TextView

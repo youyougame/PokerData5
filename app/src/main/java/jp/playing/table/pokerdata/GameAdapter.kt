@@ -5,10 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.TextView
 
 class GameAdapter(context: Context): BaseAdapter() {
     private val mLayoutInflater: LayoutInflater
-    var gameList = mutableListOf<String>()
+    var gameList = mutableListOf<Game>()
 
     init {
         this.mLayoutInflater = LayoutInflater.from(context)
@@ -27,7 +28,15 @@ class GameAdapter(context: Context): BaseAdapter() {
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val convertView = convertView ?: mLayoutInflater.inflate(R.layout.list_main, null)
+
+        val titleText = convertView!!.findViewById<View>(R.id.mainTitleText) as TextView
+        val dateText = convertView!!.findViewById<View>(R.id.mainDateText) as TextView
+
+        titleText.text = gameList[position].title
+        dateText.text = gameList[position].dateString
+
+        return convertView
     }
 
 }

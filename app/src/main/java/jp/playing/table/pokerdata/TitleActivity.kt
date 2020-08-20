@@ -19,6 +19,7 @@ class TitleActivity : AppCompatActivity() {
     private var mMonth = 0
     private var mDay = 0
     private var mGame: Game? = null
+    private var mDate = ""
 
 
     private val mOnDateClickListner = View.OnClickListener {
@@ -29,6 +30,7 @@ class TitleActivity : AppCompatActivity() {
                 mDay = dayOfMonth
                 val dateString = mYear.toString() + "/" + String.format("%02d", mMonth + 1) + "/" + String.format("%02d", mDay)
                 titleDateButton.text = dateString
+                mDate = dateString
             }, mYear, mMonth, mDay)
         datePickerDialog.show()
     }
@@ -42,7 +44,7 @@ class TitleActivity : AppCompatActivity() {
         titleDateButton.setOnClickListener(mOnDateClickListner)
         //決定ボタンのリスナー
         titleDoneButton.setOnClickListener {
-            if (titleNameEdit.text.toString() != "" && titleDateButton.text.toString() != "----/--/--") {
+            if (titleNameEdit.text.toString() != "" && titleDateButton.text.toString() != "") {
                 addTask()
                 val intent = Intent(this@TitleActivity, SettingActivity::class.java)
                 startActivity(intent)
@@ -87,6 +89,8 @@ class TitleActivity : AppCompatActivity() {
         val calendar = GregorianCalendar(mYear, mMonth, mDay)
         val date = calendar.time
         mGame!!.date = date
+
+        mGame!!.dateString = mDate
 
         realm.copyToRealmOrUpdate(mGame!!)
         realm.commitTransaction()

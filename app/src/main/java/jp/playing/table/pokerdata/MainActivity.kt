@@ -6,17 +6,34 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import io.realm.Realm
+import io.realm.RealmChangeListener
 
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.content_add_member_list.*
 import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mGameAdapter: GameAdapter
 
+    private lateinit var mRealm: Realm
+
+    private val mRealmListener = object : RealmChangeListener<Realm> {
+        override fun onChange(t: Realm) {
+            reloadListView()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+
+        //Realmの設定
+        mRealm = Realm.getDefaultInstance()
+        mRealm.addChangeListener(mRealmListener)
+
+        mGameAdapter = GameAdapter(this@MainActivity)
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -38,8 +55,20 @@ class MainActivity : AppCompatActivity() {
 
         mainListView.setOnItemLongClickListener { parent, view, position, id ->
             //該当記録を削除する
+            val game = parent.adapter.getItem(position) as Game
+
+            val results = mRealm.where(Game::class.java).equalTo("id", game.id).findAll()
+
+            mRealm.beginTransaction()
+            results.deleteAllFromRealm()
+            mRealm.commitTransaction()
+
+            reloadListView()
+
             true
         }
+
+        reloadListView()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -56,5 +85,21 @@ class MainActivity : AppCompatActivity() {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun reloadListView() {
+        val gameRealmResults = mRealm.where(Game::class.java).findAll()
+
+        mGameAdapter.gameList = mRealm.copyFromRealm(gameRealmResults)
+
+        mainListView.adapter = mGameAdapter
+
+        mGameAdapter.notifyDataSetChanged()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        mRealm.close()
     }
 }

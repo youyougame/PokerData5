@@ -34,9 +34,9 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="30dp"
             android:id="@+id/turnText"
-            android:text="順番と各プレーヤーの設定します\n自分以外のデータは入力しなくても構いません"
+            android:text="順番と各プレーヤーの設定します"
             android:gravity="center" />
 
         <LinearLayout

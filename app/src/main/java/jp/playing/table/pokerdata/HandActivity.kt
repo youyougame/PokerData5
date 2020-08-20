@@ -138,12 +138,7 @@ class HandActivity : AppCompatActivity() {
         //ボタンのリスナー
         //終了ボタンのリスナー
         handEndButton.setOnClickListener {
-            finish()
-        }
-
-        //メンバー数変更ボタンのリスナー
-        handMemberChangeButton.setOnClickListener {
-            val intent = Intent(this@HandActivity, MemberChangeActivity::class.java)
+            val intent = Intent(this@HandActivity, MainActivity::class.java)
             startActivity(intent)
         }
 
