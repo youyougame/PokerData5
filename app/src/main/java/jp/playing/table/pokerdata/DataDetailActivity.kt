@@ -4,8 +4,10 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import io.realm.Realm
+import io.realm.RealmChangeListener
 import kotlinx.android.synthetic.main.activity_data_detail.*
 import kotlinx.android.synthetic.main.content_add_member_list.*
+import kotlinx.android.synthetic.main.content_data_detail.*
 
 class DataDetailActivity : AppCompatActivity() {
 
@@ -19,11 +21,19 @@ class DataDetailActivity : AppCompatActivity() {
 
     private var dataId = 0
 
+    private val mRealmListener = object : RealmChangeListener<Realm> {
+        override fun onChange(t: Realm) {
+            reloadListView()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_data_detail)
 
         mRealm = Realm.getDefaultInstance()
+        mRealm.addChangeListener(mRealmListener)
+
 
         mDataDetailAdapter = DataDetailAdapter(this@DataDetailActivity)
 
@@ -36,10 +46,12 @@ class DataDetailActivity : AppCompatActivity() {
 
         supportActionBar?.title = gameTitle + "：" + gameDateString
 
+        reloadListView()
+
     }
 
-    private fun reLoadListView() {
-        val turnRealmResults = mRealm.where(Turn::class.java).equalTo("id", dataId).findAll()
+    private fun reloadListView() {
+        val turnRealmResults = mRealm.where(Turn::class.java).equalTo("game_id", dataId).findAll()
 
         mDataDetailAdapter.turnList = mRealm.copyFromRealm(turnRealmResults)
 

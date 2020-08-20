@@ -126,6 +126,11 @@ class ShowDownActivity : AppCompatActivity() {
         val dataPlayerId = memberData!!.member_id
         val memberName = memberData!!.memberName
 
+//        val turnRealmResults = mRealm.where(Turn::class.java).findAll()
+//        val turnPlayerNumRealmResults = mRealm.where(Turn::class.java).equalTo("player", memberName).findAll()
+//        val playerId = turnPlayerNumRealmResults.max("id")!!.toInt()
+//        val turnData = mRealm.where(Turn::class.java).equalTo("id", playerId).findFirst()
+
 //        val memberPlayingCheck = memberRealmResults[playerNumId]!!.playingCheck //foldしたかチェック
 //        val dataPlayerId = memberRealmResults[playerNumId]!!.member_id //該当プレイヤーのid
 //        val memberName = memberRealmResults[playerNumId]!!.memberName //該当プレイヤーの名前
@@ -144,6 +149,11 @@ class ShowDownActivity : AppCompatActivity() {
                 memberData!!.hand1 = ""
                 memberData!!.hand2 = ""
                 mRealm.copyToRealmOrUpdate(mMember!!)
+
+//                mTurn = Turn()
+//                turnData!!.hand1 = ""
+//                turnData!!.hand2 = ""
+//                mRealm.copyToRealmOrUpdate(mTurn)
                 mRealm.commitTransaction()
             }
             memberRound++
@@ -506,6 +516,7 @@ class ShowDownActivity : AppCompatActivity() {
                     }
                     mRealm.beginTransaction()
                     mMember = Member()
+//                    mTurn = Turn()
 
                     val memberIdRealmResults = mRealm.where(Member::class.java).equalTo("id", playerNumId).findAll()
                     Log.d("kotlintest", "memberId:" + playerNumId.toString())
@@ -517,6 +528,17 @@ class ShowDownActivity : AppCompatActivity() {
                     member!!.hand2 = playerHand2
 
                     mRealm.copyToRealmOrUpdate(mMember!!)
+
+//                    val turnIdRealmResults = mRealm.where(Turn::class.java).equalTo("id", playerId).findAll()
+//                    Log.d("kotlintest", "turnId:" + playerId.toString())
+//                    val turnMaxId = turnIdRealmResults.max("id")!!.toInt()
+//                    val turn = mRealm.where(Member::class.java).equalTo("id", turnMaxId).findFirst()
+//
+//                    turn!!.hand1 = playerHand1
+//                    turn!!.hand1 = playerHand2
+//
+//                    mRealm.copyToRealmOrUpdate(mTurn!!)
+
                     mRealm.commitTransaction()
                     memberRound++
                     if (memberRound < memberNum) {

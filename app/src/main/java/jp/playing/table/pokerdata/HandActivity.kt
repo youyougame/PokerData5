@@ -549,13 +549,7 @@ class HandActivity : AppCompatActivity() {
                             mHand!!.id = identifier
                             Log.d("kotlintest", "保存したハンド：" + identifier.toString())
 
-                            countCheack =
-                                if (handRealmResults.max("count") != null) {
-                                    handRealmResults.max("count")!!.toInt() + 1
-                                } else {
-                                    1
-                                }
-                            mHand!!.count = countCheack
+                            mHand!!.count = count
 
                         }
 
@@ -567,19 +561,53 @@ class HandActivity : AppCompatActivity() {
 
                         mMember = Member()
 
-                        val memberDataRealmResults = mRealm.where(Member::class.java).equalTo("memberName", "自分").findAll()
-                        val memberRealmResultsId = memberDataRealmResults.max("id")!!.toInt()
-                        val memberAdd = mRealm.where(Member::class.java).equalTo("id", memberRealmResultsId).findFirst()
+//                        val memberDataRealmResults = mRealm.where(Member::class.java).equalTo("memberName", "自分").findAll()
+//                        val memberRealmResultsId = memberDataRealmResults.max("id")!!.toInt()
+//                        val memberAdd = mRealm.where(Member::class.java).equalTo("id", memberRealmResultsId).findFirst()
+//
+//                        Log.d("kotlintest", "Handのプレイヤー名" + memberAdd!!.memberName)
+//
+//                        Log.d("kotlintest", "memberId:" + memberRealmResultsId.toString())
+//
+//                        memberAdd!!.hand1 = playerHand1
+//                        memberAdd!!.hand2 = playerHand2
 
-                        Log.d("kotlintest", "Handのプレイヤー名" + memberAdd!!.memberName)
+                        for (i in 1..memberNum) {
+                            val memberRealmResults = mRealm.where(Member::class.java).equalTo("memberRound", i).findAll()
+                            val memberId = memberRealmResults.max("id")!!.toInt()
+                            val memberData = mRealm.where(Member::class.java).equalTo("id", memberId).findFirst()
+                            val memberName = memberData!!.memberName
+                            val member_id = memberData!!.member_id
+                            val memberGameId = memberData!!.game_id
+                            val memberPlayingCheck = memberData!!.playingCheck
+                            val memberChips = memberData!!.memberChips
 
-                        Log.d("kotlintest", "memberId:" + memberRealmResultsId.toString())
+                            val memberRealm = mRealm.where(Member::class.java).findAll()
 
-                        memberAdd!!.hand1 = playerHand1
-                        memberAdd!!.hand2 = playerHand2
+                            val identifier: Int =
+                                if (memberRealm.max("id") != null) {
+                                    memberRealm.max("id")!!.toInt() + 1
+                                } else {
+                                    0
+                                }
+
+                            mMember!!.id = identifier
+                            mMember!!.memberName = memberName
+                            mMember!!.member_id = member_id
+                            mMember!!.memberRound = i
+                            mMember!!.game_id = memberGameId
+                            mMember!!.hand_count = count
+                            mMember!!.memberChips = memberChips
+                            mMember!!.playingCheck = memberPlayingCheck
+                            if (myRound == i) {
+                                mMember!!.hand1 = playerHand1
+                                mMember!!.hand2 = playerHand2
+                            }
+
+                            mRealm.copyToRealmOrUpdate(mMember!!)
+                        }
 
                         mRealm.copyToRealmOrUpdate(mHand!!)
-                        mRealm.copyToRealmOrUpdate(mMember!!)
                         mRealm.commitTransaction()
 
                         if (myRound == flopNum) {

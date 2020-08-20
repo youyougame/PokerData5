@@ -736,6 +736,7 @@ class TurnActivity : AppCompatActivity() {
                 mPlayer!!.game_id = gameLength
                 mPlayer!!.playerId = i.toInt()
                 mPlayer!!.playerRound = round
+                mPlayer!!.playerNum = mMember
                 mRealm.copyToRealmOrUpdate(mPlayer!!)
             }
 
@@ -761,7 +762,7 @@ class TurnActivity : AppCompatActivity() {
                     }
                 mMemBerPlay!!.id = identifier
                 Log.d("kotlintest","Member保存：" + identifier.toString())
-                mMemBerPlay!!.hand_count = 1
+                mMemBerPlay!!.hand_count = 0
                 mMemBerPlay!!.memberName = i
                 mMemBerPlay!!.memberRound = playRound
                 mMemBerPlay!!.game_id = gameLength

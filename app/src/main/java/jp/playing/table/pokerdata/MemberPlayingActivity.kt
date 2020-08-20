@@ -1085,6 +1085,7 @@ class MemberPlayingActivity : AppCompatActivity() {
 //                    Log.d("kotlintest", "memberId:" + playerNumId.toString())
 
                     //Turnを新規登録
+                    mTurn!!.playerRound = playingNum
                     mTurn!!.game_id = game_id
                     mTurn!!.count = count
                     mTurn!!.round = round
@@ -1218,6 +1219,35 @@ class MemberPlayingActivity : AppCompatActivity() {
 //                        } else {
 //                            flopNum++
 //                            playingNum = flopNum
+//                        }
+
+//                        if (round == "preflop") {
+//                            for (i in 1..memberNum) {
+//                                val memberRealmResultsWinner =
+//                                    mRealm.where(Member::class.java).equalTo("memberRound", i)
+//                                        .findAll()
+//                                val memberIdWinner = memberRealmResultsWinner.max("id")!!.toInt()
+//                                val memberDataWinner =
+//                                    mRealm.where(Member::class.java).equalTo("id", memberIdWinner)
+//                                        .findFirst()
+//                                val winnerPlayingCheck = memberDataWinner!!.playingCheck
+//                                val winnerGame = memberDataWinner!!.game_id
+//                                val winnerCount = memberDataWinner!!.hand_count
+//
+//                                if (winnerGame == game_id && winnerCount == count && winnerPlayingCheck != "fold") {
+//                                    when (i) {
+//                                        preFlopNum -> {
+//                                            memberDataWinner!!.playChips = smallBlind
+//                                            memberDataWinner!!.memberChips = playerTotalChips - smallBlind
+//                                        }
+//
+//                                        bigBlindNum -> {
+//                                            memberDataWinner!!.playChips = bigBlind
+//                                            memberDataWinner!!.memberChips = playerTotalChips - bigBlind
+//                                        }
+//                                    }
+//                                }
+//                            }
 //                        }
 
                         //WinnerCheckAcitivtyへ移動

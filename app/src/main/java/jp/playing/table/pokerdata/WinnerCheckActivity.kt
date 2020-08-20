@@ -527,7 +527,6 @@ class WinnerCheckActivity : AppCompatActivity() {
                         meFold = "fold"
                     }
                 }
-                member!!.hand_count++
                 Log.d("kotlintest", "playerNumId：" + playerNumId.toString() + "　名前：" + member!!.memberName + "　チップ数：" + member!!.memberChips.toString() + "　結果：" + member!!.playingCheck + "　fold数：" + foldCount.toString())
             }
 

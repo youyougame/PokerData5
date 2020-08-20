@@ -10,6 +10,7 @@ open class Turn : RealmObject(), Serializable {
     var round: String = "" //プリフロップ等のラウンド
     var round_count: Int = 0 //ラウンド内での週数
     var player: String = "" // プレイヤー名
+    var playerRound: Int = 0
     var player_id: String = "" //プレイヤーid
     var playChips: Int = 0 // プレイされたチップ
     var memberChips: Int = 0 //プレイヤーの所持チップ
