@@ -8,19 +8,13 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:orientation="horizontal"
-        android:id="@+id/dataDetailLinearLayout">
+        android:id="@+id/dataDetailCardLinearLayout">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:id="@+id/dataDetailPlayerText"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:id="@+id/dataDetailTableText"/>
+            android:id="@+id/dataDetailCardPlayerText"/>
 
     </LinearLayout>
 
@@ -28,25 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:orientation="horizontal"
-        android:layout_below="@+id/dataDetailLinearLayout">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="2">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:id="@+id/dataDetailActionText"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:id="@+id/dataDetailChipsText"/>
-
-        </LinearLayout>
+        android:layout_below="@+id/dataDetailCardLinearLayout">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -63,19 +39,7 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:id="@+id/dataDetailHandText"
-                    android:layout_weight="2"
-                    android:text="ハンド"/>
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:id="@+id/dataDetailTableNumText"
+                    android:id="@+id/dataDetailCardTableNumText"
                     android:layout_weight="5"
                     android:text="テーブル"/>
 
@@ -87,63 +51,50 @@
                 android:layout_weight="5"
                 android:orientation="horizontal">
 
+
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:id="@+id/dataDetailHandCard1"
+                    android:id="@+id/dataDetailCardTableCard1"
                     android:src="@drawable/card_back"/>
 
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:id="@+id/dataDetailHandCard2"
-                    android:src="@drawable/card_back"/>
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5"/>
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:id="@+id/dataDetailTableCard1"
+                    android:id="@+id/dataDetailCardTableCard2"
                     android:src="@drawable/card_back"/>
 
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:id="@+id/dataDetailTableCard2"
+                    android:id="@+id/dataDetailCardTableCard3"
                     android:src="@drawable/card_back"/>
 
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:id="@+id/dataDetailTableCard3"
+                    android:id="@+id/dataDetailCardTableCard4"
                     android:src="@drawable/card_back"/>
 
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:id="@+id/dataDetailTableCard4"
-                    android:src="@drawable/card_back"/>
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:id="@+id/dataDetailTableCard5"
+                    android:id="@+id/dataDetailCardTableCard5"
                     android:src="@drawable/card_back"/>
 
             </LinearLayout>
 
         </LinearLayout>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5.5"/>
 
     </LinearLayout>
 

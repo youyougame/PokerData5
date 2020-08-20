@@ -5,83 +5,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".DataDetailActivity">
-
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/dataDetailAppBar"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:id="@+id/dataDetailToolbar"
-            android:backgroundTint="@color/colorPrimary"
-            android:theme="@style/AppTheme.PopupOverlay"/>
-
-    </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/dataDetailAppBar"
         android:orientation="vertical"
         android:paddingTop="16dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingBottom="16dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="チップ修復"
-                android:id="@+id/dataDetailChipsButton"/>
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:id="@+id/dataDetailBestButton"
-                android:text="首位"/>
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:id="@+id/dataDetailWorstButton"
-                android:text="最下位"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:id="@+id/dataDetailWinButton"
-                android:text="Win"
-                android:textAllCaps="false"/>
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:id="@+id/dataDetailLoseButoon"
-                android:text="Lose"
-                android:textAllCaps="false"/>
-
-        </LinearLayout>
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"

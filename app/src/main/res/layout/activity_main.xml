@@ -31,12 +31,4 @@
         app:srcCompat="@drawable/add_black_white"
         app:backgroundTint="@color/colorPrimary"/>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/dataFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/assessment_white" />
-
 </android.support.design.widget.CoordinatorLayout>

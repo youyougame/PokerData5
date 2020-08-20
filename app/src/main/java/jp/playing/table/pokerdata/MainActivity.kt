@@ -43,14 +43,14 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        dataFab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-            //データの詳細を開く
-        }
-
         mainListView.setOnItemClickListener { parent, view, position, id ->
-            //前回の途中から記録を再開する
+            //データ詳細画面に移動する
+            val game = parent.adapter.getItem(position) as Game
+
+            val intent = Intent(this@MainActivity, DataDetailActivity::class.java)
+            intent.putExtra("dataId", game.id)
+            startActivity(intent)
+
         }
 
         mainListView.setOnItemLongClickListener { parent, view, position, id ->
