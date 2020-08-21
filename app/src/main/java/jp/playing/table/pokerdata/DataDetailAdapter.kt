@@ -91,6 +91,14 @@ class DataDetailAdapter(context: Context) : BaseAdapter() {
         table4Image = convertView!!.findViewById<View>(R.id.dataDetailTableCard4) as ImageView
         table5Image = convertView!!.findViewById<View>(R.id.dataDetailTableCard5) as ImageView
 
+        hand1Image.setImageResource(R.drawable.card_back)
+        hand2Image.setImageResource(R.drawable.card_back)
+        table1Image.setImageResource(R.drawable.card_back)
+        table2Image.setImageResource(R.drawable.card_back)
+        table3Image.setImageResource(R.drawable.card_back)
+        table4Image.setImageResource(R.drawable.card_back)
+        table5Image.setImageResource(R.drawable.card_back)
+
         turnGameId = turnList[position].game_id
         count = turnList[position].count
         playerName = turnList[position].player
