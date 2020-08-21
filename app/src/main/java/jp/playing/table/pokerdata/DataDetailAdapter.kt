@@ -46,6 +46,19 @@ class DataDetailAdapter(context: Context) : BaseAdapter() {
     private var playerRound = 0
     private var round = ""
 
+    private lateinit var showDown1: TextView
+    private lateinit var showDown2: TextView
+    private lateinit var showDown3: TextView
+    private lateinit var showDown4: TextView
+    private lateinit var showDown5: TextView
+    private lateinit var showDown6: TextView
+    private lateinit var showDown7: TextView
+    private lateinit var showDown8: TextView
+    private lateinit var showDown9: TextView
+    private lateinit var showDown10: TextView
+
+    private var playerNum = 0
+
 
     init {
         this.mLayoutInflater = LayoutInflater.from(context)
@@ -90,6 +103,16 @@ class DataDetailAdapter(context: Context) : BaseAdapter() {
         table3Image = convertView!!.findViewById<View>(R.id.dataDetailTableCard3) as ImageView
         table4Image = convertView!!.findViewById<View>(R.id.dataDetailTableCard4) as ImageView
         table5Image = convertView!!.findViewById<View>(R.id.dataDetailTableCard5) as ImageView
+        showDown1 = convertView!!.findViewById<View>(R.id.dataDetailShowDown1) as TextView
+        showDown2 = convertView!!.findViewById<View>(R.id.dataDetailShowDown2) as TextView
+        showDown3 = convertView!!.findViewById<View>(R.id.dataDetailShowDown3) as TextView
+        showDown4 = convertView!!.findViewById<View>(R.id.dataDetailShowDown4) as TextView
+        showDown5 = convertView!!.findViewById<View>(R.id.dataDetailShowDown5) as TextView
+        showDown6 = convertView!!.findViewById<View>(R.id.dataDetailShowDown6) as TextView
+        showDown7 = convertView!!.findViewById<View>(R.id.dataDetailShowDown7) as TextView
+        showDown8 = convertView!!.findViewById<View>(R.id.dataDetailShowDown8) as TextView
+        showDown9 = convertView!!.findViewById<View>(R.id.dataDetailShowDown9) as TextView
+        showDown10 = convertView!!.findViewById<View>(R.id.dataDetailShowDown10) as TextView
 
         hand1Image.setImageResource(R.drawable.card_back)
         hand2Image.setImageResource(R.drawable.card_back)
@@ -104,6 +127,8 @@ class DataDetailAdapter(context: Context) : BaseAdapter() {
         playerName = turnList[position].player
         playerRound = turnList[position].playerRound
         round = turnList[position].round
+        playerNum = turnList[position].playerNum
+        val id = turnList[position].id
         val turnId = turnList[position].id
         Log.d("kotlintest", playerName)
         Log.d("kotlintest", playerRound.toString())
@@ -176,6 +201,35 @@ class DataDetailAdapter(context: Context) : BaseAdapter() {
         handSetting2()
         if (playerRound != 0) {
             tableCardSetting()
+        }
+
+        val turnMax = mRealm.where(Turn::class.java).equalTo("game_id", turnGameId).findAll()
+        val maxId = turnMax.max("id")!!.toInt()
+        val maxData = mRealm.where(Turn::class.java).equalTo("id", maxId).findFirst()
+        val maxDataId = maxData!!.id
+        val maxDataCount = maxData!!.count
+
+        showDown1.visibility = View.GONE
+        showDown2.visibility = View.GONE
+        showDown3.visibility = View.GONE
+        showDown4.visibility = View.GONE
+        showDown5.visibility = View.GONE
+        showDown6.visibility = View.GONE
+        showDown7.visibility = View.GONE
+        showDown8.visibility = View.GONE
+        showDown9.visibility = View.GONE
+        showDown10.visibility = View.GONE
+
+        if (id == maxDataId) {
+            //表示
+            totalChipsSetting()
+        } else {
+            val nextData = mRealm.where(Turn::class.java).equalTo("id", id + 1).findFirst()
+            val nextCount = nextData!!.count
+            if (count < nextCount) {
+                //表示
+                totalChipsSetting()
+            }
         }
 
         mRealm.close()
@@ -662,6 +716,532 @@ class DataDetailAdapter(context: Context) : BaseAdapter() {
             }
         }
 
+    }
+
+    private fun totalChipsSetting() {
+        when (playerNum) {
+            2 -> {
+                showDown1.visibility = View.VISIBLE
+                showDown2.visibility = View.VISIBLE
+
+                val memberRealmResults1 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 1.toInt()).findAll()
+                val memberRealmResults2 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 2.toInt()).findAll()
+
+                val memberId1 = memberRealmResults1.max("id")!!.toInt()
+                val memberId2 = memberRealmResults2.max("id")!!.toInt()
+
+                val memberData1 = mRealm.where(Member::class.java).equalTo("id", memberId1).findFirst()
+                val memberData2 = mRealm.where(Member::class.java).equalTo("id", memberId2).findFirst()
+
+                val memberName1 = memberData1!!.memberName
+                val memberName2 = memberData2!!.memberName
+
+                val memberChips1 = memberData1!!.memberChips
+                val memberChips2 = memberData2!!.memberChips
+
+                val memberHand1 = memberData1!!.winnerHand
+                val memberHand2 = memberData2!!.winnerHand
+
+                showDown1.text = memberName1 + "のハンド：" + memberHand1 + " 所持チップ：" + memberChips1.toString()
+                showDown2.text = memberName2 + "のハンド：" + memberHand2 + " 所持チップ：" + memberChips2.toString()
+
+            }
+            3 -> {
+                showDown1.visibility = View.VISIBLE
+                showDown2.visibility = View.VISIBLE
+                showDown3.visibility = View.VISIBLE
+
+                val memberRealmResults1 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 1.toInt()).findAll()
+                val memberRealmResults2 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 2.toInt()).findAll()
+                val memberRealmResults3 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 3.toInt()).findAll()
+
+                val memberId1 = memberRealmResults1.max("id")!!.toInt()
+                val memberId2 = memberRealmResults2.max("id")!!.toInt()
+                val memberId3 = memberRealmResults3.max("id")!!.toInt()
+
+                val memberData1 = mRealm.where(Member::class.java).equalTo("id", memberId1).findFirst()
+                val memberData2 = mRealm.where(Member::class.java).equalTo("id", memberId2).findFirst()
+                val memberData3 = mRealm.where(Member::class.java).equalTo("id", memberId3).findFirst()
+
+                val memberName1 = memberData1!!.memberName
+                val memberName2 = memberData2!!.memberName
+                val memberName3 = memberData3!!.memberName
+
+                val memberChips1 = memberData1!!.memberChips
+                val memberChips2 = memberData2!!.memberChips
+                val memberChips3 = memberData3!!.memberChips
+
+                val memberHand1 = memberData1!!.winnerHand
+                val memberHand2 = memberData2!!.winnerHand
+                val memberHand3 = memberData3!!.winnerHand
+
+                showDown1.text = memberName1 + "のハンド：" + memberHand1 + " 所持チップ：" + memberChips1.toString()
+                showDown2.text = memberName2 + "のハンド：" + memberHand2 + " 所持チップ：" + memberChips2.toString()
+                showDown3.text = memberName3 + "のハンド：" + memberHand3 + " 所持チップ：" + memberChips3.toString()
+
+            }
+            4 -> {
+                showDown1.visibility = View.VISIBLE
+                showDown2.visibility = View.VISIBLE
+                showDown3.visibility = View.VISIBLE
+                showDown4.visibility = View.VISIBLE
+
+                val memberRealmResults1 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 1.toInt()).findAll()
+                val memberRealmResults2 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 2.toInt()).findAll()
+                val memberRealmResults3 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 3.toInt()).findAll()
+                val memberRealmResults4 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 4.toInt()).findAll()
+
+                val memberId1 = memberRealmResults1.max("id")!!.toInt()
+                val memberId2 = memberRealmResults2.max("id")!!.toInt()
+                val memberId3 = memberRealmResults3.max("id")!!.toInt()
+                val memberId4 = memberRealmResults4.max("id")!!.toInt()
+
+                val memberData1 = mRealm.where(Member::class.java).equalTo("id", memberId1).findFirst()
+                val memberData2 = mRealm.where(Member::class.java).equalTo("id", memberId2).findFirst()
+                val memberData3 = mRealm.where(Member::class.java).equalTo("id", memberId3).findFirst()
+                val memberData4 = mRealm.where(Member::class.java).equalTo("id", memberId4).findFirst()
+
+                val memberName1 = memberData1!!.memberName
+                val memberName2 = memberData2!!.memberName
+                val memberName3 = memberData3!!.memberName
+                val memberName4 = memberData4!!.memberName
+
+                val memberChips1 = memberData1!!.memberChips
+                val memberChips2 = memberData2!!.memberChips
+                val memberChips3 = memberData3!!.memberChips
+                val memberChips4 = memberData4!!.memberChips
+
+                val memberHand1 = memberData1!!.winnerHand
+                val memberHand2 = memberData2!!.winnerHand
+                val memberHand3 = memberData3!!.winnerHand
+                val memberHand4 = memberData4!!.winnerHand
+
+                showDown1.text = memberName1 + "のハンド：" + memberHand1 + " 所持チップ：" + memberChips1.toString()
+                showDown2.text = memberName2 + "のハンド：" + memberHand2 + " 所持チップ：" + memberChips2.toString()
+                showDown3.text = memberName3 + "のハンド：" + memberHand3 + " 所持チップ：" + memberChips3.toString()
+                showDown4.text = memberName4 + "のハンド：" + memberHand4 + " 所持チップ：" + memberChips4.toString()
+
+            }
+            5 -> {
+                showDown1.visibility = View.VISIBLE
+                showDown2.visibility = View.VISIBLE
+                showDown3.visibility = View.VISIBLE
+                showDown4.visibility = View.VISIBLE
+                showDown5.visibility = View.VISIBLE
+
+                val memberRealmResults1 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 1.toInt()).findAll()
+                val memberRealmResults2 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 2.toInt()).findAll()
+                val memberRealmResults3 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 3.toInt()).findAll()
+                val memberRealmResults4 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 4.toInt()).findAll()
+                val memberRealmResults5 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 5.toInt()).findAll()
+
+                val memberId1 = memberRealmResults1.max("id")!!.toInt()
+                val memberId2 = memberRealmResults2.max("id")!!.toInt()
+                val memberId3 = memberRealmResults3.max("id")!!.toInt()
+                val memberId4 = memberRealmResults4.max("id")!!.toInt()
+                val memberId5 = memberRealmResults5.max("id")!!.toInt()
+
+                val memberData1 = mRealm.where(Member::class.java).equalTo("id", memberId1).findFirst()
+                val memberData2 = mRealm.where(Member::class.java).equalTo("id", memberId2).findFirst()
+                val memberData3 = mRealm.where(Member::class.java).equalTo("id", memberId3).findFirst()
+                val memberData4 = mRealm.where(Member::class.java).equalTo("id", memberId4).findFirst()
+                val memberData5 = mRealm.where(Member::class.java).equalTo("id", memberId5).findFirst()
+
+                val memberName1 = memberData1!!.memberName
+                val memberName2 = memberData2!!.memberName
+                val memberName3 = memberData3!!.memberName
+                val memberName4 = memberData4!!.memberName
+                val memberName5 = memberData5!!.memberName
+
+                val memberChips1 = memberData1!!.memberChips
+                val memberChips2 = memberData2!!.memberChips
+                val memberChips3 = memberData3!!.memberChips
+                val memberChips4 = memberData4!!.memberChips
+                val memberChips5 = memberData5!!.memberChips
+
+                val memberHand1 = memberData1!!.winnerHand
+                val memberHand2 = memberData2!!.winnerHand
+                val memberHand3 = memberData3!!.winnerHand
+                val memberHand4 = memberData4!!.winnerHand
+                val memberHand5 = memberData5!!.winnerHand
+
+                showDown1.text = memberName1 + "のハンド：" + memberHand1 + " 所持チップ：" + memberChips1.toString()
+                showDown2.text = memberName2 + "のハンド：" + memberHand2 + " 所持チップ：" + memberChips2.toString()
+                showDown3.text = memberName3 + "のハンド：" + memberHand3 + " 所持チップ：" + memberChips3.toString()
+                showDown4.text = memberName4 + "のハンド：" + memberHand4 + " 所持チップ：" + memberChips4.toString()
+                showDown5.text = memberName5 + "のハンド：" + memberHand5 + " 所持チップ：" + memberChips5.toString()
+            }
+            6 -> {
+                showDown1.visibility = View.VISIBLE
+                showDown2.visibility = View.VISIBLE
+                showDown3.visibility = View.VISIBLE
+                showDown4.visibility = View.VISIBLE
+                showDown5.visibility = View.VISIBLE
+                showDown6.visibility = View.VISIBLE
+
+                val memberRealmResults1 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 1.toInt()).findAll()
+                val memberRealmResults2 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 2.toInt()).findAll()
+                val memberRealmResults3 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 3.toInt()).findAll()
+                val memberRealmResults4 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 4.toInt()).findAll()
+                val memberRealmResults5 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 5.toInt()).findAll()
+                val memberRealmResults6 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 6.toInt()).findAll()
+
+                val memberId1 = memberRealmResults1.max("id")!!.toInt()
+                val memberId2 = memberRealmResults2.max("id")!!.toInt()
+                val memberId3 = memberRealmResults3.max("id")!!.toInt()
+                val memberId4 = memberRealmResults4.max("id")!!.toInt()
+                val memberId5 = memberRealmResults5.max("id")!!.toInt()
+                val memberId6 = memberRealmResults6.max("id")!!.toInt()
+
+                val memberData1 = mRealm.where(Member::class.java).equalTo("id", memberId1).findFirst()
+                val memberData2 = mRealm.where(Member::class.java).equalTo("id", memberId2).findFirst()
+                val memberData3 = mRealm.where(Member::class.java).equalTo("id", memberId3).findFirst()
+                val memberData4 = mRealm.where(Member::class.java).equalTo("id", memberId4).findFirst()
+                val memberData5 = mRealm.where(Member::class.java).equalTo("id", memberId5).findFirst()
+                val memberData6 = mRealm.where(Member::class.java).equalTo("id", memberId6).findFirst()
+
+                val memberName1 = memberData1!!.memberName
+                val memberName2 = memberData2!!.memberName
+                val memberName3 = memberData3!!.memberName
+                val memberName4 = memberData4!!.memberName
+                val memberName5 = memberData5!!.memberName
+                val memberName6 = memberData6!!.memberName
+
+                val memberChips1 = memberData1!!.memberChips
+                val memberChips2 = memberData2!!.memberChips
+                val memberChips3 = memberData3!!.memberChips
+                val memberChips4 = memberData4!!.memberChips
+                val memberChips5 = memberData5!!.memberChips
+                val memberChips6 = memberData6!!.memberChips
+
+                val memberHand1 = memberData1!!.winnerHand
+                val memberHand2 = memberData2!!.winnerHand
+                val memberHand3 = memberData3!!.winnerHand
+                val memberHand4 = memberData4!!.winnerHand
+                val memberHand5 = memberData5!!.winnerHand
+                val memberHand6 = memberData6!!.winnerHand
+
+                showDown1.text = memberName1 + "のハンド：" + memberHand1 + " 所持チップ：" + memberChips1.toString()
+                showDown2.text = memberName2 + "のハンド：" + memberHand2 + " 所持チップ：" + memberChips2.toString()
+                showDown3.text = memberName3 + "のハンド：" + memberHand3 + " 所持チップ：" + memberChips3.toString()
+                showDown4.text = memberName4 + "のハンド：" + memberHand4 + " 所持チップ：" + memberChips4.toString()
+                showDown5.text = memberName5 + "のハンド：" + memberHand5 + " 所持チップ：" + memberChips5.toString()
+                showDown6.text = memberName6 + "のハンド：" + memberHand6 + " 所持チップ：" + memberChips6.toString()
+            }
+            7 -> {
+                showDown1.visibility = View.VISIBLE
+                showDown2.visibility = View.VISIBLE
+                showDown3.visibility = View.VISIBLE
+                showDown4.visibility = View.VISIBLE
+                showDown5.visibility = View.VISIBLE
+                showDown6.visibility = View.VISIBLE
+                showDown7.visibility = View.VISIBLE
+
+                val memberRealmResults1 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 1.toInt()).findAll()
+                val memberRealmResults2 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 2.toInt()).findAll()
+                val memberRealmResults3 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 3.toInt()).findAll()
+                val memberRealmResults4 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 4.toInt()).findAll()
+                val memberRealmResults5 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 5.toInt()).findAll()
+                val memberRealmResults6 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 6.toInt()).findAll()
+                val memberRealmResults7 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 7.toInt()).findAll()
+
+                val memberId1 = memberRealmResults1.max("id")!!.toInt()
+                val memberId2 = memberRealmResults2.max("id")!!.toInt()
+                val memberId3 = memberRealmResults3.max("id")!!.toInt()
+                val memberId4 = memberRealmResults4.max("id")!!.toInt()
+                val memberId5 = memberRealmResults5.max("id")!!.toInt()
+                val memberId6 = memberRealmResults6.max("id")!!.toInt()
+                val memberId7 = memberRealmResults7.max("id")!!.toInt()
+
+                val memberData1 = mRealm.where(Member::class.java).equalTo("id", memberId1).findFirst()
+                val memberData2 = mRealm.where(Member::class.java).equalTo("id", memberId2).findFirst()
+                val memberData3 = mRealm.where(Member::class.java).equalTo("id", memberId3).findFirst()
+                val memberData4 = mRealm.where(Member::class.java).equalTo("id", memberId4).findFirst()
+                val memberData5 = mRealm.where(Member::class.java).equalTo("id", memberId5).findFirst()
+                val memberData6 = mRealm.where(Member::class.java).equalTo("id", memberId6).findFirst()
+                val memberData7 = mRealm.where(Member::class.java).equalTo("id", memberId7).findFirst()
+
+                val memberName1 = memberData1!!.memberName
+                val memberName2 = memberData2!!.memberName
+                val memberName3 = memberData3!!.memberName
+                val memberName4 = memberData4!!.memberName
+                val memberName5 = memberData5!!.memberName
+                val memberName6 = memberData6!!.memberName
+                val memberName7 = memberData7!!.memberName
+
+                val memberChips1 = memberData1!!.memberChips
+                val memberChips2 = memberData2!!.memberChips
+                val memberChips3 = memberData3!!.memberChips
+                val memberChips4 = memberData4!!.memberChips
+                val memberChips5 = memberData5!!.memberChips
+                val memberChips6 = memberData6!!.memberChips
+                val memberChips7 = memberData7!!.memberChips
+
+                val memberHand1 = memberData1!!.winnerHand
+                val memberHand2 = memberData2!!.winnerHand
+                val memberHand3 = memberData3!!.winnerHand
+                val memberHand4 = memberData4!!.winnerHand
+                val memberHand5 = memberData5!!.winnerHand
+                val memberHand6 = memberData6!!.winnerHand
+                val memberHand7 = memberData7!!.winnerHand
+
+                showDown1.text = memberName1 + "のハンド：" + memberHand1 + " 所持チップ：" + memberChips1.toString()
+                showDown2.text = memberName2 + "のハンド：" + memberHand2 + " 所持チップ：" + memberChips2.toString()
+                showDown3.text = memberName3 + "のハンド：" + memberHand3 + " 所持チップ：" + memberChips3.toString()
+                showDown4.text = memberName4 + "のハンド：" + memberHand4 + " 所持チップ：" + memberChips4.toString()
+                showDown5.text = memberName5 + "のハンド：" + memberHand5 + " 所持チップ：" + memberChips5.toString()
+                showDown6.text = memberName6 + "のハンド：" + memberHand6 + " 所持チップ：" + memberChips6.toString()
+                showDown7.text = memberName7 + "のハンド：" + memberHand7 + " 所持チップ：" + memberChips7.toString()
+
+            }
+            8 -> {
+                showDown1.visibility = View.VISIBLE
+                showDown2.visibility = View.VISIBLE
+                showDown3.visibility = View.VISIBLE
+                showDown4.visibility = View.VISIBLE
+                showDown5.visibility = View.VISIBLE
+                showDown6.visibility = View.VISIBLE
+                showDown7.visibility = View.VISIBLE
+                showDown8.visibility = View.VISIBLE
+
+                val memberRealmResults1 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 1.toInt()).findAll()
+                val memberRealmResults2 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 2.toInt()).findAll()
+                val memberRealmResults3 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 3.toInt()).findAll()
+                val memberRealmResults4 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 4.toInt()).findAll()
+                val memberRealmResults5 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 5.toInt()).findAll()
+                val memberRealmResults6 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 6.toInt()).findAll()
+                val memberRealmResults7 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 7.toInt()).findAll()
+                val memberRealmResults8 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 8.toInt()).findAll()
+
+                val memberId1 = memberRealmResults1.max("id")!!.toInt()
+                val memberId2 = memberRealmResults2.max("id")!!.toInt()
+                val memberId3 = memberRealmResults3.max("id")!!.toInt()
+                val memberId4 = memberRealmResults4.max("id")!!.toInt()
+                val memberId5 = memberRealmResults5.max("id")!!.toInt()
+                val memberId6 = memberRealmResults6.max("id")!!.toInt()
+                val memberId7 = memberRealmResults7.max("id")!!.toInt()
+                val memberId8 = memberRealmResults8.max("id")!!.toInt()
+
+                val memberData1 = mRealm.where(Member::class.java).equalTo("id", memberId1).findFirst()
+                val memberData2 = mRealm.where(Member::class.java).equalTo("id", memberId2).findFirst()
+                val memberData3 = mRealm.where(Member::class.java).equalTo("id", memberId3).findFirst()
+                val memberData4 = mRealm.where(Member::class.java).equalTo("id", memberId4).findFirst()
+                val memberData5 = mRealm.where(Member::class.java).equalTo("id", memberId5).findFirst()
+                val memberData6 = mRealm.where(Member::class.java).equalTo("id", memberId6).findFirst()
+                val memberData7 = mRealm.where(Member::class.java).equalTo("id", memberId7).findFirst()
+                val memberData8 = mRealm.where(Member::class.java).equalTo("id", memberId8).findFirst()
+
+                val memberName1 = memberData1!!.memberName
+                val memberName2 = memberData2!!.memberName
+                val memberName3 = memberData3!!.memberName
+                val memberName4 = memberData4!!.memberName
+                val memberName5 = memberData5!!.memberName
+                val memberName6 = memberData6!!.memberName
+                val memberName7 = memberData7!!.memberName
+                val memberName8 = memberData8!!.memberName
+
+                val memberChips1 = memberData1!!.memberChips
+                val memberChips2 = memberData2!!.memberChips
+                val memberChips3 = memberData3!!.memberChips
+                val memberChips4 = memberData4!!.memberChips
+                val memberChips5 = memberData5!!.memberChips
+                val memberChips6 = memberData6!!.memberChips
+                val memberChips7 = memberData7!!.memberChips
+                val memberChips8 = memberData8!!.memberChips
+
+                val memberHand1 = memberData1!!.winnerHand
+                val memberHand2 = memberData2!!.winnerHand
+                val memberHand3 = memberData3!!.winnerHand
+                val memberHand4 = memberData4!!.winnerHand
+                val memberHand5 = memberData5!!.winnerHand
+                val memberHand6 = memberData6!!.winnerHand
+                val memberHand7 = memberData7!!.winnerHand
+                val memberHand8 = memberData8!!.winnerHand
+
+                showDown1.text = memberName1 + "のハンド：" + memberHand1 + " 所持チップ：" + memberChips1.toString()
+                showDown2.text = memberName2 + "のハンド：" + memberHand2 + " 所持チップ：" + memberChips2.toString()
+                showDown3.text = memberName3 + "のハンド：" + memberHand3 + " 所持チップ：" + memberChips3.toString()
+                showDown4.text = memberName4 + "のハンド：" + memberHand4 + " 所持チップ：" + memberChips4.toString()
+                showDown5.text = memberName5 + "のハンド：" + memberHand5 + " 所持チップ：" + memberChips5.toString()
+                showDown6.text = memberName6 + "のハンド：" + memberHand6 + " 所持チップ：" + memberChips6.toString()
+                showDown7.text = memberName7 + "のハンド：" + memberHand7 + " 所持チップ：" + memberChips7.toString()
+                showDown8.text = memberName8 + "のハンド：" + memberHand8 + " 所持チップ：" + memberChips8.toString()
+
+            }
+            9 -> {
+                showDown1.visibility = View.VISIBLE
+                showDown2.visibility = View.VISIBLE
+                showDown3.visibility = View.VISIBLE
+                showDown4.visibility = View.VISIBLE
+                showDown5.visibility = View.VISIBLE
+                showDown6.visibility = View.VISIBLE
+                showDown7.visibility = View.VISIBLE
+                showDown8.visibility = View.VISIBLE
+                showDown9.visibility = View.VISIBLE
+
+                val memberRealmResults1 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 1.toInt()).findAll()
+                val memberRealmResults2 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 2.toInt()).findAll()
+                val memberRealmResults3 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 3.toInt()).findAll()
+                val memberRealmResults4 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 4.toInt()).findAll()
+                val memberRealmResults5 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 5.toInt()).findAll()
+                val memberRealmResults6 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 6.toInt()).findAll()
+                val memberRealmResults7 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 7.toInt()).findAll()
+                val memberRealmResults8 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 8.toInt()).findAll()
+                val memberRealmResults9 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 9.toInt()).findAll()
+
+                val memberId1 = memberRealmResults1.max("id")!!.toInt()
+                val memberId2 = memberRealmResults2.max("id")!!.toInt()
+                val memberId3 = memberRealmResults3.max("id")!!.toInt()
+                val memberId4 = memberRealmResults4.max("id")!!.toInt()
+                val memberId5 = memberRealmResults5.max("id")!!.toInt()
+                val memberId6 = memberRealmResults6.max("id")!!.toInt()
+                val memberId7 = memberRealmResults7.max("id")!!.toInt()
+                val memberId8 = memberRealmResults8.max("id")!!.toInt()
+                val memberId9 = memberRealmResults9.max("id")!!.toInt()
+
+                val memberData1 = mRealm.where(Member::class.java).equalTo("id", memberId1).findFirst()
+                val memberData2 = mRealm.where(Member::class.java).equalTo("id", memberId2).findFirst()
+                val memberData3 = mRealm.where(Member::class.java).equalTo("id", memberId3).findFirst()
+                val memberData4 = mRealm.where(Member::class.java).equalTo("id", memberId4).findFirst()
+                val memberData5 = mRealm.where(Member::class.java).equalTo("id", memberId5).findFirst()
+                val memberData6 = mRealm.where(Member::class.java).equalTo("id", memberId6).findFirst()
+                val memberData7 = mRealm.where(Member::class.java).equalTo("id", memberId7).findFirst()
+                val memberData8 = mRealm.where(Member::class.java).equalTo("id", memberId8).findFirst()
+                val memberData9 = mRealm.where(Member::class.java).equalTo("id", memberId9).findFirst()
+
+                val memberName1 = memberData1!!.memberName
+                val memberName2 = memberData2!!.memberName
+                val memberName3 = memberData3!!.memberName
+                val memberName4 = memberData4!!.memberName
+                val memberName5 = memberData5!!.memberName
+                val memberName6 = memberData6!!.memberName
+                val memberName7 = memberData7!!.memberName
+                val memberName8 = memberData8!!.memberName
+                val memberName9 = memberData9!!.memberName
+
+                val memberChips1 = memberData1!!.memberChips
+                val memberChips2 = memberData2!!.memberChips
+                val memberChips3 = memberData3!!.memberChips
+                val memberChips4 = memberData4!!.memberChips
+                val memberChips5 = memberData5!!.memberChips
+                val memberChips6 = memberData6!!.memberChips
+                val memberChips7 = memberData7!!.memberChips
+                val memberChips8 = memberData8!!.memberChips
+                val memberChips9 = memberData9!!.memberChips
+
+                val memberHand1 = memberData1!!.winnerHand
+                val memberHand2 = memberData2!!.winnerHand
+                val memberHand3 = memberData3!!.winnerHand
+                val memberHand4 = memberData4!!.winnerHand
+                val memberHand5 = memberData5!!.winnerHand
+                val memberHand6 = memberData6!!.winnerHand
+                val memberHand7 = memberData7!!.winnerHand
+                val memberHand8 = memberData8!!.winnerHand
+                val memberHand9 = memberData9!!.winnerHand
+
+
+                showDown1.text = memberName1 + "のハンド：" + memberHand1 + " 所持チップ：" + memberChips1.toString()
+                showDown2.text = memberName2 + "のハンド：" + memberHand2 + " 所持チップ：" + memberChips2.toString()
+                showDown3.text = memberName3 + "のハンド：" + memberHand3 + " 所持チップ：" + memberChips3.toString()
+                showDown4.text = memberName4 + "のハンド：" + memberHand4 + " 所持チップ：" + memberChips4.toString()
+                showDown5.text = memberName5 + "のハンド：" + memberHand5 + " 所持チップ：" + memberChips5.toString()
+                showDown6.text = memberName6 + "のハンド：" + memberHand6 + " 所持チップ：" + memberChips6.toString()
+                showDown7.text = memberName7 + "のハンド：" + memberHand7 + " 所持チップ：" + memberChips7.toString()
+                showDown8.text = memberName8 + "のハンド：" + memberHand8 + " 所持チップ：" + memberChips8.toString()
+                showDown9.text = memberName9 + "のハンド：" + memberHand9 + " 所持チップ：" + memberChips9.toString()
+            }
+            10 -> {
+                showDown1.visibility = View.VISIBLE
+                showDown2.visibility = View.VISIBLE
+                showDown3.visibility = View.VISIBLE
+                showDown4.visibility = View.VISIBLE
+                showDown5.visibility = View.VISIBLE
+                showDown6.visibility = View.VISIBLE
+                showDown7.visibility = View.VISIBLE
+                showDown8.visibility = View.VISIBLE
+                showDown9.visibility = View.VISIBLE
+                showDown10.visibility = View.VISIBLE
+
+                val memberRealmResults1 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 1.toInt()).findAll()
+                val memberRealmResults2 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 2.toInt()).findAll()
+                val memberRealmResults3 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 3.toInt()).findAll()
+                val memberRealmResults4 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 4.toInt()).findAll()
+                val memberRealmResults5 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 5.toInt()).findAll()
+                val memberRealmResults6 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 6.toInt()).findAll()
+                val memberRealmResults7 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 7.toInt()).findAll()
+                val memberRealmResults8 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 8.toInt()).findAll()
+                val memberRealmResults9 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 9.toInt()).findAll()
+                val memberRealmResults10 = mRealm.where(Member::class.java).equalTo("game_id", turnGameId).and().equalTo("hand_count", count).and().equalTo("memberRound", 10.toInt()).findAll()
+
+                val memberId1 = memberRealmResults1.max("id")!!.toInt()
+                val memberId2 = memberRealmResults2.max("id")!!.toInt()
+                val memberId3 = memberRealmResults3.max("id")!!.toInt()
+                val memberId4 = memberRealmResults4.max("id")!!.toInt()
+                val memberId5 = memberRealmResults5.max("id")!!.toInt()
+                val memberId6 = memberRealmResults6.max("id")!!.toInt()
+                val memberId7 = memberRealmResults7.max("id")!!.toInt()
+                val memberId8 = memberRealmResults8.max("id")!!.toInt()
+                val memberId9 = memberRealmResults9.max("id")!!.toInt()
+                val memberId10 = memberRealmResults10.max("id")!!.toInt()
+
+                val memberData1 = mRealm.where(Member::class.java).equalTo("id", memberId1).findFirst()
+                val memberData2 = mRealm.where(Member::class.java).equalTo("id", memberId2).findFirst()
+                val memberData3 = mRealm.where(Member::class.java).equalTo("id", memberId3).findFirst()
+                val memberData4 = mRealm.where(Member::class.java).equalTo("id", memberId4).findFirst()
+                val memberData5 = mRealm.where(Member::class.java).equalTo("id", memberId5).findFirst()
+                val memberData6 = mRealm.where(Member::class.java).equalTo("id", memberId6).findFirst()
+                val memberData7 = mRealm.where(Member::class.java).equalTo("id", memberId7).findFirst()
+                val memberData8 = mRealm.where(Member::class.java).equalTo("id", memberId8).findFirst()
+                val memberData9 = mRealm.where(Member::class.java).equalTo("id", memberId9).findFirst()
+                val memberData10 = mRealm.where(Member::class.java).equalTo("id", memberId10).findFirst()
+
+                val memberName1 = memberData1!!.memberName
+                val memberName2 = memberData2!!.memberName
+                val memberName3 = memberData3!!.memberName
+                val memberName4 = memberData4!!.memberName
+                val memberName5 = memberData5!!.memberName
+                val memberName6 = memberData6!!.memberName
+                val memberName7 = memberData7!!.memberName
+                val memberName8 = memberData8!!.memberName
+                val memberName9 = memberData9!!.memberName
+                val memberName10 = memberData10!!.memberName
+
+                val memberChips1 = memberData1!!.memberChips
+                val memberChips2 = memberData2!!.memberChips
+                val memberChips3 = memberData3!!.memberChips
+                val memberChips4 = memberData4!!.memberChips
+                val memberChips5 = memberData5!!.memberChips
+                val memberChips6 = memberData6!!.memberChips
+                val memberChips7 = memberData7!!.memberChips
+                val memberChips8 = memberData8!!.memberChips
+                val memberChips9 = memberData9!!.memberChips
+                val memberChips10 = memberData10!!.memberChips
+
+                val memberHand1 = memberData1!!.winnerHand
+                val memberHand2 = memberData2!!.winnerHand
+                val memberHand3 = memberData3!!.winnerHand
+                val memberHand4 = memberData4!!.winnerHand
+                val memberHand5 = memberData5!!.winnerHand
+                val memberHand6 = memberData6!!.winnerHand
+                val memberHand7 = memberData7!!.winnerHand
+                val memberHand8 = memberData8!!.winnerHand
+                val memberHand9 = memberData9!!.winnerHand
+                val memberHand10 = memberData10!!.winnerHand
+
+
+                showDown1.text = memberName1 + "のハンド：" + memberHand1 + " 所持チップ：" + memberChips1.toString()
+                showDown2.text = memberName2 + "のハンド：" + memberHand2 + " 所持チップ：" + memberChips2.toString()
+                showDown3.text = memberName3 + "のハンド：" + memberHand3 + " 所持チップ：" + memberChips3.toString()
+                showDown4.text = memberName4 + "のハンド：" + memberHand4 + " 所持チップ：" + memberChips4.toString()
+                showDown5.text = memberName5 + "のハンド：" + memberHand5 + " 所持チップ：" + memberChips5.toString()
+                showDown6.text = memberName6 + "のハンド：" + memberHand6 + " 所持チップ：" + memberChips6.toString()
+                showDown7.text = memberName7 + "のハンド：" + memberHand7 + " 所持チップ：" + memberChips7.toString()
+                showDown8.text = memberName8 + "のハンド：" + memberHand8 + " 所持チップ：" + memberChips8.toString()
+                showDown9.text = memberName9 + "のハンド：" + memberHand9 + " 所持チップ：" + memberChips9.toString()
+                showDown10.text = memberName10 + "のハンド：" + memberHand10 + " 所持チップ：" + memberChips10.toString()
+            }
+
+        }
     }
 
 }

@@ -44,16 +44,16 @@
             android:layout_weight="2">
 
             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
                 android:id="@+id/dataDetailActionText"
+                android:textSize="10sp"/>
+
+            <TextView
+                android:id="@+id/dataDetailChipsText"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:textSize="10sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:id="@+id/dataDetailChipsText"
-                android:textSize="10sp"/>
 
         </LinearLayout>
 
@@ -153,6 +153,64 @@
             </LinearLayout>
 
         </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dataDetailLinearLayout2"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:id="@+id/dataDetailShowDown1"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:id="@+id/dataDetailShowDown2"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:id="@+id/dataDetailShowDown3"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:id="@+id/dataDetailShowDown4"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:id="@+id/dataDetailShowDown5"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:id="@+id/dataDetailShowDown6"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:id="@+id/dataDetailShowDown7"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:id="@+id/dataDetailShowDown8"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:id="@+id/dataDetailShowDown9"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:id="@+id/dataDetailShowDown10"/>
 
     </LinearLayout>
 

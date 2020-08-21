@@ -950,6 +950,7 @@ class PlayingActivity : AppCompatActivity() {
 //                    Log.d("kotlintest", "memberId:" + playerNumId.toString())
 
                     //Turnを新規登録
+                    mTurn!!.playerNum = memberNum
                     mTurn!!.playerRound = playingNum
                     mTurn!!.game_id = game_id
                     mTurn!!.count = count
