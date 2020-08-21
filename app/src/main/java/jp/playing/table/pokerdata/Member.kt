@@ -6,6 +6,7 @@ import java.io.Serializable
 
 open class Member: RealmObject(), Serializable {
     var memberName = "" // 参加中のメンバーの名前
+    var memberNum = 0
     var member_id = ""// 参加中のメンバーのid
     var memberRound = 0 //参加中のメンバーの順番
     var game_id = 0 //テーブルのid

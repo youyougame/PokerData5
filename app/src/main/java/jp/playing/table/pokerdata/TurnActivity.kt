@@ -602,6 +602,7 @@ class TurnActivity : AppCompatActivity() {
                             intent.putExtra("SB", sb)
                             intent.putExtra("BB", bb)
                             intent.putExtra("foldPlayer", 0)
+                            intent.putExtra("send", "TurnActivity")
                             startActivity(intent)
                         }
                     }
@@ -762,11 +763,12 @@ class TurnActivity : AppCompatActivity() {
                     }
                 mMemBerPlay!!.id = identifier
                 Log.d("kotlintest","Member保存：" + identifier.toString())
-                mMemBerPlay!!.hand_count = 0
+                mMemBerPlay!!.hand_count = 1
                 mMemBerPlay!!.memberName = i
                 mMemBerPlay!!.memberRound = playRound
                 mMemBerPlay!!.game_id = gameLength
                 mMemBerPlay!!.playingCheck = "play"
+                mMemBerPlay!!.memberNum = mMember
 
                 if (identifier == 0) {
                     firstRealm = i

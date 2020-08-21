@@ -544,7 +544,7 @@ class HandActivity : AppCompatActivity() {
                                 if (handRealmResults.max("id") != null) {
                                     handRealmResults.max("id")!!.toInt() + 1
                                 } else {
-                                    0
+                                    1
                                 }
                             mHand!!.id = identifier
                             Log.d("kotlintest", "保存したハンド：" + identifier.toString())
@@ -599,6 +599,7 @@ class HandActivity : AppCompatActivity() {
                             mMember!!.hand_count = count
                             mMember!!.memberChips = memberChips
                             mMember!!.playingCheck = memberPlayingCheck
+                            mMember!!.memberNum = memberNum
                             if (myRound == i) {
                                 mMember!!.hand1 = playerHand1
                                 mMember!!.hand2 = playerHand2
@@ -609,6 +610,22 @@ class HandActivity : AppCompatActivity() {
 
                         mRealm.copyToRealmOrUpdate(mHand!!)
                         mRealm.commitTransaction()
+
+                        //削除予定
+                        val handRealmResults = mRealm.where(Hand::class.java).equalTo("game_id", game_id).and().equalTo("count", count).findAll()
+                        Log.d("kotlintest", "データ：" + handRealmResults.toString())
+                        Log.d("kotlintest", "数字：" + count.toString())
+                        val handId = handRealmResults.max("id")!!.toInt()
+                        val handData = mRealm.where(Hand::class.java).equalTo("id", handId).findFirst()
+                        Log.d("kotlintest", "HandId：" + handData!!.id.toString())
+                        Log.d("kotlintest", "Hand：" + handData!!.count.toString())
+                        Log.d("kotlintest", "Hand：" + handData!!.hand1)
+                        Log.d("kotlintest", "Hand：" + handData!!.hand2)
+                        Log.d("kotlintest", "Hand1：" + handData!!.table1)
+                        Log.d("kotlintest", "Hand2：" + handData!!.table2)
+                        Log.d("kotlintest", "Hand3：" + handData!!.table3)
+                        Log.d("kotlintest", "Hand4：" + handData!!.table4)
+                        Log.d("kotlintest", "Hand5：" + handData!!.table5)
 
                         if (myRound == flopNum) {
                             roundPlayer = "you"

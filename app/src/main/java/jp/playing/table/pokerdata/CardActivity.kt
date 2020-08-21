@@ -1426,6 +1426,21 @@ class CardActivity : AppCompatActivity() {
 
         playingNum = preFlopNum
 
+        val handRealmResults = mRealm.where(Hand::class.java).equalTo("game_id", game_id).and().equalTo("count", count).findAll()
+        Log.d("kotlintest", "データ：" + handRealmResults.toString())
+        Log.d("kotlintest", "数字：" + count.toString())
+        val handId = handRealmResults.max("id")!!.toInt()
+        val handData = mRealm.where(Hand::class.java).equalTo("id", handId).findFirst()
+        Log.d("kotlintest", "HandId：" + handData!!.id.toString())
+        Log.d("kotlintest", "Hand：" + handData!!.count.toString())
+        Log.d("kotlintest", "Hand：" + handData!!.hand1)
+        Log.d("kotlintest", "Hand：" + handData!!.hand2)
+        Log.d("kotlintest", "Hand1：" + handData!!.table1)
+        Log.d("kotlintest", "Hand2：" + handData!!.table2)
+        Log.d("kotlintest", "Hand3：" + handData!!.table3)
+        Log.d("kotlintest", "Hand4：" + handData!!.table4)
+        Log.d("kotlintest", "Hand5：" + handData!!.table5)
+
         when (roundPlayer) {
             "you" -> {
 
@@ -1539,6 +1554,21 @@ class CardActivity : AppCompatActivity() {
     }
 
     private fun intentShowDown() {
+
+        val handRealmResults = mRealm.where(Hand::class.java).equalTo("game_id", game_id).and().equalTo("count", count).findAll()
+        Log.d("kotlintest", "データ：" + handRealmResults.toString())
+        Log.d("kotlintest", "数字：" + count.toString())
+        val handId = handRealmResults.max("id")!!.toInt()
+        val handData = mRealm.where(Hand::class.java).equalTo("id", handId).findFirst()
+        Log.d("kotlintest", "HandId：" + handData!!.id.toString())
+        Log.d("kotlintest", "Hand：" + handData!!.count.toString())
+        Log.d("kotlintest", "Hand：" + handData!!.hand1)
+        Log.d("kotlintest", "Hand：" + handData!!.hand2)
+        Log.d("kotlintest", "Hand1：" + handData!!.table1)
+        Log.d("kotlintest", "Hand2：" + handData!!.table2)
+        Log.d("kotlintest", "Hand3：" + handData!!.table3)
+        Log.d("kotlintest", "Hand4：" + handData!!.table4)
+        Log.d("kotlintest", "Hand5：" + handData!!.table5)
 
         //ShowDownActivityへ移動
         val intent = Intent(this@CardActivity, ShowDownActivity::class.java)
